@@ -73,7 +73,7 @@ git init
 git add .
 git commit -m "Initial commit: YouTube emotion analyzer"
 git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/youtube-emotion-analyzer.git
+git remote add origin https://github.com/chasezhang1999/youtube-emotion-analyzer.git
 git push -u origin main
 ```
 

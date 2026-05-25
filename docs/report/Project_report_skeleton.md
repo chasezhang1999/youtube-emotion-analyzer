@@ -225,12 +225,12 @@ Both CPU (`device=-1`) and GPU (`device=0`) measurements are recorded. Streamlit
 
 | Model | Device | Test Samples | Accuracy | Runtime (with loading) | Runtime (w/o loading) |
 |---|---:|---:|---:|---:|---:|
-| Pre-trained emotion model | CPU | 455 | [Replace] | [Replace]s | [Replace]s |
-| Pre-trained emotion model | GPU | 455 | [Replace] | [Replace]s | [Replace]s |
-| Fine-tuned emotion model | CPU | 455 | [Replace] | [Replace]s | [Replace]s |
-| Fine-tuned emotion model | GPU | 455 | [Replace] | [Replace]s | [Replace]s |
-| Sentiment baseline model | CPU | 455 | [Replace] | [Replace]s | [Replace]s |
-| Sentiment baseline model | GPU | 455 | [Replace] | [Replace]s | [Replace]s |
+| `j-hartmann/emotion-english-distilroberta-base` | CPU | 455 | 0.7033 | 38.6122s | 27.8509s |
+| `j-hartmann/emotion-english-distilroberta-base` | GPU | 455 | 0.7033 | 4.8555s | 3.9927s |
+| `chase1zhang/youtube-emotion-distilbert` | CPU | 455 | 0.7604 | 30.7984s | 25.9997s |
+| `chase1zhang/youtube-emotion-distilbert` | GPU | 455 | 0.7604 | 3.2396s | 2.2477s |
+| `cardiffnlp/twitter-roberta-base-sentiment-latest` | CPU | 455 | 0.7363 | 57.5298s | 50.5400s |
+| `cardiffnlp/twitter-roberta-base-sentiment-latest` | GPU | 455 | 0.7363 | 6.1080s | 4.2489s |
 
 ### 11.2 Application Performance on Streamlit Cloud
 
@@ -246,8 +246,8 @@ The deployed app is tested using 3–5 YouTube videos. The app's main emotion pr
 
 ### 11.3 Key Findings
 
-- The fine-tuned model [improves / maintains] accuracy compared to the pre-trained baseline on the seven-emotion task.
-- CPU inference time on Streamlit Cloud is [reasonable / needs optimization] for 50 comments.
+- The fine-tuned model improves accuracy compared with the pre-trained emotion baseline on the seven-emotion task, increasing accuracy from 0.7033 to 0.7604.
+- GPU inference is much faster than CPU inference for all tested models, while CPU runtime remains acceptable for the Streamlit Cloud app because each app run analyzes only the first 50 comments.
 - The sentiment pipeline adds a useful supporting signal but maps different emotion categories (e.g., surprise, disgust) into broader sentiment classes, so it serves as a complementary view rather than a replacement.
 - The Streamlit Cloud app provides consistent predictions across different YouTube videos.
 

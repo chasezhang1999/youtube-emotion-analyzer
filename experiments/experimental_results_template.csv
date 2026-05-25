@@ -1,7 +1,7 @@
 experiment_id,model_name,task,device,num_test_samples,accuracy,runtime_with_model_loading_seconds,runtime_without_model_loading_seconds,notes
-1,j-hartmann/emotion-english-distilroberta-base,seven-emotion classification,CPU,455,,,,Pre-trained baseline for comparison
-2,j-hartmann/emotion-english-distilroberta-base,seven-emotion classification,GPU,455,,,,Pre-trained baseline on GPU
-3,chase1zhang/youtube-emotion-distilbert,seven-emotion classification,CPU,455,,,,Fine-tuned model
-4,chase1zhang/youtube-emotion-distilbert,seven-emotion classification,GPU,455,,,,Fine-tuned model on GPU
-5,cardiffnlp/twitter-roberta-base-sentiment-latest,sentiment classification,CPU,455,,,,Sentiment pipeline as supporting signal
-6,cardiffnlp/twitter-roberta-base-sentiment-latest,sentiment classification,GPU,455,,,,Sentiment pipeline on GPU
+1,j-hartmann/emotion-english-distilroberta-base,seven-emotion classification,CPU,455,0.7033,38.6122,27.8509,Pre-trained baseline for comparison
+2,j-hartmann/emotion-english-distilroberta-base,seven-emotion classification,GPU,455,0.7033,4.8555,3.9927,Pre-trained baseline on GPU
+3,chase1zhang/youtube-emotion-distilbert,seven-emotion classification,CPU,455,0.7604,30.7984,25.9997,Fine-tuned model
+4,chase1zhang/youtube-emotion-distilbert,seven-emotion classification,GPU,455,0.7604,3.2396,2.2477,Fine-tuned model on GPU
+5,cardiffnlp/twitter-roberta-base-sentiment-latest,sentiment classification,CPU,455,0.7363,57.5298,50.5400,Sentiment pipeline as supporting signal
+6,cardiffnlp/twitter-roberta-base-sentiment-latest,sentiment classification,GPU,455,0.7363,6.1080,4.2489,Sentiment pipeline on GPU
