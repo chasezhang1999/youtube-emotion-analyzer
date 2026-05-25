@@ -18,7 +18,7 @@ InsightWave Digital Marketing Agency helps brands evaluate social media campaign
 
 ## 3. Project Objective
 
-This project helps a digital marketing agency analyze audience emotions in YouTube comments using deep learning. By classifying the first 50 comments into seven emotions (anger, disgust, fear, joy, neutral, sadness, surprise) using two Hugging Face transformer pipelines, the app provides fast campaign insights for content evaluation and strategy improvement.
+This project helps a digital marketing agency use deep learning to classify the first 50 YouTube comments into seven audience emotions, summarize campaign reaction, flag negative feedback risk, and generate actionable marketing recommendations.
 
 ## 4. Strategy
 
@@ -280,7 +280,7 @@ Overall, the project demonstrates how Hugging Face transformer models can suppor
 - [x] Streamlit app files (`streamlit_app.py`, `youtube_emotion/`, `requirements.txt`)
 - [x] Dataset files (`data/go_emotions_7class/`)
 - [x] Fine-tuned model files (`fine_tuned_model_files/youtube-emotion-distilbert/`)
-- [ ] Experimental results Excel file (`experiments/experimental_results_template.csv`)
+- [ ] Experimental results Excel file (`Experimental_results.xlsx`)
 - [x] GitHub repository URL: https://github.com/chasezhang1999/youtube-emotion-analyzer
 - [x] Hugging Face model URL: https://huggingface.co/chase1zhang/youtube-emotion-distilbert
 - [x] Streamlit Cloud app URL: https://youtube-emotion-analyzer.streamlit.app/
