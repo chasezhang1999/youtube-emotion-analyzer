@@ -51,11 +51,11 @@ Sentiment pipeline model: `cardiffnlp/twitter-roberta-base-sentiment-latest`
 
 ## 6. App URL
 
-**Deployed Streamlit Cloud app:** https://[your-app-name].streamlit.app
+**Deployed Streamlit Cloud app:** https://youtube-emotion-analyzer.streamlit.app/
 
 ## 7. GitHub URL
 
-**GitHub repository:** https://github.com/[YOUR_USERNAME]/youtube-emotion-analyzer
+**GitHub repository:** https://github.com/chasezhang1999/youtube-emotion-analyzer
 
 The repository is connected to Streamlit Cloud for automatic deployment. The app uses Streamlit secrets to manage the YouTube Data API key securely.
 
@@ -277,12 +277,12 @@ Overall, the project demonstrates how Hugging Face transformer models can suppor
 - [ ] Project report PDF (this document, <10 pages)
 - [ ] Fine-tuning Colab notebook (`notebooks/fine_tune_go_emotions_distilbert.ipynb`)
 - [ ] Testing and experiments Colab notebook (`notebooks/testing_experiments.ipynb`)
-- [ ] Streamlit app files (`streamlit_app.py`, `youtube_emotion/`, `requirements.txt`)
-- [ ] Dataset files (`data/go_emotions_7class/`)
-- [ ] Fine-tuned model files (`fine_tuned_model_files/`)
+- [x] Streamlit app files (`streamlit_app.py`, `youtube_emotion/`, `requirements.txt`)
+- [x] Dataset files (`data/go_emotions_7class/`)
+- [x] Fine-tuned model files (`fine_tuned_model_files/youtube-emotion-distilbert/`)
 - [ ] Experimental results Excel file (`experiments/experimental_results_template.csv`)
-- [ ] GitHub repository URL: https://github.com/[YOUR_USERNAME]/youtube-emotion-analyzer
-- [ ] Hugging Face model URL: https://huggingface.co/chase1zhang/youtube-emotion-distilbert
-- [ ] Streamlit Cloud app URL: https://[your-app-name].streamlit.app
+- [x] GitHub repository URL: https://github.com/chasezhang1999/youtube-emotion-analyzer
+- [x] Hugging Face model URL: https://huggingface.co/chase1zhang/youtube-emotion-distilbert
+- [x] Streamlit Cloud app URL: https://youtube-emotion-analyzer.streamlit.app/
 - [ ] PPT presentation
 - [ ] MP4 presentation video

@@ -14,8 +14,11 @@ InsightWave Digital Marketing Agency helps brands understand whether YouTube cam
 ✅ Streamlit app built  
 ✅ Dataset prepared (GoEmotions 7-class, balanced)  
 ✅ Project report drafted  
+✅ Fine-tuned Hugging Face model uploaded and verified  
+✅ GitHub repository pushed  
+✅ Streamlit Cloud app deployed and tested  
 
-⏳ **Remaining: rerun Hugging Face upload verification, then deploy, run experiments, fill report numbers**
+⏳ **Remaining: run final Colab experiments, fill report numbers/screenshots, create PPT, record MP4, package Canvas submission**
 
 ## Quick Start
 
@@ -50,6 +53,8 @@ For local testing without a YouTube API key, check "Use sample comments" in the 
 5. Run Section 13 to verify the uploaded model can be loaded by `pipeline()`
 6. Record the model URL: `https://huggingface.co/chase1zhang/youtube-emotion-distilbert`
 
+Status: completed and verified with `pipeline("text-classification")`.
+
 ### Step 3: Update App with Fine-tuned Model
 
 Edit `youtube_emotion/model_runner.py`:
@@ -77,7 +82,9 @@ Then:
 2. Connect your GitHub repo
 3. Add secret: `YOUTUBE_API_KEY` = your YouTube Data API key
 4. Deploy
-5. Record the app URL: `https://your-app-name.streamlit.app`
+5. Record the app URL: `https://youtube-emotion-analyzer.streamlit.app/`
+
+Status: completed. GitHub repository: `https://github.com/chasezhang1999/youtube-emotion-analyzer`
 
 ### Step 5: Run Experiments
 
@@ -87,6 +94,7 @@ Then:
 4. Runtime → **Restart & Run All**
 5. Record all accuracy and runtime numbers
 6. Download the generated CSV files
+7. Convert the final results table to `Experimental_results.xlsx`
 
 ### Step 6: Fill Report Numbers
 
@@ -132,6 +140,7 @@ GroupXX_program/
 GroupXX_Dataset_files/
 ├── data/go_emotions_7class/
 └── Fine-tuned_Model_files/
+    └── youtube-emotion-distilbert/
 
 GroupXX_presentation/
 ├── Presentation_slide.pptx

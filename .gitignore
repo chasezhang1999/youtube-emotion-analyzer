@@ -3,6 +3,7 @@ __pycache__/
 .venv/
 .DS_Store
 .env
+.playwright-cli/
 .streamlit/secrets.toml
 docs/superpowers/
 fine_tuned_model_files/*
