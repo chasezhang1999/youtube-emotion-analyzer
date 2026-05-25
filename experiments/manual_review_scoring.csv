@@ -1,4 +1,0 @@
-video,num_comments,manual_7_emotion,manual_7_score,app_7_emotion,emotion_correct,manual_3_sentiment,manual_3_score,app_3_sentiment,sentiment_correct,rationale
-https://www.youtube.com/watch?v=d2dgJGkw5p0,50,neutral,68,neutral,Yes,neutral,62,neutral,Yes,"Mostly informational and geopolitical discussion; some sarcasm and criticism are present, but no single strong emotion dominates."
-https://www.youtube.com/watch?v=M8To7iorkxQ,50,joy,88,neutral,No,positive,92,positive,Yes,"Many comments praise the video or movie, use hearts, and contain positive wording such as amazing, enjoying, and favorite."
-https://www.youtube.com/watch?v=-_-eIVAX1yQ,50,anger,72,neutral,No,negative,85,negative,Yes,"Comments include blame, insults, political hostility, and violent sarcasm; negative anger dominates despite some dark humor."

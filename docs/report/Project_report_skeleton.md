@@ -234,27 +234,44 @@ Both CPU (`device=-1`) and GPU (`device=0`) measurements are recorded. Streamlit
 
 ### 11.2 Application Performance on Streamlit Cloud
 
-The deployed app is tested using three YouTube videos. The app prediction is compared with a manual review of the first 50 comments. The manual review serves as the human benchmark: the reviewer reads the comments, selects the dominant seven-emotion label and three-class sentiment label, and assigns a confidence score from 0 to 100 based on how consistently the comments support that label.
+The deployed app is tested using three YouTube videos. For each video, the first 50 comments are manually labeled comment by comment. The app performance score is calculated as:
+
+```text
+Accuracy = number of comments matching the manual label / 50 comments
+```
+
+The seven-emotion task compares the pre-tuning baseline model with the fine-tuned model. The three-class sentiment task compares the supporting sentiment pipeline with manual sentiment labels.
 
 **App testing results:**
 
-| Video | # Comments | Manual 7-Emotion | 7-Emotion Score | App 7-Emotion | 7 Correct | Manual Sentiment | Sentiment Score | App Sentiment | Sentiment Correct |
-|---|---:|---|---:|---|---|---|---:|---|---|
-| https://www.youtube.com/watch?v=d2dgJGkw5p0 | 50 | neutral | 68 | neutral | Yes | neutral | 62 | neutral | Yes |
-| https://www.youtube.com/watch?v=M8To7iorkxQ | 50 | joy | 88 | neutral | No | positive | 92 | positive | Yes |
-| https://www.youtube.com/watch?v=-_-eIVAX1yQ | 50 | anger | 72 | neutral | No | negative | 85 | negative | Yes |
+| Video | Task | Model Stage | Matched / 50 | Accuracy | Manual Main Label | Model Main Label |
+|---|---|---|---:|---:|---|---|
+| https://www.youtube.com/watch?v=d2dgJGkw5p0 | 7-emotion | Pre-tuning baseline | 31 | 0.6200 | neutral | neutral |
+| https://www.youtube.com/watch?v=d2dgJGkw5p0 | 7-emotion | Fine-tuned | 32 | 0.6400 | neutral | neutral |
+| https://www.youtube.com/watch?v=d2dgJGkw5p0 | 3-sentiment | Supporting pipeline | 31 | 0.6200 | neutral | neutral |
+| https://www.youtube.com/watch?v=M8To7iorkxQ | 7-emotion | Pre-tuning baseline | 28 | 0.5600 | joy | neutral |
+| https://www.youtube.com/watch?v=M8To7iorkxQ | 7-emotion | Fine-tuned | 24 | 0.4800 | joy | neutral |
+| https://www.youtube.com/watch?v=M8To7iorkxQ | 3-sentiment | Supporting pipeline | 44 | 0.8800 | positive | positive |
+| https://www.youtube.com/watch?v=-_-eIVAX1yQ | 7-emotion | Pre-tuning baseline | 14 | 0.2800 | anger | neutral |
+| https://www.youtube.com/watch?v=-_-eIVAX1yQ | 7-emotion | Fine-tuned | 17 | 0.3400 | anger | neutral |
+| https://www.youtube.com/watch?v=-_-eIVAX1yQ | 3-sentiment | Supporting pipeline | 33 | 0.6600 | negative | negative |
 
-**Manual review rationale:**
-- Video 1 contains mostly informational and geopolitical discussion. Some comments are sarcastic or critical, but no single strong emotion dominates, so the benchmark label is neutral.
-- Video 2 contains many positive comments, hearts, praise, and words such as "amazing", "enjoying", and "favorite", so the benchmark labels are joy and positive.
-- Video 3 contains blame, insults, political hostility, and violent sarcasm. Although some comments are jokes, the dominant benchmark labels are anger and negative.
+**Overall app performance:**
+
+| Task | Model / Pipeline | Matched / Total | Accuracy |
+|---|---|---:|---:|
+| 7-emotion | Pre-tuning baseline | 73 / 150 | 0.4867 |
+| 7-emotion | Fine-tuned model | 73 / 150 | 0.4867 |
+| 3-sentiment | Supporting sentiment pipeline | 108 / 150 | 0.7200 |
+
+Manual review rationale: the rare-earths video is mainly informational and neutral; the Avatar video is mostly joyful/positive because many comments include praise, hearts, and "amazing" language; the shooting news video contains anger/negative reactions because many comments include hostility, blame, insults, or violent sarcasm.
 
 ### 11.3 Key Findings
 
 - The fine-tuned model improves accuracy compared with the pre-trained emotion baseline on the seven-emotion task, increasing accuracy from 0.7033 to 0.7604.
 - GPU inference is much faster than CPU inference for all tested models, while CPU runtime remains acceptable for the Streamlit Cloud app because each app run analyzes only the first 50 comments.
-- The sentiment pipeline adds a useful supporting signal: it matched the manual three-class sentiment for all three app test videos.
-- In the Streamlit Cloud app test, the seven-emotion classifier matched the manual main emotion for 1 of 3 videos. The two mismatched videos were predicted as neutral, showing that the fine-grained seven-emotion classifier can under-detect joy or anger when comments are short, multilingual, sarcastic, or discussion-oriented.
+- On the Streamlit Cloud app test, the fine-tuned seven-emotion model and the pre-tuning baseline both achieved 73/150 comment-level matches overall. The fine-tuned model improved slightly on the rare-earths and shooting-news videos, but performed worse on the Avatar video because many short positive comments were predicted as neutral.
+- The three-class sentiment pipeline performed more consistently, achieving 108/150 comment-level matches overall. This suggests that broad sentiment is easier and more stable than fine-grained seven-emotion classification on short, multilingual, and sarcastic YouTube comments.
 
 ## 12. Conclusion
 

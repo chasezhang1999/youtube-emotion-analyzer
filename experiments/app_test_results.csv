@@ -1,4 +1,0 @@
-video,num_comments,app_main_emotion,manual_main_emotion,correct,negative_emotion_ratio,anger_pct,disgust_pct,fear_pct,joy_pct,neutral_pct,sadness_pct,surprise_pct
-https://www.youtube.com/watch?v=d2dgJGkw5p0,50,neutral,neutral,Yes,10.0,6.0,2.0,0.0,14.0,70.0,2.0,6.0
-https://www.youtube.com/watch?v=M8To7iorkxQ,50,neutral,joy,No,4.0,2.0,0.0,0.0,24.0,64.0,2.0,8.0
-https://www.youtube.com/watch?v=-_-eIVAX1yQ,50,neutral,anger,No,28.0,4.0,4.0,8.0,2.0,62.0,12.0,8.0

@@ -128,7 +128,8 @@ Must include:
 Recommended sheets:
 
 - `Model_Selection`
-- `Streamlit_App_Tests`
+- `Streamlit_App_Performance`
+- `Manual_Comment_Labels`
 - `Notes`
 
 ### 6. Presentation PPT
