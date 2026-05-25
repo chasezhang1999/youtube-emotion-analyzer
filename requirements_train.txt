@@ -1,0 +1,8 @@
+accelerate>=0.30
+datasets>=2.20
+evaluate>=0.4
+scikit-learn>=1.5
+transformers>=4.41
+torch>=2.2
+pandas>=2.2
+

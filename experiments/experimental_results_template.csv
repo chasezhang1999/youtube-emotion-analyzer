@@ -1,0 +1,7 @@
+experiment_id,model_name,task,device,num_test_samples,accuracy,runtime_with_model_loading_seconds,runtime_without_model_loading_seconds,notes
+1,j-hartmann/emotion-english-distilroberta-base,seven-emotion classification,CPU,455,,,,Pre-trained baseline for comparison
+2,j-hartmann/emotion-english-distilroberta-base,seven-emotion classification,GPU,455,,,,Pre-trained baseline on GPU
+3,chase1zhang/youtube-emotion-distilbert,seven-emotion classification,CPU,455,,,,Fine-tuned model
+4,chase1zhang/youtube-emotion-distilbert,seven-emotion classification,GPU,455,,,,Fine-tuned model on GPU
+5,cardiffnlp/twitter-roberta-base-sentiment-latest,sentiment classification,CPU,455,,,,Sentiment pipeline as supporting signal
+6,cardiffnlp/twitter-roberta-base-sentiment-latest,sentiment classification,GPU,455,,,,Sentiment pipeline on GPU
