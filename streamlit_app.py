@@ -5,16 +5,7 @@ import pandas as pd
 import streamlit as st
 
 from youtube_emotion.core import build_marketing_recommendation, parse_video_id, summarize_predictions
-from youtube_emotion.model_runner import (
-    DEFAULT_COMPARISON_MODEL_LABELS,
-    DEFAULT_EMOTION_MODEL,
-    DEFAULT_SENTIMENT_MODEL,
-    EMOTION_MODEL_OPTIONS,
-    load_text_classification_pipeline,
-    predict_comment_emotion_only,
-    predict_comment_emotions,
-    predict_comment_sentiments,
-)
+from youtube_emotion import model_runner
 from youtube_emotion.youtube_client import fetch_top_comments
 
 
@@ -30,7 +21,7 @@ st.set_page_config(
 
 @st.cache_resource(show_spinner=False)
 def get_pipeline(model_name: str):
-    return load_text_classification_pipeline(model_name)
+    return model_runner.load_text_classification_pipeline(model_name)
 
 
 @st.cache_data(show_spinner=False)
@@ -244,7 +235,7 @@ def main() -> None:
         if analysis_mode == "Single model":
             emotion_model_label = st.selectbox(
                 "Emotion model",
-                options=list(EMOTION_MODEL_OPTIONS.keys()),
+                options=list(model_runner.EMOTION_MODEL_OPTIONS.keys()),
                 index=0,
                 help="The recommended model was further fine-tuned on 1,000 YouTube-domain comments.",
             )
@@ -252,18 +243,22 @@ def main() -> None:
         else:
             selected_emotion_model_labels = st.multiselect(
                 "Emotion models to compare",
-                options=list(EMOTION_MODEL_OPTIONS.keys()),
-                default=DEFAULT_COMPARISON_MODEL_LABELS,
+                options=list(model_runner.EMOTION_MODEL_OPTIONS.keys()),
+                default=model_runner.DEFAULT_COMPARISON_MODEL_LABELS,
                 help="The default comparison uses three fine-tuned emotion models.",
             )
 
         selected_emotion_models = {
-            label: EMOTION_MODEL_OPTIONS[label] for label in selected_emotion_model_labels
+            label: model_runner.EMOTION_MODEL_OPTIONS[label]
+            for label in selected_emotion_model_labels
         }
         for label, model_name in selected_emotion_models.items():
             st.caption(f"{label}: `{model_name}`")
 
-        sentiment_model = st.text_input("Sentiment model", value=DEFAULT_SENTIMENT_MODEL)
+        sentiment_model = st.text_input(
+            "Sentiment model",
+            value=model_runner.DEFAULT_SENTIMENT_MODEL,
+        )
         comment_order = st.selectbox("Comment order", ["relevance", "time"], index=0)
         use_sample_comments = st.checkbox(
             "Use sample comments",
@@ -315,13 +310,13 @@ def main() -> None:
 
         if analysis_mode == "Compare emotion models":
             with st.spinner("Analyzing comments with selected emotion models..."):
-                sentiment_rows = predict_comment_sentiments(
+                sentiment_rows = model_runner.predict_comment_sentiments(
                     comments=comments,
                     sentiment_pipeline=sentiment_pipeline,
                 )
                 comparison_results = {}
                 for label, emotion_pipeline in emotion_pipelines.items():
-                    emotion_rows = predict_comment_emotion_only(
+                    emotion_rows = model_runner.predict_comment_emotion_only(
                         comments=comments,
                         emotion_pipeline=emotion_pipeline,
                     )
@@ -337,7 +332,7 @@ def main() -> None:
         else:
             selected_label = selected_emotion_model_labels[0]
             with st.spinner("Analyzing audience emotions..."):
-                rows = predict_comment_emotions(
+                rows = model_runner.predict_comment_emotions(
                     comments=comments,
                     emotion_pipeline=emotion_pipelines[selected_label],
                     sentiment_pipeline=sentiment_pipeline,
