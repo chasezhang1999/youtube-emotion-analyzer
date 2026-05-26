@@ -93,6 +93,7 @@ Emotion pipeline:
 - Base model: `distilbert-base-uncased`
 - Original fine-tuned model: `chase1zhang/youtube-emotion-distilbert`
 - Domain-adapted model: `chase1zhang/youtube-emotion-distilbert-domain-adapted`
+- Public comparison model: `SamLowe/roberta-base-go_emotions`
 
 Sentiment pipeline:
 
@@ -115,11 +116,13 @@ Show screenshots:
 2. Summary metrics
 3. Emotion distribution chart
 4. Comment-level table
-5. Marketing recommendation
+5. Three-model comparison mode
+6. Marketing recommendation
 
 Speaker notes:
 
 During the demo, paste a YouTube URL, run the analysis, and explain what the main emotion and negative emotion ratio mean for campaign decisions.
+Also switch to compare mode to show how the same comments are labeled by three fine-tuned emotion models.
 
 ## Slide 7: Experimental Results
 

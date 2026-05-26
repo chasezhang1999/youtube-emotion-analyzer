@@ -6,11 +6,14 @@ import streamlit as st
 
 from youtube_emotion.core import build_marketing_recommendation, parse_video_id, summarize_predictions
 from youtube_emotion.model_runner import (
+    DEFAULT_COMPARISON_MODEL_LABELS,
     DEFAULT_EMOTION_MODEL,
     DEFAULT_SENTIMENT_MODEL,
     EMOTION_MODEL_OPTIONS,
     load_text_classification_pipeline,
+    predict_comment_emotion_only,
     predict_comment_emotions,
+    predict_comment_sentiments,
 )
 from youtube_emotion.youtube_client import fetch_top_comments
 
@@ -108,6 +111,119 @@ def display_summary(rows: list[dict]) -> None:
     )
 
 
+def merge_emotion_and_sentiment_rows(
+    emotion_rows: list[dict],
+    sentiment_rows: list[dict],
+) -> list[dict]:
+    rows: list[dict] = []
+    for emotion_row, sentiment_row in zip(emotion_rows, sentiment_rows):
+        rows.append(
+            {
+                **emotion_row,
+                "sentiment": sentiment_row["sentiment"],
+                "sentiment_score": sentiment_row["sentiment_score"],
+            }
+        )
+    return rows
+
+
+def display_model_comparison(comparison_results: dict[str, dict]) -> None:
+    summary_rows = []
+    distribution_rows = []
+    combined_rows = []
+
+    for model_label, result in comparison_results.items():
+        rows = result["rows"]
+        summary = summarize_predictions(rows)
+        result["summary"] = summary
+
+        summary_rows.append(
+            {
+                "Model": model_label,
+                "Hugging Face Repo": result["model_name"],
+                "Comments": summary["total_comments"],
+                "Main Emotion": summary["main_emotion"].title(),
+                "Negative Emotion Ratio": f"{summary['negative_emotion_ratio']:.1f}%",
+            }
+        )
+
+        for emotion, percentage in summary["emotion_percentages"].items():
+            distribution_rows.append(
+                {
+                    "emotion": emotion,
+                    "model": model_label,
+                    "percentage": percentage,
+                }
+            )
+
+        for row in rows:
+            combined_rows.append(
+                {
+                    "model": model_label,
+                    "model_name": result["model_name"],
+                    **row,
+                }
+            )
+
+    st.subheader("Model Comparison Summary")
+    st.dataframe(pd.DataFrame(summary_rows), width="stretch", hide_index=True)
+
+    st.subheader("Emotion Distribution by Model")
+    distribution_df = pd.DataFrame(distribution_rows)
+    distribution_pivot = (
+        distribution_df.pivot(index="emotion", columns="model", values="percentage")
+        .fillna(0.0)
+        .sort_index()
+    )
+    st.bar_chart(distribution_pivot)
+
+    st.subheader("Per-Model Comment Results")
+    tabs = st.tabs(list(comparison_results.keys()))
+    for tab, (model_label, result) in zip(tabs, comparison_results.items()):
+        with tab:
+            summary = result["summary"]
+            rows = result["rows"]
+            model_df = pd.DataFrame(rows)
+
+            metric_cols = st.columns(3)
+            metric_cols[0].metric("Comments analyzed", summary["total_comments"])
+            metric_cols[1].metric("Main emotion", summary["main_emotion"].title())
+            metric_cols[2].metric(
+                "Negative emotion ratio",
+                f"{summary['negative_emotion_ratio']:.1f}%",
+            )
+            st.caption(f"Hugging Face model: `{result['model_name']}`")
+
+            emotion_chart_df = pd.DataFrame(
+                {
+                    "emotion": list(summary["emotion_percentages"].keys()),
+                    "percentage": list(summary["emotion_percentages"].values()),
+                }
+            ).set_index("emotion")
+            st.bar_chart(emotion_chart_df)
+            st.dataframe(
+                model_df[
+                    [
+                        "comment",
+                        "emotion",
+                        "emotion_score",
+                        "sentiment",
+                        "sentiment_score",
+                    ]
+                ],
+                width="stretch",
+                hide_index=True,
+            )
+
+    combined_df = pd.DataFrame(combined_rows)
+    st.download_button(
+        "Download model comparison CSV",
+        combined_df.to_csv(index=False).encode("utf-8"),
+        file_name="youtube_comment_emotion_model_comparison.csv",
+        mime="text/csv",
+    )
+
+
 def main() -> None:
     st.title("YouTube Audience Emotion Analyzer")
     st.caption("A deep learning application for digital marketing campaign evaluation.")
@@ -118,14 +234,35 @@ def main() -> None:
         if not api_key:
             api_key = st.text_input("YouTube API key", type="password")
 
-        emotion_model_label = st.selectbox(
-            "Emotion model",
-            options=list(EMOTION_MODEL_OPTIONS.keys()),
+        analysis_mode = st.radio(
+            "Analysis mode",
+            options=["Single model", "Compare emotion models"],
             index=0,
-            help="The recommended model was further fine-tuned on 1,000 YouTube-domain comments.",
+            help="Compare mode runs the same 50 comments through three fine-tuned emotion models.",
         )
-        emotion_model = EMOTION_MODEL_OPTIONS[emotion_model_label]
-        st.caption(f"Using `{emotion_model}`")
+
+        if analysis_mode == "Single model":
+            emotion_model_label = st.selectbox(
+                "Emotion model",
+                options=list(EMOTION_MODEL_OPTIONS.keys()),
+                index=0,
+                help="The recommended model was further fine-tuned on 1,000 YouTube-domain comments.",
+            )
+            selected_emotion_model_labels = [emotion_model_label]
+        else:
+            selected_emotion_model_labels = st.multiselect(
+                "Emotion models to compare",
+                options=list(EMOTION_MODEL_OPTIONS.keys()),
+                default=DEFAULT_COMPARISON_MODEL_LABELS,
+                help="The default comparison uses three fine-tuned emotion models.",
+            )
+
+        selected_emotion_models = {
+            label: EMOTION_MODEL_OPTIONS[label] for label in selected_emotion_model_labels
+        }
+        for label, model_name in selected_emotion_models.items():
+            st.caption(f"{label}: `{model_name}`")
+
         sentiment_model = st.text_input("Sentiment model", value=DEFAULT_SENTIMENT_MODEL)
         comment_order = st.selectbox("Comment order", ["relevance", "time"], index=0)
         use_sample_comments = st.checkbox(
@@ -162,18 +299,51 @@ def main() -> None:
             st.warning("No comments were found for this video.")
             return
 
+        if not selected_emotion_models:
+            st.warning("Please select at least one emotion model.")
+            return
+
+        if analysis_mode == "Compare emotion models" and len(selected_emotion_models) < 3:
+            st.warning("For the project comparison requirement, select at least three emotion models.")
+
         with st.spinner("Loading Hugging Face models..."):
-            emotion_pipeline = get_pipeline(emotion_model)
+            emotion_pipelines = {
+                label: get_pipeline(model_name)
+                for label, model_name in selected_emotion_models.items()
+            }
             sentiment_pipeline = get_pipeline(sentiment_model)
 
-        with st.spinner("Analyzing audience emotions..."):
-            rows = predict_comment_emotions(
-                comments=comments,
-                emotion_pipeline=emotion_pipeline,
-                sentiment_pipeline=sentiment_pipeline,
-            )
+        if analysis_mode == "Compare emotion models":
+            with st.spinner("Analyzing comments with selected emotion models..."):
+                sentiment_rows = predict_comment_sentiments(
+                    comments=comments,
+                    sentiment_pipeline=sentiment_pipeline,
+                )
+                comparison_results = {}
+                for label, emotion_pipeline in emotion_pipelines.items():
+                    emotion_rows = predict_comment_emotion_only(
+                        comments=comments,
+                        emotion_pipeline=emotion_pipeline,
+                    )
+                    comparison_results[label] = {
+                        "model_name": selected_emotion_models[label],
+                        "rows": merge_emotion_and_sentiment_rows(
+                            emotion_rows=emotion_rows,
+                            sentiment_rows=sentiment_rows,
+                        ),
+                    }
 
-        display_summary(rows)
+            display_model_comparison(comparison_results)
+        else:
+            selected_label = selected_emotion_model_labels[0]
+            with st.spinner("Analyzing audience emotions..."):
+                rows = predict_comment_emotions(
+                    comments=comments,
+                    emotion_pipeline=emotion_pipelines[selected_label],
+                    sentiment_pipeline=sentiment_pipeline,
+                )
+
+            display_summary(rows)
 
     except Exception as exc:
         st.error(str(exc))

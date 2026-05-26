@@ -20,6 +20,7 @@ InsightWave Digital Marketing Agency helps brands understand whether YouTube cam
 - ✅ Experimental results workbook prepared
 - ✅ Report screenshots captured
 - ✅ Draft report PDF generated
+- ✅ Three-model Streamlit comparison mode added
 
 ⏳ **Remaining: fill student names, re-export PDF, save final Colab notebook outputs, create PPT, record MP4, package Canvas submission**
 
@@ -110,9 +111,22 @@ docs/report/Project_report_skeleton.md
 
 Only the student names/IDs need to be filled before re-exporting the final PDF.
 
-### Step 7: App Screenshots
+### Step 7: Streamlit Model Comparison
 
-The five required screenshots are saved in:
+The app now supports two analysis modes:
+
+- Single model: run one selected emotion model.
+- Compare emotion models: run the same comments through three fine-tuned emotion models.
+
+Default comparison models:
+
+- `chase1zhang/youtube-emotion-distilbert-domain-adapted`
+- `chase1zhang/youtube-emotion-distilbert`
+- `SamLowe/roberta-base-go_emotions`
+
+### Step 8: App Screenshots
+
+The required screenshots are saved in:
 
 ```text
 docs/report/screenshots/
@@ -120,13 +134,13 @@ docs/report/screenshots/
 
 Replace them only if you want screenshots from Streamlit Cloud instead of local Streamlit.
 
-### Step 8: Create PPT and Record MP4
+### Step 9: Create PPT and Record MP4
 
 - Presentation ≤ 10 minutes
 - Faces must be visible in the video
 - Demo the app workflow
 
-### Step 9: Package and Submit
+### Step 10: Package and Submit
 
 Organize files per Canvas submission structure:
 
@@ -211,6 +225,10 @@ youtube_emotion_project/
 |---|---|---|---|
 | Pipeline 1 | `text-classification` | Domain-adapted fine-tuned `distilbert-base-uncased` | Seven-emotion classification |
 | Pipeline 2 | `sentiment-analysis` | `cardiffnlp/twitter-roberta-base-sentiment-latest` | Supporting sentiment signal |
+
+Additional Streamlit comparison model:
+
+- `SamLowe/roberta-base-go_emotions`, a public GoEmotions fine-tuned RoBERTa model
 
 ## Dataset
 

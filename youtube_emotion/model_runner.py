@@ -9,8 +9,17 @@ DEFAULT_SENTIMENT_MODEL = "cardiffnlp/twitter-roberta-base-sentiment-latest"
 EMOTION_MODEL_OPTIONS = {
     "YouTube-domain adapted DistilBERT (recommended)": DEFAULT_EMOTION_MODEL,
     "GoEmotions DistilBERT (previous fine-tuned)": "chase1zhang/youtube-emotion-distilbert",
+    "Public GoEmotions RoBERTa (SamLowe)": "SamLowe/roberta-base-go_emotions",
     "DistilRoBERTa baseline": "j-hartmann/emotion-english-distilroberta-base",
 }
+
+DEFAULT_COMPARISON_MODEL_LABELS = [
+    "YouTube-domain adapted DistilBERT (recommended)",
+    "GoEmotions DistilBERT (previous fine-tuned)",
+    "Public GoEmotions RoBERTa (SamLowe)",
+]
+
+PIPELINE_KWARGS = {"truncation": True, "return_token_type_ids": False}
 
 
 def load_text_classification_pipeline(model_name: str):
@@ -37,28 +46,68 @@ def predict_comment_emotions(
     emotion_pipeline: Callable[..., list[Any]],
     sentiment_pipeline: Callable[..., list[Any]],
 ) -> list[dict[str, Any]]:
+    emotion_rows = predict_comment_emotion_only(comments, emotion_pipeline)
+    sentiment_rows = predict_comment_sentiments(comments, sentiment_pipeline)
+
+    rows: list[dict[str, Any]] = []
+    for emotion_row, sentiment_row in zip(emotion_rows, sentiment_rows):
+        rows.append(
+            {
+                **emotion_row,
+                "sentiment": sentiment_row["sentiment"],
+                "sentiment_score": sentiment_row["sentiment_score"],
+            }
+        )
+
+    return rows
+
+
+def predict_comment_emotion_only(
+    comments: list[str],
+    emotion_pipeline: Callable[..., list[Any]],
+) -> list[dict[str, Any]]:
     cleaned_comments = [clean_comment_text(comment) for comment in comments]
     cleaned_comments = [comment for comment in cleaned_comments if comment]
 
     if not cleaned_comments:
         return []
 
-    pipeline_kwargs = {"truncation": True, "return_token_type_ids": False}
-    emotion_outputs = emotion_pipeline(cleaned_comments, **pipeline_kwargs)
-    sentiment_outputs = sentiment_pipeline(cleaned_comments, **pipeline_kwargs)
+    emotion_outputs = emotion_pipeline(cleaned_comments, **PIPELINE_KWARGS)
 
     rows: list[dict[str, Any]] = []
-    for comment, emotion_output, sentiment_output in zip(
-        cleaned_comments, emotion_outputs, sentiment_outputs
-    ):
+    for comment, emotion_output in zip(cleaned_comments, emotion_outputs):
         emotion_label, emotion_score = extract_top_prediction(emotion_output)
-        sentiment_label, sentiment_score = extract_top_prediction(sentiment_output)
 
         rows.append(
             {
                 "comment": comment,
                 "emotion": normalize_emotion_label(emotion_label),
                 "emotion_score": round(emotion_score, 4),
+            }
+        )
+
+    return rows
+
+
+def predict_comment_sentiments(
+    comments: list[str],
+    sentiment_pipeline: Callable[..., list[Any]],
+) -> list[dict[str, Any]]:
+    cleaned_comments = [clean_comment_text(comment) for comment in comments]
+    cleaned_comments = [comment for comment in cleaned_comments if comment]
+
+    if not cleaned_comments:
+        return []
+
+    sentiment_outputs = sentiment_pipeline(cleaned_comments, **PIPELINE_KWARGS)
+
+    rows: list[dict[str, Any]] = []
+    for comment, sentiment_output in zip(cleaned_comments, sentiment_outputs):
+        sentiment_label, sentiment_score = extract_top_prediction(sentiment_output)
+
+        rows.append(
+            {
+                "comment": comment,
                 "sentiment": normalize_sentiment_label(sentiment_label),
                 "sentiment_score": round(sentiment_score, 4),
             }

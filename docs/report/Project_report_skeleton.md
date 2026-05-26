@@ -36,6 +36,7 @@ The dashboard provides:
 - Main audience emotion
 - Seven-emotion distribution chart
 - Three-class sentiment distribution chart
+- Three-model emotion comparison mode
 - Negative emotion ratio metric
 - Comment-level prediction table with model confidence scores
 - Marketing recommendation text
@@ -47,11 +48,13 @@ The dashboard provides:
 
 **Original fine-tuned emotion model:** https://huggingface.co/chase1zhang/youtube-emotion-distilbert
 
+**Public GoEmotions fine-tuned comparison model:** https://huggingface.co/SamLowe/roberta-base-go_emotions
+
 **Pre-tuning baseline emotion model:** https://huggingface.co/j-hartmann/emotion-english-distilroberta-base
 
 **Supporting sentiment model:** https://huggingface.co/cardiffnlp/twitter-roberta-base-sentiment-latest
 
-The final Streamlit app defaults to the domain-adapted model because it was further trained with YouTube-domain comments. The app also keeps a model selector in the sidebar so the original fine-tuned model and pre-tuning baseline can be compared during testing.
+The final Streamlit app defaults to the domain-adapted model because it was further trained with YouTube-domain comments. The app also includes a comparison mode that runs the same comments through three fine-tuned emotion models: the YouTube-domain adapted DistilBERT, the original GoEmotions DistilBERT, and the public SamLowe GoEmotions RoBERTa model.
 
 ## 6. App URL
 
@@ -146,6 +149,9 @@ Model development:
 - Stage 2: further fine-tuned on 1,000 YouTube-domain comments
 - Training setup: learning rate 2e-5, batch size 16, 3 epochs for the first stage
 - Model selection: validation accuracy and app-level manual testing
+- Streamlit comparison: the app can compare the deployed model with `chase1zhang/youtube-emotion-distilbert` and `SamLowe/roberta-base-go_emotions`
+
+The SamLowe model predicts the 28-label GoEmotions label set. To compare it with this project's seven-emotion output, related labels are mapped into the seven target emotions. For example, admiration, amusement, love, gratitude, optimism, and excitement are mapped to joy; annoyance is mapped to anger; disappointment, grief, and remorse are mapped to sadness.
 
 ### 9.2 Pipeline 2: Sentiment Classification
 
@@ -218,7 +224,7 @@ Deployment steps:
 App usage:
 
 1. Paste a YouTube video URL.
-2. Choose comment order and emotion model version from the sidebar.
+2. Choose single-model analysis or multi-model comparison from the sidebar.
 3. Click the analyze button.
 4. Review emotion and sentiment charts.
 5. Read the comment-level prediction table.
@@ -236,6 +242,8 @@ Application screenshots:
 ![Comment-level result table](screenshots/04_comment_level_results.png)
 
 ![Marketing recommendation](screenshots/05_marketing_recommendation.png)
+
+![Three-model comparison mode](screenshots/06_model_comparison_mode.png)
 
 ## 11. Experiments
 
@@ -257,6 +265,8 @@ This benchmark follows the course pipeline selection idea: compare accuracy and 
 | `chase1zhang/youtube-emotion-distilbert-domain-adapted` | MPS | 455 | 0.7011 | 4.9693s | 3.6406s | Local Mac MPS, not Colab T4 |
 
 The original GoEmotions fine-tuned model performs best on the GoEmotions test set with 0.7604 accuracy. The domain-adapted model is lower on this test set because it was further optimized toward YouTube-style comments rather than the original GoEmotions distribution.
+
+In addition to the benchmark table, the Streamlit app now supports an interactive three-model comparison mode. This lets business users run one YouTube video through three fine-tuned emotion models and compare the main emotion, negative emotion ratio, emotion distribution, and comment-level predictions side by side.
 
 ### 11.2 YouTube-Domain Validation
 
@@ -312,6 +322,7 @@ Runtime for the deployed app workload:
 - GPU inference is much faster than CPU inference in the Colab benchmark. This matters for training and batch experiments, while Streamlit Cloud CPU runtime is still acceptable because each app run analyzes only 50 comments.
 - Domain adaptation improved the app result on the rare-earths video from 32/50 to 34/50 and slightly improved the Avatar video from 24/50 to 25/50.
 - Domain adaptation hurt the shooting-news video, dropping from 17/50 to 10/50, because the small YouTube-domain training set is dominated by neutral and joy comments and has fewer anger / fear / sadness examples.
+- The Streamlit comparison mode makes this trade-off visible by showing how the same comments are labeled by three fine-tuned emotion models.
 - The three-class sentiment pipeline is the most stable app-level signal, achieving 108/150 accuracy. This shows that broad sentiment is easier than fine-grained seven-emotion classification on noisy YouTube comments.
 
 ## 12. Business Interpretation
@@ -351,6 +362,7 @@ The experimental results show that fine-tuning improves performance on the origi
 - [x] Streamlit app: https://youtube-emotion-analyzer.streamlit.app/
 - [x] Original fine-tuned model: https://huggingface.co/chase1zhang/youtube-emotion-distilbert
 - [x] Domain-adapted model: https://huggingface.co/chase1zhang/youtube-emotion-distilbert-domain-adapted
+- [x] Public comparison model: https://huggingface.co/SamLowe/roberta-base-go_emotions
 - [x] Experimental results Excel: `experiments/Experimental_results.xlsx`
 - [x] App and dataset files prepared in the repository
 - [x] Draft PDF generated: `docs/report/Project_report.pdf`

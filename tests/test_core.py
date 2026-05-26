@@ -2,6 +2,7 @@ import unittest
 
 from youtube_emotion.core import (
     build_marketing_recommendation,
+    normalize_emotion_label,
     normalize_sentiment_label,
     parse_video_id,
     summarize_predictions,
@@ -65,6 +66,13 @@ class CoreLogicTest(unittest.TestCase):
         self.assertEqual(normalize_sentiment_label("LABEL_1"), "neutral")
         self.assertEqual(normalize_sentiment_label("LABEL_2"), "positive")
         self.assertEqual(normalize_sentiment_label("Positive"), "positive")
+
+    def test_normalize_emotion_label_maps_go_emotions_labels_to_project_labels(self):
+        self.assertEqual(normalize_emotion_label("admiration"), "joy")
+        self.assertEqual(normalize_emotion_label("annoyance"), "anger")
+        self.assertEqual(normalize_emotion_label("disapproval"), "disgust")
+        self.assertEqual(normalize_emotion_label("nervousness"), "fear")
+        self.assertEqual(normalize_emotion_label("realization"), "surprise")
 
 
 if __name__ == "__main__":

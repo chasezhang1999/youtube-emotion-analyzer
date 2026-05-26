@@ -12,6 +12,10 @@ This checklist is based on `ISOM5240_project_requirements.pdf` and the current Y
 - Domain-adapted model files downloaded locally: `fine_tuned_model_files/youtube-emotion-distilbert-domain-adapted/`
 - App default model updated to the domain-adapted model
 - Model selector added to the Streamlit sidebar for comparison
+- Three-model Streamlit comparison mode added:
+  - `chase1zhang/youtube-emotion-distilbert-domain-adapted`
+  - `chase1zhang/youtube-emotion-distilbert`
+  - `SamLowe/roberta-base-go_emotions`
 - GoEmotions seven-class dataset prepared: `data/go_emotions_7class/`
 - YouTube-domain adaptation dataset prepared: `data/youtube_domain_7class_assistant/`
 - Manual app testing dataset prepared: `experiments/app_per_comment_manual_labels.csv`
@@ -39,7 +43,7 @@ GroupXX_documentation/Project_report.pdf
 Need to finish:
 
 - Fill in student names and IDs.
-- Review the five inserted screenshots and replace them if you prefer screenshots from Streamlit Cloud instead of local Streamlit.
+- Review the inserted screenshots and replace them if you prefer screenshots from Streamlit Cloud instead of local Streamlit.
 - After filling names, re-export the report as PDF.
 - Keep the final PDF under 10 pages.
 

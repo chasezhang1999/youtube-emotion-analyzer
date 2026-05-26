@@ -1,6 +1,11 @@
 import unittest
 
-from youtube_emotion.model_runner import extract_top_prediction, predict_comment_emotions
+from youtube_emotion.model_runner import (
+    extract_top_prediction,
+    predict_comment_emotion_only,
+    predict_comment_emotions,
+    predict_comment_sentiments,
+)
 
 
 class FakePipeline:
@@ -61,6 +66,24 @@ class ModelRunnerTest(unittest.TestCase):
 
         self.assertFalse(emotion_pipe.calls[0]["return_token_type_ids"])
         self.assertFalse(sentiment_pipe.calls[0]["return_token_type_ids"])
+
+    def test_predict_comment_emotion_only_supports_public_goemotions_labels(self):
+        comments = ["This is amazing"]
+        emotion_pipe = FakePipeline([{"label": "admiration", "score": 0.77}])
+
+        rows = predict_comment_emotion_only(comments, emotion_pipe)
+
+        self.assertEqual(rows[0]["emotion"], "joy")
+        self.assertEqual(rows[0]["emotion_score"], 0.77)
+
+    def test_predict_comment_sentiments_returns_sentiment_rows(self):
+        comments = ["This is disappointing"]
+        sentiment_pipe = FakePipeline([{"label": "LABEL_0", "score": 0.81}])
+
+        rows = predict_comment_sentiments(comments, sentiment_pipe)
+
+        self.assertEqual(rows[0]["sentiment"], "negative")
+        self.assertEqual(rows[0]["sentiment_score"], 0.81)
 
 
 if __name__ == "__main__":

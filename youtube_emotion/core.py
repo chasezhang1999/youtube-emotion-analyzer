@@ -17,6 +17,37 @@ EMOTION_LABELS = [
 
 NEGATIVE_EMOTIONS = {"anger", "disgust", "fear", "sadness"}
 
+EMOTION_LABEL_MAP = {
+    "admiration": "joy",
+    "amusement": "joy",
+    "anger": "anger",
+    "annoyance": "anger",
+    "approval": "joy",
+    "caring": "joy",
+    "confusion": "neutral",
+    "curiosity": "neutral",
+    "desire": "joy",
+    "disappointment": "sadness",
+    "disapproval": "disgust",
+    "disgust": "disgust",
+    "embarrassment": "sadness",
+    "excitement": "joy",
+    "fear": "fear",
+    "gratitude": "joy",
+    "grief": "sadness",
+    "joy": "joy",
+    "love": "joy",
+    "nervousness": "fear",
+    "optimism": "joy",
+    "pride": "joy",
+    "realization": "surprise",
+    "relief": "joy",
+    "remorse": "sadness",
+    "sadness": "sadness",
+    "surprise": "surprise",
+    "neutral": "neutral",
+}
+
 SENTIMENT_LABEL_MAP = {
     "label_0": "negative",
     "label_1": "neutral",
@@ -66,7 +97,7 @@ def clean_comment_text(text: str) -> str:
 
 def normalize_emotion_label(label: str) -> str:
     normalized = (label or "").strip().lower()
-    return normalized if normalized in EMOTION_LABELS else "neutral"
+    return EMOTION_LABEL_MAP.get(normalized, "neutral")
 
 
 def normalize_sentiment_label(label: str) -> str:
