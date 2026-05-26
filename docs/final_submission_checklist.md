@@ -7,17 +7,30 @@ This checklist is based on `ISOM5240_project_requirements.pdf` and the current Y
 - Streamlit app built: `streamlit_app.py`
 - GitHub repository uploaded: https://github.com/chasezhang1999/youtube-emotion-analyzer
 - Streamlit Cloud app deployed: https://youtube-emotion-analyzer.streamlit.app/
-- Hugging Face fine-tuned model uploaded: https://huggingface.co/chase1zhang/youtube-emotion-distilbert
-- Fine-tuned model files downloaded locally: `fine_tuned_model_files/youtube-emotion-distilbert/`
-- Dataset prepared: `data/go_emotions_7class/`
-- App tested with sample comments and a real YouTube video URL
+- Original Hugging Face fine-tuned model uploaded: https://huggingface.co/chase1zhang/youtube-emotion-distilbert
+- Domain-adapted Hugging Face model uploaded: https://huggingface.co/chase1zhang/youtube-emotion-distilbert-domain-adapted
+- Domain-adapted model files downloaded locally: `fine_tuned_model_files/youtube-emotion-distilbert-domain-adapted/`
+- App default model updated to the domain-adapted model
+- Model selector added to the Streamlit sidebar for comparison
+- GoEmotions seven-class dataset prepared: `data/go_emotions_7class/`
+- YouTube-domain adaptation dataset prepared: `data/youtube_domain_7class_assistant/`
+- Manual app testing dataset prepared: `experiments/app_per_comment_manual_labels.csv`
+- Experimental results workbook prepared: `experiments/Experimental_results.xlsx`
+- Report screenshots captured: `docs/report/screenshots/`
+- Draft report PDF generated: `docs/report/Project_report.pdf`
 - Unit tests pass locally
 
-## Still Required
+## Still Required Before Canvas Submission
 
 ### 1. Project Report PDF
 
-File to prepare:
+Current draft:
+
+```text
+docs/report/Project_report_skeleton.md
+```
+
+Submit as:
 
 ```text
 GroupXX_documentation/Project_report.pdf
@@ -25,17 +38,10 @@ GroupXX_documentation/Project_report.pdf
 
 Need to finish:
 
-- Replace student names and IDs in `docs/report/Project_report_skeleton.md`
-- Keep the report under 10 pages after exporting to PDF
-- Add 5 Streamlit Cloud screenshots:
-  - input page with YouTube URL
-  - summary metrics
-  - seven-emotion distribution chart
-  - comment-level result table
-  - marketing recommendation
-- Fill experiment tables with real accuracy and runtime numbers
-- Add final app testing table using 3 to 5 YouTube videos
-- Export the final report as PDF
+- Fill in student names and IDs.
+- Review the five inserted screenshots and replace them if you prefer screenshots from Streamlit Cloud instead of local Streamlit.
+- After filling names, re-export the report as PDF.
+- Keep the final PDF under 10 pages.
 
 ### 2. Python Notebooks
 
@@ -52,13 +58,21 @@ Fine_tune_Model.ipynb
 Testing_Experiments.ipynb
 ```
 
+Use these project files:
+
+```text
+notebooks/fine_tune_go_emotions_distilbert.ipynb
+notebooks/testing_experiments.ipynb
+```
+
 Need to finish:
 
-- Open both notebooks in Google Colab
-- Runtime: T4 GPU
-- Run `Runtime -> Restart & Run All`
-- Keep all outputs visible in the notebooks
-- Make sure the reported numbers match the project report
+- Open both notebooks in Google Colab.
+- Runtime: T4 GPU.
+- Run `Runtime -> Restart & Run All`.
+- Keep all outputs visible.
+- Make sure notebook numbers match `experiments/Experimental_results.xlsx` and the report.
+- If including the domain-adapted model in the notebook, keep the section after the original GoEmotions evaluation and upload it to `chase1zhang/youtube-emotion-distilbert-domain-adapted`.
 
 ### 3. GitHub App Files
 
@@ -89,7 +103,7 @@ __pycache__/
 .playwright-cli/
 ```
 
-### 4. Dataset Files
+### 4. Dataset and Model Files
 
 Folder to submit:
 
@@ -103,59 +117,80 @@ Include:
 data/go_emotions_7class/train.csv
 data/go_emotions_7class/validation.csv
 data/go_emotions_7class/test.csv
+data/youtube_domain_7class_assistant/all.csv
+data/youtube_domain_7class_assistant/train.csv
+data/youtube_domain_7class_assistant/validation.csv
 data/sample_comments.csv
 fine_tuned_model_files/youtube-emotion-distilbert/
+fine_tuned_model_files/youtube-emotion-distilbert-domain-adapted/
+```
+
+Recommended note in the report:
+
+```text
+The YouTube-domain labels are assistant-assisted annotations used for domain adaptation. The independent app performance test uses a separate manually reviewed 150-comment benchmark.
 ```
 
 ### 5. Experimental Results Excel
 
-File to prepare:
+File prepared:
+
+```text
+experiments/Experimental_results.xlsx
+```
+
+Submit as:
 
 ```text
 GroupXX_documentation/Experimental_results.xlsx
 ```
 
-Must include:
-
-- Model selection results
-- Accuracy
-- Runtime with model loading
-- Runtime without model loading
-- CPU vs GPU comparison
-- Streamlit Cloud app testing accuracy
-- Reasonable sample size, not just one or two comments
-
-Recommended sheets:
+Workbook sheets:
 
 - `Model_Selection`
 - `Streamlit_App_Performance`
+- `App_Runtime`
 - `Manual_Comment_Labels`
-- `Notes`
+- `YouTube_Domain_Validation`
+
+Key numbers:
+
+- GoEmotions fine-tuned DistilBERT: 0.7604 on the 455-sample GoEmotions test set.
+- Domain-adapted model: 0.6400 on the 200-sample YouTube-domain validation split.
+- Streamlit app seven-emotion manual benchmark:
+  - pre-tuning baseline: 73/150 = 0.4867
+  - GoEmotions fine-tuned model: 73/150 = 0.4867
+  - domain-adapted model: 69/150 = 0.4600
+- Streamlit app three-class sentiment benchmark: 108/150 = 0.7200
 
 ### 6. Presentation PPT
 
-File to prepare:
+File to submit:
 
 ```text
 GroupXX_presentation/Presentation_slide.pptx
 ```
 
+Use this outline:
+
+```text
+docs/presentation_outline.md
+```
+
 Suggested slide order:
 
-1. Title, team, project objective
-2. Business problem: digital marketing agency needs scalable YouTube feedback analysis
+1. Title and project objective
+2. Business problem and target company scenario
 3. Dataset and preprocessing
-4. Model pipeline: YouTube API -> emotion pipeline -> sentiment pipeline -> dashboard
-5. Fine-tuning setup and model selection
-6. Streamlit Cloud app demo screenshots
+4. Model pipeline and app workflow
+5. Fine-tuning and domain adaptation
+6. Streamlit Cloud app demo
 7. Experimental results
-8. Business insights and conclusion
-
-Keep the presentation under 10 minutes.
+8. Business insights, limitations, and conclusion
 
 ### 7. MP4 Presentation Video
 
-File to prepare:
+File to submit:
 
 ```text
 GroupXX_presentation/grpXX.mp4
@@ -169,7 +204,7 @@ Requirements:
 - Keep within 10 minutes
 - File name must use two-digit group number, e.g. `grp01.mp4`
 
-### 8. Final Zip
+## Final Zip Structure
 
 Final zip name:
 
@@ -181,42 +216,41 @@ Recommended structure:
 
 ```text
 GroupXX_documentation/
-├── Project_report.pdf
-└── Experimental_results.xlsx
+|-- Project_report.pdf
+`-- Experimental_results.xlsx
 
 GroupXX_program/
-├── Python_notebooks/
-│   ├── Fine_tune_Model.ipynb
-│   └── Testing_Experiments.ipynb
-└── GitHub_App_Files/
-    ├── streamlit_app.py
-    ├── requirements.txt
-    ├── README.md
-    ├── .streamlit/
-    ├── data/
-    └── youtube_emotion/
+|-- Python_notebooks/
+|   |-- Fine_tune_Model.ipynb
+|   `-- Testing_Experiments.ipynb
+`-- GitHub_App_Files/
+    |-- streamlit_app.py
+    |-- requirements.txt
+    |-- README.md
+    |-- .streamlit/
+    |-- data/
+    `-- youtube_emotion/
 
 GroupXX_Dataset_files/
-├── data/
-└── fine_tuned_model_files/
+|-- data/
+`-- fine_tuned_model_files/
 
 GroupXX_presentation/
-├── Presentation_slide.pptx
-└── grpXX.mp4
+|-- Presentation_slide.pptx
+`-- grpXX.mp4
 ```
 
-Also submit or paste:
+Also paste the Streamlit Cloud app URL:
 
 ```text
-Streamlit Cloud App URL:
 https://youtube-emotion-analyzer.streamlit.app/
 ```
 
 ## Highest Priority Next Steps
 
-1. Run `notebooks/testing_experiments.ipynb` in Colab with T4 GPU and save the outputs.
-2. Fill the experiment numbers in `docs/report/Project_report_skeleton.md`.
-3. Take the 5 app screenshots from the deployed Streamlit Cloud app.
-4. Export the final report to PDF.
-5. Build the PPT and record the MP4.
-6. Package the Canvas zip with the required folder names.
+1. Fill student names and IDs in the report.
+2. Re-export the report to PDF after filling names.
+3. Open both notebooks in Colab and save final outputs.
+4. Build the PPT from `docs/presentation_outline.md`.
+5. Record the MP4 presentation.
+6. Package the final zip using the required folder names.

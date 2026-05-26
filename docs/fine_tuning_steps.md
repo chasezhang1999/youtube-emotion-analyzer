@@ -5,7 +5,10 @@
 The current Streamlit app uses two Hugging Face text classification models.
 
 1. Seven-emotion model:
-   - `j-hartmann/emotion-english-distilroberta-base`
+   - default: `chase1zhang/youtube-emotion-distilbert-domain-adapted`
+   - comparison options:
+     - `chase1zhang/youtube-emotion-distilbert`
+     - `j-hartmann/emotion-english-distilroberta-base`
    - Used for: anger, disgust, fear, joy, neutral, sadness, surprise
    - Role: main audience emotion analysis pipeline
 
@@ -77,6 +80,25 @@ Prepared split sizes:
 | Validation | 406 | 58 |
 | Test | 455 | 65 |
 
+## YouTube-Domain Adaptation Dataset
+
+The original GoEmotions fine-tuned model was further adapted with YouTube-domain comments because YouTube comments are different from the original GoEmotions text style.
+
+Prepared files:
+
+- `data/youtube_domain_7class_assistant/all.csv`
+- `data/youtube_domain_7class_assistant/train.csv`
+- `data/youtube_domain_7class_assistant/validation.csv`
+
+Dataset summary:
+
+- 1,000 YouTube comments
+- 20 videos
+- seven target emotions
+- assistant-assisted labels
+- used only for domain adaptation
+- independent app evaluation uses a separate manually reviewed 150-comment set
+
 ## Fine-Tuning Steps
 
 1. Open Colab and enable GPU.
@@ -89,10 +111,13 @@ Prepared split sizes:
 7. Train with `Trainer`.
 8. Evaluate on validation and test sets.
 9. Save the model and tokenizer.
-10. Push the model and tokenizer to Hugging Face.
-11. Verify the uploaded model with `pipeline("text-classification", model=repo_name)`.
-12. Replace the app emotion model with the Hugging Face model URL after verification passes.
-13. Record accuracy and runtime in `experiments/experimental_results_template.csv`.
+10. Save and test the original GoEmotions fine-tuned model.
+11. Continue training on the YouTube-domain adaptation dataset.
+12. Save and test the domain-adapted model.
+13. Push both model versions to Hugging Face.
+14. Verify the uploaded models with `pipeline("text-classification")`.
+15. Update the Streamlit app default model to the domain-adapted model.
+16. Record accuracy and runtime in `experiments/Experimental_results.xlsx`.
 
 ## Recommended Hyperparameters
 
@@ -118,6 +143,7 @@ Use conservative settings so the notebook runs reliably in Colab:
    - lower learning rate
    - `j-hartmann/emotion-english-distilroberta-base` as the base model
    - more training examples per class if using a non-balanced dataset
+   - more manually verified YouTube comments for anger, fear, sadness, and disgust
 
 ## Commands Already Executed Locally
 
@@ -148,4 +174,12 @@ If the repo only contains tokenizer files, rerun the upload section in the noteb
 repo_name = "chase1zhang/youtube-emotion-distilbert"
 trainer.model.push_to_hub(repo_name)
 tokenizer.push_to_hub(repo_name)
+```
+
+For the domain-adapted model, use:
+
+```python
+domain_repo_name = "chase1zhang/youtube-emotion-distilbert-domain-adapted"
+domain_trainer.model.push_to_hub(domain_repo_name)
+tokenizer.push_to_hub(domain_repo_name)
 ```
