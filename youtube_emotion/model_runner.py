@@ -3,8 +3,14 @@ from typing import Any, Callable
 from youtube_emotion.core import clean_comment_text, normalize_emotion_label, normalize_sentiment_label
 
 
-DEFAULT_EMOTION_MODEL = "chase1zhang/youtube-emotion-distilbert"
+DEFAULT_EMOTION_MODEL = "chase1zhang/youtube-emotion-distilbert-domain-adapted"
 DEFAULT_SENTIMENT_MODEL = "cardiffnlp/twitter-roberta-base-sentiment-latest"
+
+EMOTION_MODEL_OPTIONS = {
+    "YouTube-domain adapted DistilBERT (recommended)": DEFAULT_EMOTION_MODEL,
+    "GoEmotions DistilBERT (previous fine-tuned)": "chase1zhang/youtube-emotion-distilbert",
+    "DistilRoBERTa baseline": "j-hartmann/emotion-english-distilroberta-base",
+}
 
 
 def load_text_classification_pipeline(model_name: str):

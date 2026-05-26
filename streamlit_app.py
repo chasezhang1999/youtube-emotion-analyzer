@@ -8,6 +8,7 @@ from youtube_emotion.core import build_marketing_recommendation, parse_video_id,
 from youtube_emotion.model_runner import (
     DEFAULT_EMOTION_MODEL,
     DEFAULT_SENTIMENT_MODEL,
+    EMOTION_MODEL_OPTIONS,
     load_text_classification_pipeline,
     predict_comment_emotions,
 )
@@ -117,7 +118,14 @@ def main() -> None:
         if not api_key:
             api_key = st.text_input("YouTube API key", type="password")
 
-        emotion_model = st.text_input("Emotion model", value=DEFAULT_EMOTION_MODEL)
+        emotion_model_label = st.selectbox(
+            "Emotion model",
+            options=list(EMOTION_MODEL_OPTIONS.keys()),
+            index=0,
+            help="The recommended model was further fine-tuned on 1,000 YouTube-domain comments.",
+        )
+        emotion_model = EMOTION_MODEL_OPTIONS[emotion_model_label]
+        st.caption(f"Using `{emotion_model}`")
         sentiment_model = st.text_input("Sentiment model", value=DEFAULT_SENTIMENT_MODEL)
         comment_order = st.selectbox("Comment order", ["relevance", "time"], index=0)
         use_sample_comments = st.checkbox(
