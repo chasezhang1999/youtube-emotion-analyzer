@@ -6,8 +6,10 @@ from youtube_emotion.model_runner import extract_top_prediction, predict_comment
 class FakePipeline:
     def __init__(self, outputs):
         self.outputs = outputs
+        self.calls = []
 
-    def __call__(self, comments, truncation=True):
+    def __call__(self, comments, truncation=True, **kwargs):
+        self.calls.append({"comments": comments, "truncation": truncation, **kwargs})
         return self.outputs[: len(comments)]
 
 
@@ -49,6 +51,16 @@ class ModelRunnerTest(unittest.TestCase):
         self.assertEqual(rows[0]["sentiment"], "positive")
         self.assertEqual(rows[1]["emotion"], "sadness")
         self.assertEqual(rows[1]["sentiment"], "negative")
+
+    def test_predict_comment_emotions_disables_token_type_ids_for_distilbert_models(self):
+        comments = ["Love this launch"]
+        emotion_pipe = FakePipeline([{"label": "joy", "score": 0.88}])
+        sentiment_pipe = FakePipeline([{"label": "LABEL_2", "score": 0.92}])
+
+        predict_comment_emotions(comments, emotion_pipe, sentiment_pipe)
+
+        self.assertFalse(emotion_pipe.calls[0]["return_token_type_ids"])
+        self.assertFalse(sentiment_pipe.calls[0]["return_token_type_ids"])
 
 
 if __name__ == "__main__":

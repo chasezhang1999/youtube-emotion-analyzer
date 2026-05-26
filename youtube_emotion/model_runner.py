@@ -43,8 +43,9 @@ def predict_comment_emotions(
     if not cleaned_comments:
         return []
 
-    emotion_outputs = emotion_pipeline(cleaned_comments, truncation=True)
-    sentiment_outputs = sentiment_pipeline(cleaned_comments, truncation=True)
+    pipeline_kwargs = {"truncation": True, "return_token_type_ids": False}
+    emotion_outputs = emotion_pipeline(cleaned_comments, **pipeline_kwargs)
+    sentiment_outputs = sentiment_pipeline(cleaned_comments, **pipeline_kwargs)
 
     rows: list[dict[str, Any]] = []
     for comment, emotion_output, sentiment_output in zip(

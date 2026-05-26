@@ -1,0 +1,2 @@
+model_name,dataset,device,num_samples,accuracy,runtime_with_model_loading_seconds,runtime_without_model_loading_seconds,notes
+chase1zhang/youtube-emotion-distilbert-domain-adapted,YouTube-domain validation comments,CPU,200,0.64,3.4064,2.642,Validation split from assistant-assisted YouTube-domain adaptation data

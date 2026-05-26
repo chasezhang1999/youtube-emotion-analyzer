@@ -1,0 +1,2 @@
+model_name,dataset,device,num_comments,runtime_with_model_loading_seconds,runtime_without_model_loading_seconds,notes
+chase1zhang/youtube-emotion-distilbert-domain-adapted,150 manually reviewed Streamlit app comments,CPU,150,2.3695,1.5621,Local Mac CPU runtime measured while evaluating the app-level manual benchmark
