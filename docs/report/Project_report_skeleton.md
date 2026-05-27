@@ -38,6 +38,7 @@ The dashboard provides:
 - Three-class sentiment distribution chart
 - Three-model emotion comparison mode
 - Negative emotion ratio metric
+- Decision pipeline for campaign action and risk level
 - Comment-level prediction table with model confidence scores
 - Marketing recommendation text
 - CSV download of all predictions
@@ -79,13 +80,13 @@ The first training stage uses the GoEmotions dataset from Hugging Face:
 - Target feature: seven-class emotion label
 - Labels: anger, disgust, fear, joy, neutral, sadness, surprise
 
-The raw GoEmotions dataset is multi-label. For this project, it was filtered to clean single-label examples and reduced to the seven target emotions. Each split was balanced by downsampling to the minority class.
+The raw GoEmotions dataset is multi-label. For this project, it was filtered to clean single-label examples and reduced to the seven target emotions. The training and test splits now use target-size stratified sampling without replacement, capped by available minority-class rows; validation remains class-balanced.
 
 | Split | Samples | Class balance |
 |---|---:|---|
-| Train | 3,010 | 430 per class |
+| Train | 5,000 | Stratified; capped by available minority-class rows |
 | Validation | 406 | 58 per class |
-| Test | 455 | 65 per class |
+| Test | 1,000 | Stratified; capped by available minority-class rows |
 
 Preprocessing steps:
 
@@ -255,7 +256,7 @@ The experiments evaluate model accuracy, runtime, domain adaptation, and deploye
 
 ### 11.1 Model Selection on GoEmotions Test Set
 
-This benchmark follows the course pipeline selection idea: compare accuracy and runtime with model loading and without model loading.
+This historical benchmark follows the course pipeline selection idea: compare accuracy and runtime with model loading and without model loading. The current repository now includes an expanded 1,000-row GoEmotions test split, so these rows should be refreshed after retraining and reevaluation.
 
 | Model | Device | Test samples | Accuracy | Runtime with loading | Runtime w/o loading | Notes |
 |---|---:|---:|---:|---:|---:|---|

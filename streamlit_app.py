@@ -5,6 +5,7 @@ import pandas as pd
 import streamlit as st
 
 from youtube_emotion.core import (
+    build_campaign_decision,
     build_marketing_recommendation,
     clean_comment_text,
     normalize_emotion_label,
@@ -162,6 +163,7 @@ def predict_comment_emotions(comments: list[str], emotion_pipeline, sentiment_pi
 def display_summary(rows: list[dict]) -> None:
     summary = summarize_predictions(rows)
     recommendation = build_marketing_recommendation(summary)
+    decision = build_campaign_decision(rows)
     result_df = pd.DataFrame(rows)
 
     metric_cols = st.columns(3)
@@ -177,6 +179,24 @@ def display_summary(rows: list[dict]) -> None:
         st.warning(recommendation)
     else:
         st.info(recommendation)
+
+    st.subheader("Decision Pipeline")
+    decision_cols = st.columns(3)
+    decision_cols[0].metric("Decision", decision["decision"].replace("_", " ").title())
+    decision_cols[1].metric("Risk level", decision["risk_level"].title())
+    decision_cols[2].metric(
+        "Positive sentiment",
+        f"{decision['positive_sentiment_ratio']:.1f}%",
+    )
+    if decision["risk_level"] == "high":
+        st.warning(decision["rationale"])
+    elif decision["risk_level"] == "low":
+        st.success(decision["rationale"])
+    else:
+        st.info(decision["rationale"])
+    st.markdown(
+        "\n".join(f"- {action}" for action in decision["next_actions"])
+    )
 
     chart_cols = st.columns(2)
     emotion_chart_df = pd.DataFrame(
@@ -244,7 +264,9 @@ def display_model_comparison(comparison_results: dict[str, dict]) -> None:
     for model_label, result in comparison_results.items():
         rows = result["rows"]
         summary = summarize_predictions(rows)
+        decision = build_campaign_decision(rows)
         result["summary"] = summary
+        result["decision"] = decision
 
         summary_rows.append(
             {
@@ -253,6 +275,8 @@ def display_model_comparison(comparison_results: dict[str, dict]) -> None:
                 "Comments": summary["total_comments"],
                 "Main Emotion": summary["main_emotion"].title(),
                 "Negative Emotion Ratio": f"{summary['negative_emotion_ratio']:.1f}%",
+                "Decision": decision["decision"].replace("_", " ").title(),
+                "Risk": decision["risk_level"].title(),
             }
         )
 
@@ -291,17 +315,23 @@ def display_model_comparison(comparison_results: dict[str, dict]) -> None:
     for tab, (model_label, result) in zip(tabs, comparison_results.items()):
         with tab:
             summary = result["summary"]
+            decision = result["decision"]
             rows = result["rows"]
             model_df = pd.DataFrame(rows)
 
-            metric_cols = st.columns(3)
+            metric_cols = st.columns(4)
             metric_cols[0].metric("Comments analyzed", summary["total_comments"])
             metric_cols[1].metric("Main emotion", summary["main_emotion"].title())
             metric_cols[2].metric(
                 "Negative emotion ratio",
                 f"{summary['negative_emotion_ratio']:.1f}%",
             )
+            metric_cols[3].metric("Decision risk", decision["risk_level"].title())
             st.caption(f"Hugging Face model: `{result['model_name']}`")
+            st.info(
+                f"Decision pipeline: {decision['decision'].replace('_', ' ').title()} — "
+                f"{decision['rationale']}"
+            )
 
             emotion_chart_df = pd.DataFrame(
                 {
@@ -347,7 +377,7 @@ def main() -> None:
             "Analysis mode",
             options=["Single model", "Compare emotion models"],
             index=0,
-            help="Compare mode runs the same 100 comments through three fine-tuned emotion models.",
+            help="All modes run emotion, sentiment, and decision pipelines. Compare mode runs the same comments through multiple emotion models.",
         )
 
         if analysis_mode == "Single model":

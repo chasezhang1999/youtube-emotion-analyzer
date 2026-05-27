@@ -65,10 +65,10 @@ The project uses GoEmotions plus YouTube-domain adaptation data.
 
 Include:
 
-- GoEmotions seven-class balanced dataset:
-  - train: 3,010
+- GoEmotions seven-class stratified dataset:
+  - train: 5,000
   - validation: 406
-  - test: 455
+  - test: 1,000
 - Labels: anger, disgust, fear, joy, neutral, sadness, surprise
 - YouTube-domain adaptation set:
   - 2,962 comments

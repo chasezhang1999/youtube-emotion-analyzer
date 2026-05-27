@@ -78,9 +78,9 @@ Prepared split sizes:
 
 | Split | Total rows | Rows per class |
 |---|---:|---:|
-| Train | 3,010 | 430 |
+| Train | 5,000 | Stratified; capped by available minority-class rows |
 | Validation | 406 | 58 |
-| Test | 455 | 65 |
+| Test | 1,000 | Stratified; capped by available minority-class rows |
 
 ## YouTube-Domain Adaptation Dataset
 

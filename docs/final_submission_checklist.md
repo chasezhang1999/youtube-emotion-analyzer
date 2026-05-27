@@ -165,7 +165,7 @@ Workbook sheets:
 
 Key numbers:
 
-- GoEmotions fine-tuned DistilBERT: 0.7604 on the 455-sample GoEmotions test set.
+- GoEmotions fine-tuned DistilBERT: 0.7604 on the historical 455-sample GoEmotions test benchmark. Refresh this after retraining/evaluating on the expanded 1,000-sample test split.
 - Domain-adapted model: 0.6400 on the earlier 200-sample YouTube-domain validation split; refresh this after rerunning on the expanded 592-sample validation split.
 - Streamlit app seven-emotion manual benchmark:
   - pre-tuning public baseline: 67/150 = 0.4467

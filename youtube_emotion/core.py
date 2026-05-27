@@ -167,3 +167,86 @@ def build_marketing_recommendation(summary: dict[str, Any]) -> str:
         f"The main audience emotion is {main_emotion}. The agency should inspect representative "
         "comments and adjust content tone, targeting, or messaging before scaling the campaign."
     )
+
+
+def build_campaign_decision(rows: list[dict[str, Any]]) -> dict[str, Any]:
+    summary = summarize_predictions(rows)
+    total_comments = summary["total_comments"]
+    sentiments = [
+        normalize_sentiment_label(str(row.get("sentiment", "")))
+        for row in rows
+        if row.get("sentiment")
+    ]
+    sentiment_counts = Counter(sentiments)
+
+    if total_comments == 0:
+        return {
+            "decision": "collect_more_comments",
+            "risk_level": "unknown",
+            "main_emotion": "none",
+            "negative_emotion_ratio": 0.0,
+            "positive_sentiment_ratio": 0.0,
+            "negative_sentiment_ratio": 0.0,
+            "rationale": "No usable comments were available for a campaign decision.",
+            "next_actions": ["Test another video or broaden the comment collection window."],
+        }
+
+    sentiment_total = max(len(sentiments), 1)
+    positive_sentiment_ratio = round(
+        (sentiment_counts.get("positive", 0) / sentiment_total) * 100,
+        2,
+    )
+    negative_sentiment_ratio = round(
+        (sentiment_counts.get("negative", 0) / sentiment_total) * 100,
+        2,
+    )
+    main_emotion = summary["main_emotion"]
+    negative_emotion_ratio = summary["negative_emotion_ratio"]
+
+    if negative_emotion_ratio >= 40 or negative_sentiment_ratio >= 40:
+        decision = "review_before_scaling"
+        risk_level = "high"
+        rationale = "Negative emotion or sentiment is high enough to require human review before scaling."
+        next_actions = [
+            "Human review the highest-risk anger, disgust, fear, and sadness comments.",
+            "Identify repeated complaint themes and adjust message framing before more paid amplification.",
+            "Re-run analysis after the revised creative or response plan is ready.",
+        ]
+    elif main_emotion in {"joy", "surprise"} and positive_sentiment_ratio >= 50:
+        decision = "scale_positive_creative"
+        risk_level = "low"
+        rationale = "Positive audience response is strong and fine-grained emotions are favorable."
+        next_actions = [
+            "Reuse the strongest hook, topic, or creator angle in the next campaign asset.",
+            "Collect representative positive comments for campaign reporting.",
+            "Monitor comments after scaling to catch sentiment drift early.",
+        ]
+    elif main_emotion == "neutral":
+        decision = "improve_engagement_hook"
+        risk_level = "medium"
+        rationale = "The audience is not strongly negative, but the emotional response is muted."
+        next_actions = [
+            "Improve the opening hook, title, call to action, or storytelling frame.",
+            "A/B test a stronger emotional angle before expanding distribution.",
+            "Track whether neutral comments shift toward joy or surprise in the next run.",
+        ]
+    else:
+        decision = "monitor_and_review_samples"
+        risk_level = "medium"
+        rationale = "The signal is mixed and should be treated as decision support rather than an automatic call."
+        next_actions = [
+            "Review a sample of comments from the dominant emotion class.",
+            "Compare emotion and sentiment outputs for disagreement.",
+            "Use the CSV export to inspect uncertain or low-confidence predictions.",
+        ]
+
+    return {
+        "decision": decision,
+        "risk_level": risk_level,
+        "main_emotion": main_emotion,
+        "negative_emotion_ratio": negative_emotion_ratio,
+        "positive_sentiment_ratio": positive_sentiment_ratio,
+        "negative_sentiment_ratio": negative_sentiment_ratio,
+        "rationale": rationale,
+        "next_actions": next_actions,
+    }

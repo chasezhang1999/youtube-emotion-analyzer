@@ -4,11 +4,11 @@ ISOM5240 Group Project — Deep learning business application for a digital mark
 
 ## Business Scenario
 
-InsightWave Digital Marketing Agency helps brands understand whether YouTube campaign videos generate the intended audience reaction. This app classifies the first 100 YouTube comments into seven emotions and provides actionable marketing recommendations.
+InsightWave Digital Marketing Agency helps brands understand whether YouTube campaign videos generate the intended audience reaction. This app classifies the first 100 YouTube comments into seven emotions, runs a sentiment pipeline, and adds a decision pipeline for campaign actions.
 
 ## Project Status
 
-- ✅ `youtube_emotion/` package fully built and tested (19 tests pass)
+- ✅ `youtube_emotion/` package fully built and tested (23 tests pass)
 - ✅ Fine-tuning Colab notebook ready
 - ✅ Testing/experiments Colab notebook ready
 - ✅ Streamlit app built
@@ -24,6 +24,8 @@ InsightWave Digital Marketing Agency helps brands understand whether YouTube cam
 - ✅ Three-model Streamlit comparison mode added
 - ✅ App comment retrieval expanded to 100 comments per video
 - ✅ YouTube-domain adaptation dataset expanded to 2,962 comments from 30 videos
+- ✅ GoEmotions train/test splits expanded to 5,000 / 1,000 rows
+- ✅ Decision pipeline added to Streamlit outputs
 
 ⏳ **Remaining: fill student names, re-export PDF, save final Colab notebook outputs, create PPT, record MP4, package Canvas submission**
 
@@ -183,15 +185,15 @@ youtube_emotion_project/
 ├── streamlit_app.py                     # Main Streamlit application
 ├── youtube_emotion/                     # Core Python package
 │   ├── __init__.py
-│   ├── core.py                          # URL parsing, labels, summary, recommendations
+│   ├── core.py                          # URL parsing, labels, summary, recommendations, decisions
 │   ├── model_runner.py                  # Hugging Face pipeline loading & prediction
 │   ├── youtube_client.py                # YouTube Data API comment fetching
 │   └── dataset_prep.py                  # GoEmotions dataset preparation
 ├── data/
-│   ├── go_emotions_7class/              # Balanced 7-class dataset
-│   │   ├── train.csv                    (3,010 samples)
+│   ├── go_emotions_7class/              # Stratified 7-class dataset
+│   │   ├── train.csv                    (5,000 samples)
 │   │   ├── validation.csv               (406 samples)
-│   │   └── test.csv                     (455 samples)
+│   │   └── test.csv                     (1,000 samples)
 │   ├── youtube_domain_7class_assistant/ # YouTube-domain adaptation dataset
 │   └── sample_comments.csv              # Demo comments (no API key needed)
 ├── notebooks/

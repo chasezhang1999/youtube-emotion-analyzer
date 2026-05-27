@@ -14,6 +14,8 @@ def main() -> None:
         output_dir=output_dir,
         balance=True,
         max_train_per_label=None,
+        target_train_size=5000,
+        target_test_size=1000,
         random_state=42,
     )
 

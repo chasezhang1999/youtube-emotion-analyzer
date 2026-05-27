@@ -1,6 +1,7 @@
 import unittest
 
 from youtube_emotion.core import (
+    build_campaign_decision,
     build_marketing_recommendation,
     normalize_emotion_label,
     normalize_sentiment_label,
@@ -73,6 +74,36 @@ class CoreLogicTest(unittest.TestCase):
         self.assertEqual(normalize_emotion_label("disapproval"), "disgust")
         self.assertEqual(normalize_emotion_label("nervousness"), "fear")
         self.assertEqual(normalize_emotion_label("realization"), "surprise")
+
+    def test_build_campaign_decision_flags_high_negative_risk(self):
+        rows = [
+            {"emotion": "anger", "sentiment": "negative"},
+            {"emotion": "sadness", "sentiment": "negative"},
+            {"emotion": "joy", "sentiment": "positive"},
+            {"emotion": "neutral", "sentiment": "neutral"},
+        ]
+
+        decision = build_campaign_decision(rows)
+
+        self.assertEqual(decision["decision"], "review_before_scaling")
+        self.assertEqual(decision["risk_level"], "high")
+        self.assertGreaterEqual(decision["negative_emotion_ratio"], 40.0)
+        self.assertIn("Human review", decision["next_actions"][0])
+
+    def test_build_campaign_decision_recommends_scaling_positive_creative(self):
+        rows = [
+            {"emotion": "joy", "sentiment": "positive"},
+            {"emotion": "joy", "sentiment": "positive"},
+            {"emotion": "surprise", "sentiment": "positive"},
+            {"emotion": "neutral", "sentiment": "neutral"},
+        ]
+
+        decision = build_campaign_decision(rows)
+
+        self.assertEqual(decision["decision"], "scale_positive_creative")
+        self.assertEqual(decision["risk_level"], "low")
+        self.assertEqual(decision["main_emotion"], "joy")
+        self.assertGreater(decision["positive_sentiment_ratio"], 50.0)
 
 
 if __name__ == "__main__":
