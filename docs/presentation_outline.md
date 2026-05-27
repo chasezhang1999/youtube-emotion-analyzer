@@ -137,18 +137,18 @@ Key results:
 
 | Test | Model / Pipeline | Result |
 |---|---|---:|
-| GoEmotions test | Pre-tuning baseline | 0.7033 |
-| GoEmotions test | Fine-tuned DistilBERT | 0.7604 |
-| YouTube-domain validation | Domain-adapted model | 0.6400 |
+| GoEmotions test | Pre-tuning baseline | 0.6680 |
+| GoEmotions test | Fine-tuned DistilBERT | 0.7030 |
+| YouTube-domain validation | Domain-adapted model | 0.6622 |
 | Streamlit app 7-emotion | Pre-tuning public baseline | 67/150 |
 | Streamlit app 7-emotion | GoEmotions fine-tuned DistilBERT | 70/150 |
-| Streamlit app 7-emotion | YouTube-domain adapted DistilBERT | 65/150 |
+| Streamlit app 7-emotion | YouTube-domain adapted DistilBERT | 71/150 |
 | Streamlit app 7-emotion | Public SamLowe GoEmotions RoBERTa | 80/150 |
 | Streamlit app 3-sentiment | Supporting pipeline | 105/150 |
 
 Speaker notes:
 
-The GoEmotions fine-tuned model performs best on the original GoEmotions test set. On the manually reviewed YouTube benchmark, the public SamLowe GoEmotions RoBERTa model performs best. The domain-adapted model helps on the rare-earths video but performs worse on anger-heavy news comments, showing that the current YouTube-domain data is still class-imbalanced.
+The GoEmotions fine-tuned model improves the original GoEmotions test benchmark. The domain-adapted model performs best on the dedicated YouTube-domain validation split, while the public SamLowe GoEmotions RoBERTa model performs best on the manually reviewed app benchmark. This is why the app keeps model comparison mode instead of hiding model disagreement.
 
 ## Slide 8: Business Insights and Limitations
 

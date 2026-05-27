@@ -80,7 +80,7 @@ Need to finish:
 - Run `Runtime -> Restart & Run All`.
 - Keep all outputs visible.
 - Make sure notebook numbers match `experiments/Experimental_results.xlsx` and the report.
-- Rerun the domain-adaptation section after pushing the expanded 2,962-comment dataset, then upload the refreshed model to `chase1zhang/youtube-emotion-distilbert-domain-adapted`.
+- Refreshed model has been uploaded and evaluated; latest model revisions are recorded in `experiments/model_revision_summary.csv`.
 
 ### 3. GitHub App Files
 
@@ -156,21 +156,21 @@ GroupXX_documentation/Experimental_results.xlsx
 Workbook sheets:
 
 - `Model_Selection`
-- `Streamlit_App_Performance`
-- `App_Runtime`
-- `Manual_Comment_Labels`
-- `Per_Comment_Predictions`
-- `Label_Review_Summary`
 - `YouTube_Domain_Validation`
+- `Streamlit_App_Performance`
+- `App_5Model_Comparison`
+- `App_Runtime`
+- `Model_Revisions`
+- `Manual_Comment_Labels`
 
 Key numbers:
 
-- GoEmotions fine-tuned DistilBERT: 0.7604 on the historical 455-sample GoEmotions test benchmark. Refresh this after retraining/evaluating on the expanded 1,000-sample test split.
-- Domain-adapted model: 0.6400 on the earlier 200-sample YouTube-domain validation split; refresh this after rerunning on the expanded 592-sample validation split.
+- GoEmotions fine-tuned DistilBERT: 0.7030 on the expanded 1,000-sample GoEmotions test benchmark.
+- Domain-adapted model: 0.6622 on the expanded 592-sample YouTube-domain validation split.
 - Streamlit app seven-emotion manual benchmark:
   - pre-tuning public baseline: 67/150 = 0.4467
   - GoEmotions fine-tuned DistilBERT: 70/150 = 0.4667
-  - YouTube-domain adapted DistilBERT: 65/150 = 0.4333
+  - YouTube-domain adapted DistilBERT: 71/150 = 0.4733
   - public SamLowe GoEmotions RoBERTa: 80/150 = 0.5333
   - public RoBERTa-large seven-emotion: 62/150 = 0.4133
 - Streamlit app three-class sentiment benchmark: 105/150 = 0.7000

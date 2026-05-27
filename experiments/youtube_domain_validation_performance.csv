@@ -1,2 +1,7 @@
-model_name,dataset,device,num_samples,accuracy,runtime_with_model_loading_seconds,runtime_without_model_loading_seconds,notes
-chase1zhang/youtube-emotion-distilbert-domain-adapted,YouTube-domain validation comments,CPU,200,0.64,3.4064,2.642,Validation split from assistant-assisted YouTube-domain adaptation data
+model_name,task,dataset,device,num_samples,matched_samples,accuracy,runtime_with_model_loading_seconds,runtime_without_model_loading_seconds,notes
+j-hartmann/emotion-english-distilroberta-base,seven-emotion classification,YouTube-domain validation comments,CPU,592,279,0.4713,7.5595,6.3333,pre-tuning public baseline; refreshed on expanded 592-comment validation split
+chase1zhang/youtube-emotion-distilbert,seven-emotion classification,YouTube-domain validation comments,CPU,592,343,0.5794,6.6107,6.5285,GoEmotions fine-tuned DistilBERT; refreshed on expanded 592-comment validation split
+chase1zhang/youtube-emotion-distilbert-domain-adapted,seven-emotion classification,YouTube-domain validation comments,CPU,592,392,0.6622,6.4313,6.3628,YouTube-domain adapted DistilBERT; refreshed on expanded 592-comment validation split
+SamLowe/roberta-base-go_emotions,seven-emotion classification,YouTube-domain validation comments,CPU,592,388,0.6554,13.9222,13.0302,public GoEmotions RoBERTa; refreshed on expanded 592-comment validation split
+j-hartmann/emotion-english-roberta-large,seven-emotion classification,YouTube-domain validation comments,CPU,592,262,0.4426,49.2064,47.8895,public RoBERTa-large seven-emotion; refreshed on expanded 592-comment validation split
+cardiffnlp/twitter-roberta-base-sentiment-latest,sentiment classification,YouTube-domain validation comments,CPU,592,337,0.5693,13.681,12.4351,supporting sentiment pipeline; refreshed on expanded 592-comment validation split

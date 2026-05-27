@@ -67,14 +67,14 @@
 
 | 模型 | 准确率 |
 |---|---:|
-| **YouTube-domain adapted** | **0.4733** |
+| **Public GoEmotions RoBERTa** | **0.5333** |
+| YouTube-domain adapted | 0.4733 |
 | GoEmotions fine-tuned | 0.4667 |
 | Pre-tuning baseline | 0.4467 |
 | Public RoBERTa-large | 0.4133 |
-| Public GoEmotions RoBERTa | 0.2733 |
 | Sentiment pipeline | 0.7000 |
 
-- **视觉：** 柱状图，YouTube-domain adapted 用醒目颜色标注
+- **视觉：** 柱状图，公共最佳模型和自研最终模型分别标注
 
 ---
 
@@ -107,11 +107,11 @@
 
 - **标题：** 关键发现
 - **内容：**
-  1. 调优提升 GoEmotions 测试集准确率：0.7033 → 0.7604
-  2. YouTube 领域适配在实际应用中排名第一：71/150
+  1. 调优提升 GoEmotions 测试集准确率：0.6680 → 0.7030
+  2. YouTube 领域适配在领域验证集排名第一：0.6622
   3. 平衡数据 + 类别加权是解决中性偏差的关键
   4. 愤怒情绪检测提升最大（+50%）
-  5. 公开模型在 YouTube 评论上表现不如自定义模型
+  5. 公共 SamLowe 模型在 app benchmark 中表现最好，说明模型对比模式有实际价值
 - **视觉：** 关键数字用大字体突出
 
 ---
@@ -149,7 +149,7 @@
 - **标题：** 总结
 - **内容：**
   - 项目成果：Streamlit App + 5 个模型对比 + 完整实验
-  - 最终模型：YouTube-domain adapted DistilBERT，准确率 0.4733（排名第一）
+  - 最终模型：YouTube-domain adapted DistilBERT，领域验证准确率 0.6622；app benchmark 为 71/150
   - GitHub：https://github.com/chasezhang1999/youtube-emotion-analyzer
   - App：https://youtube-emotion-analyzer.streamlit.app/
   - 感谢教授和助教！

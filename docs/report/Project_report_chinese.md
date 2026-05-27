@@ -197,26 +197,29 @@ youtube_emotion_project/
 
 ### 11.1 GoEmotions 测试集上的模型选择
 
-下表是历史 455 条 GoEmotions 测试集上的基准结果。当前仓库已经扩展到 1,000 条测试样本，重新训练和评估后应刷新该表。
+下表是重新训练后刷新过的模型选择结果，使用扩展后的 1,000 条 GoEmotions 测试样本，并拉取 2026 年 5 月 27 日 Hugging Face 上的最新模型版本。
 
 | 模型 | 设备 | 测试样本数 | 准确率 | 含加载时间 | 仅推理时间 | 备注 |
 |---|---:|---:|---:|---:|---:|---|
-| j-hartmann DistilRoBERTa | CPU | 455 | 0.7033 | 38.61s | 27.85s | 预调优基线 |
-| j-hartmann DistilRoBERTa | GPU | 455 | 0.7033 | 4.86s | 3.99s | 预调优基线 |
-| GoEmotions fine-tuned | CPU | 455 | 0.7604 | 30.80s | 26.00s | 第一阶段调优 |
-| GoEmotions fine-tuned | GPU | 455 | 0.7604 | 3.24s | 2.25s | 第一阶段调优 |
-| CardiffNLP 情感模型 | CPU | 455 | 0.7363 | 57.53s | 50.54s | 辅助情感模型 |
-| CardiffNLP 情感模型 | GPU | 455 | 0.7363 | 6.11s | 4.25s | 辅助情感模型 |
-| Domain-adapted | CPU | 455 | 0.7011 | 3.20s | 2.39s | 最终模型 |
-| Domain-adapted | MPS | 455 | 0.7011 | 4.97s | 3.64s | Mac MPS |
+| j-hartmann DistilRoBERTa | CPU | 1,000 | 0.6680 | 4.95s | 3.72s | 预调优基线 |
+| GoEmotions fine-tuned | CPU | 1,000 | 0.7030 | 3.65s | 3.57s | 第一阶段调优 |
+| Domain-adapted | CPU | 1,000 | 0.6280 | 3.69s | 3.62s | YouTube 领域适配 |
+| CardiffNLP 情感模型 | CPU | 1,000 | 0.6460 | 8.75s | 7.50s | 辅助情感模型 |
 
-GoEmotions fine-tuned 模型在 GoEmotions 测试集上表现最好（0.7604）。Domain-adapted 模型在此测试集上略低，因为它进一步优化了对 YouTube 评论风格的适应。
+GoEmotions fine-tuned 模型在 GoEmotions 测试集上从 0.6680 提升到 0.7030。Domain-adapted 模型在此测试集上略低，因为它进一步优化了对 YouTube 评论风格的适应，而不是单纯追求 Reddit 风格 GoEmotions 测试集表现。
 
 ### 11.2 YouTube 领域验证
 
 | 模型 | 数据集 | 设备 | 样本数 | 准确率 |
 |---|---|---:|---:|---:|
-| Domain-adapted | YouTube 领域验证集 | CPU | 200 | 0.6400 |
+| j-hartmann DistilRoBERTa | YouTube 领域验证集 | CPU | 592 | 0.4713 |
+| GoEmotions fine-tuned | YouTube 领域验证集 | CPU | 592 | 0.5794 |
+| Domain-adapted | YouTube 领域验证集 | CPU | 592 | 0.6622 |
+| Public GoEmotions RoBERTa | YouTube 领域验证集 | CPU | 592 | 0.6554 |
+| Public RoBERTa-large | YouTube 领域验证集 | CPU | 592 | 0.4426 |
+| CardiffNLP 情感模型 | YouTube 领域验证集 | CPU | 592 | 0.5693 |
+
+Domain-adapted DistilBERT 在 592 条 YouTube-domain 验证集上表现最好（0.6622），略高于公共 SamLowe RoBERTa 模型（0.6554）。因此最终应用仍默认使用自研的 YouTube-domain adapted 模型。
 
 ### 11.3 应用级性能（5 个模型对比，150 条人工审核评论）
 
@@ -228,19 +231,19 @@ GoEmotions fine-tuned 模型在 GoEmotions 测试集上表现最好（0.7604）�
 | d2dgJGkw5p0 | 7情绪 | GoEmotions fine-tuned | 29 | 0.58 | neutral | neutral |
 | d2dgJGkw5p0 | 7情绪 | **YouTube-domain adapted** | 28 | 0.56 | neutral | neutral |
 | d2dgJGkw5p0 | 7情绪 | Public RoBERTa-large | 24 | 0.48 | neutral | neutral |
-| d2dgJGkw5p0 | 7情绪 | Public GoEmotions RoBERTa | 21 | 0.42 | neutral | neutral |
+| d2dgJGkw5p0 | 7情绪 | Public GoEmotions RoBERTa | 26 | 0.52 | neutral | neutral |
 | d2dgJGkw5p0 | 3情感 | Sentiment pipeline | 30 | 0.60 | neutral | neutral |
 | M8To7iorkxQ | 7情绪 | Pre-tuning baseline | 26 | 0.52 | joy | neutral |
 | M8To7iorkxQ | 7情绪 | GoEmotions fine-tuned | 25 | 0.50 | joy | neutral |
 | M8To7iorkxQ | 7情绪 | **YouTube-domain adapted** | 25 | 0.50 | joy | neutral |
 | M8To7iorkxQ | 7情绪 | Public RoBERTa-large | 24 | 0.48 | joy | neutral |
-| M8To7iorkxQ | 7情绪 | Public GoEmotions RoBERTa | 10 | 0.20 | joy | neutral |
+| M8To7iorkxQ | 7情绪 | Public GoEmotions RoBERTa | 37 | 0.74 | joy | joy |
 | M8To7iorkxQ | 3情感 | Sentiment pipeline | 46 | 0.92 | positive | positive |
 | -_-eIVAX1yQ | 7情绪 | Pre-tuning baseline | 12 | 0.24 | anger | neutral |
 | -_-eIVAX1yQ | 7情绪 | GoEmotions fine-tuned | 16 | 0.32 | anger | neutral |
 | -_-eIVAX1yQ | 7情绪 | **YouTube-domain adapted** | 18 | 0.36 | anger | neutral |
 | -_-eIVAX1yQ | 7情绪 | Public RoBERTa-large | 14 | 0.28 | anger | neutral |
-| -_-eIVAX1yQ | 7情绪 | Public GoEmotions RoBERTa | 10 | 0.20 | anger | neutral |
+| -_-eIVAX1yQ | 7情绪 | Public GoEmotions RoBERTa | 17 | 0.34 | anger | neutral |
 | -_-eIVAX1yQ | 3情感 | Sentiment pipeline | 29 | 0.58 | negative | negative |
 
 **总体结果：**
@@ -249,18 +252,19 @@ GoEmotions fine-tuned 模型在 GoEmotions 测试集上表现最好（0.7604）�
 |---|---|---:|---:|
 | 7情绪 | Pre-tuning baseline | 67 | 0.4467 |
 | 7情绪 | GoEmotions fine-tuned | 70 | 0.4667 |
-| 7情绪 | **YouTube-domain adapted（最终模型）** | **71** | **0.4733** |
+| 7情绪 | Public GoEmotions RoBERTa | 80 | 0.5333 |
+| 7情绪 | **YouTube-domain adapted（自研最终模型）** | **71** | **0.4733** |
 | 7情绪 | Public RoBERTa-large | 62 | 0.4133 |
-| 7情绪 | Public GoEmotions RoBERTa | 41 | 0.2733 |
 | 3情感 | Sentiment pipeline | 105 | 0.7000 |
 
 ### 11.4 关键发现
 
-- GoEmotions fine-tuned DistilBERT 在 GoEmotions 测试集上从 0.7033 提升到 0.7604。
-- 重新平衡 YouTube 领域训练数据（neutral 从 1226 降到 200）并加入类别加权损失后，domain-adapted 模型在 150 条应用基准上取得最佳七情绪准确率：**71/150 (0.4733)**，排名第一。
+- GoEmotions fine-tuned DistilBERT 在扩展后的 GoEmotions 测试集上从 0.6680 提升到 0.7030。
+- 重新平衡 YouTube 领域训练数据并加入类别加权损失后，domain-adapted 模型在 YouTube-domain 验证集上取得最佳结果：**392/592 (0.6622)**。
+- 在 150 条应用级人工 benchmark 中，公共 SamLowe GoEmotions RoBERTa 最高：**80/150 (0.5333)**。自研 domain-adapted DistilBERT 是最强自研 DistilBERT：**71/150 (0.4733)**，高于 GoEmotions fine-tuned 的 70/150 和预调优基线的 67/150。
 - 最大提升出现在以愤怒情绪为主的新闻视频上：从 12/50 提升到 18/50，说明平衡的领域适配有助于模型更好地检测负面情绪。
-- 两个公开模型在 YouTube 评论上表现不如预期：RoBERTa-large 倾向过度预测愤怒，SamLowe 的 GoEmotions RoBERTa 对短小、非正式的 YouTube 文本效果较差。
-- GPU 推理速度远快于 CPU。Streamlit Cloud 的 CPU 推理对于 100 条评论的分析是可以接受的。
+- 公共模型依然是有价值的对照：SamLowe RoBERTa 在 app benchmark 里最好，而 RoBERTa-large 在本任务上更慢且准确率较低。
+- Streamlit Cloud 的 CPU 推理对于 100 条评论的分析是可以接受的，因为模型 pipeline 会被缓存。
 - 三分类情感模型在正面/中性/负面层面最稳定（105/150），但七情绪分类提供了更细致的诊断洞察。
 
 ## 12. 业务解读
@@ -291,7 +295,7 @@ YouTube 领域适配数据集缩小了这一差距。重新平衡训练数据并
 
 本项目展示了基于 Transformer 的文本分类如何支持数字营销决策。Streamlit 应用收集 YouTube 评论，应用两条 Hugging Face 流水线，可视化观众情绪和情感，并生成实用建议。
 
-实验结果表明：调优提升了 GoEmotions 基准上的表现；使用平衡 YouTube 数据的领域适配进一步改善了实际应用性能。YouTube-domain adapted DistilBERT 取得最佳七情绪准确率（71/150），在愤怒情绪评论上提升最大。辅助情感模型在正面/中性/负面层面表现最稳定（105/150）。两条流水线共同为营销活动监控和受众反馈分析提供了有用的工作流程。
+实验结果表明：调优提升了 GoEmotions 基准上的表现；使用平衡 YouTube 数据的领域适配让自研模型在 YouTube-domain 验证集上取得最佳结果。公共 SamLowe RoBERTa 是 app 手工 benchmark 中最强的对照模型，而 YouTube-domain adapted DistilBERT 仍作为默认最终模型，因为它体积较小、由项目自研维护，并且在专门的 YouTube 验证集上表现最好。辅助情感模型在正面/中性/负面层面表现最稳定（105/150）。两条流水线共同为营销活动监控和受众反馈分析提供了有用的工作流程。
 
 ---
 

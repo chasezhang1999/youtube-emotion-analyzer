@@ -338,13 +338,13 @@
         </div>
         <div class="stacked-ledger" data-anim="ledger">
           <div class="ledger-row" style="border-bottom-color:rgba(255,255,255,.15)">
-            <div class="ledger-num" style="color:var(--accent-bright)">71<span style="font-size:.4em;opacity:.6">/150</span></div>
-            <div class="ledger-lbl" style="color:rgba(255,255,255,.7)">最终模型准确匹配数</div>
+            <div class="ledger-num" style="color:var(--accent-bright)">80<span style="font-size:.4em;opacity:.6">/150</span></div>
+            <div class="ledger-lbl" style="color:rgba(255,255,255,.7)">app benchmark 最佳对照模型</div>
             <div class="ledger-icon"><i data-lucide="target" style="color:var(--accent-bright);width:24px;height:24px"></i></div>
           </div>
           <div class="ledger-row" style="border-bottom-color:rgba(255,255,255,.15)">
-            <div class="ledger-num" style="color:var(--accent-bright)">0.4733</div>
-            <div class="ledger-lbl" style="color:rgba(255,255,255,.7)">七情绪准确率（排名第一）</div>
+            <div class="ledger-num" style="color:var(--accent-bright)">0.6622</div>
+            <div class="ledger-lbl" style="color:rgba(255,255,255,.7)">最终模型领域验证准确率</div>
             <div class="ledger-icon"><i data-lucide="trophy" style="color:var(--accent-bright);width:24px;height:24px"></i></div>
           </div>
           <div class="ledger-row" style="border-bottom-color:rgba(255,255,255,.15)">
@@ -377,29 +377,29 @@
         <p class="lead">基于 3 个 YouTube 视频 × 50 条人工审核评论的独立评估</p>
         <div class="h-bar-chart" data-anim="bars" style="justify-content:center">
           <div class="bar-row">
+            <span class="bar-lbl">Public GoEmotions RoBERTa</span>
+            <span class="bar-fill" style="--w:100%"></span>
+            <span class="bar-num" style="color:var(--accent);font-weight:600">80</span>
+          </div>
+          <div class="bar-row">
             <span class="bar-lbl">YouTube-domain adapted</span>
-            <span class="bar-fill" style="--w:94.6%"></span>
+            <span class="bar-fill" style="--w:88.8%"></span>
             <span class="bar-num" style="color:var(--accent);font-weight:600">71</span>
           </div>
           <div class="bar-row">
             <span class="bar-lbl">GoEmotions fine-tuned</span>
-            <span class="bar-fill" style="--w:93.3%"></span>
+            <span class="bar-fill" style="--w:87.5%"></span>
             <span class="bar-num">70</span>
           </div>
           <div class="bar-row">
             <span class="bar-lbl">Pre-tuning baseline</span>
-            <span class="bar-fill" style="--w:89.3%"></span>
+            <span class="bar-fill" style="--w:83.8%"></span>
             <span class="bar-num">67</span>
           </div>
           <div class="bar-row">
             <span class="bar-lbl">Public RoBERTa-large</span>
-            <span class="bar-fill" style="--w:82.7%"></span>
+            <span class="bar-fill" style="--w:77.5%"></span>
             <span class="bar-num">62</span>
-          </div>
-          <div class="bar-row">
-            <span class="bar-lbl">Public GoEmotions RoBERTa</span>
-            <span class="bar-fill" style="--w:54.7%"></span>
-            <span class="bar-num">41</span>
           </div>
         </div>
         <div style="display:flex;gap:3vw;align-items:center">
@@ -574,7 +574,7 @@
             <span class="t-cat" style="color:var(--text-helper)">BEFORE</span>
             <h3 style="font-family:var(--sans),var(--sans-zh);font-weight:200;font-size:min(4.6vw,8vh);line-height:1;letter-spacing:-.03em;margin-top:1vh">GoEmotions<br>直接推理</h3>
             <div style="display:flex;flex-direction:column;gap:1.6vh;margin-top:2vh">
-              <div class="card-fill" style="padding:var(--sp-5)"><span class="t-meta">Test Set Accuracy</span><div style="font-family:var(--mono);font-size:max(20px,1.5vw);font-weight:500;margin-top:.6vh">0.7033</div></div>
+              <div class="card-fill" style="padding:var(--sp-5)"><span class="t-meta">Test Set Accuracy</span><div style="font-family:var(--mono);font-size:max(20px,1.5vw);font-weight:500;margin-top:.6vh">0.6680</div></div>
               <div class="card-fill" style="padding:var(--sp-5)"><span class="t-meta">App Benchmark</span><div style="font-family:var(--mono);font-size:max(20px,1.5vw);font-weight:500;margin-top:.6vh">67 / 150</div></div>
               <p class="body-sm" style="color:var(--text-helper)">Reddit 风格训练数据<br>与 YouTube 评论存在领域差异</p>
             </div>
@@ -584,7 +584,7 @@
             <span class="t-cat" style="color:var(--accent)">AFTER</span>
             <h3 style="font-family:var(--sans),var(--sans-zh);font-weight:200;font-size:min(4.6vw,8vh);line-height:1;letter-spacing:-.03em;margin-top:1vh">YouTube 领域<br><span style="color:var(--accent)">适配模型</span></h3>
             <div style="display:flex;flex-direction:column;gap:1.6vh;margin-top:2vh">
-              <div class="card-accent" style="padding:var(--sp-5)"><span class="t-meta" style="color:rgba(255,255,255,.7)">App Benchmark</span><div style="font-family:var(--mono);font-size:max(20px,1.5vw);font-weight:500;margin-top:.6vh">71 / 150</div></div>
+              <div class="card-accent" style="padding:var(--sp-5)"><span class="t-meta" style="color:rgba(255,255,255,.7)">Domain Validation</span><div style="font-family:var(--mono);font-size:max(20px,1.5vw);font-weight:500;margin-top:.6vh">0.6622</div></div>
               <div class="card-fill" style="padding:var(--sp-5)"><span class="t-meta">Anger Detection</span><div style="font-family:var(--mono);font-size:max(20px,1.5vw);font-weight:500;margin-top:.6vh">12→18 <span style="font-size:.6em;color:var(--accent)">+50%</span></div></div>
               <p class="body-sm" style="color:var(--text-helper)">平衡数据 + class-weighted loss<br>2,962 条 YouTube 评论领域适配</p>
             </div>
@@ -660,7 +660,7 @@
           <ul class="takeaway-list">
             <li>
               <span class="num">01</span>
-              <div><h4>领域适配有效</h4><p>YouTube 领域数据 + 平衡策略让模型准确率排名第一</p></div>
+              <div><h4>领域适配有效</h4><p>YouTube 领域数据 + 平衡策略让自研模型在领域验证集领先</p></div>
             </li>
             <li>
               <span class="num">02</span>

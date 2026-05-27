@@ -254,6 +254,16 @@ Additional YouTube-domain adaptation data:
 - Stored in `data/youtube_domain_7class_assistant/`
 - Independent app evaluation uses a separate manually reviewed 150-comment benchmark
 
+## Latest Evaluation Summary
+
+| Evaluation | Best / selected model | Result |
+|---|---|---:|
+| GoEmotions 1,000-row test | GoEmotions fine-tuned DistilBERT | 0.7030 |
+| YouTube-domain 592-row validation | YouTube-domain adapted DistilBERT | 0.6622 |
+| 150-comment app benchmark | Public SamLowe GoEmotions RoBERTa | 80/150 |
+| 150-comment app benchmark, project-owned model | YouTube-domain adapted DistilBERT | 71/150 |
+| 150-comment app sentiment benchmark | CardiffNLP sentiment pipeline | 105/150 |
+
 ## YouTube API Key
 
 Set via environment variable or Streamlit secrets:
