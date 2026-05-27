@@ -18,6 +18,7 @@ InsightWave Digital Marketing Agency helps brands understand whether YouTube cam
 - ✅ GitHub repository pushed
 - ✅ Streamlit Cloud app deployed and tested
 - ✅ Experimental results workbook prepared
+- ✅ 150-comment app benchmark manually reviewed and refreshed
 - ✅ Report screenshots captured
 - ✅ Draft report PDF generated
 - ✅ Three-model Streamlit comparison mode added

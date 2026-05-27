@@ -1,2 +1,7 @@
 model_name,dataset,device,num_comments,runtime_with_model_loading_seconds,runtime_without_model_loading_seconds,notes
-chase1zhang/youtube-emotion-distilbert-domain-adapted,150 manually reviewed Streamlit app comments,CPU,150,2.3695,1.5621,Local Mac CPU runtime measured while evaluating the app-level manual benchmark
+j-hartmann/emotion-english-distilroberta-base,150 reviewed Streamlit app comments,CPU,150,7.2815,1.5164,pre-tuning public baseline
+chase1zhang/youtube-emotion-distilbert,150 reviewed Streamlit app comments,CPU,150,12.8617,1.3363,GoEmotions fine-tuned DistilBERT
+chase1zhang/youtube-emotion-distilbert-domain-adapted,150 reviewed Streamlit app comments,CPU,150,14.8326,1.4346,YouTube-domain adapted DistilBERT
+SamLowe/roberta-base-go_emotions,150 reviewed Streamlit app comments,CPU,150,4.8483,3.8838,public GoEmotions RoBERTa
+j-hartmann/emotion-english-roberta-large,150 reviewed Streamlit app comments,CPU,150,40.846,11.9566,public RoBERTa-large seven-emotion
+cardiffnlp/twitter-roberta-base-sentiment-latest,150 reviewed Streamlit app comments,CPU,150,4.304,3.0499,supporting sentiment pipeline

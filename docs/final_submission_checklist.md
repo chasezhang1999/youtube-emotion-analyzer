@@ -159,6 +159,8 @@ Workbook sheets:
 - `Streamlit_App_Performance`
 - `App_Runtime`
 - `Manual_Comment_Labels`
+- `Per_Comment_Predictions`
+- `Label_Review_Summary`
 - `YouTube_Domain_Validation`
 
 Key numbers:
@@ -166,10 +168,13 @@ Key numbers:
 - GoEmotions fine-tuned DistilBERT: 0.7604 on the 455-sample GoEmotions test set.
 - Domain-adapted model: 0.6400 on the earlier 200-sample YouTube-domain validation split; refresh this after rerunning on the expanded 592-sample validation split.
 - Streamlit app seven-emotion manual benchmark:
-  - pre-tuning baseline: 73/150 = 0.4867
-  - GoEmotions fine-tuned model: 73/150 = 0.4867
-  - domain-adapted model: 69/150 = 0.4600
-- Streamlit app three-class sentiment benchmark: 108/150 = 0.7200
+  - pre-tuning public baseline: 67/150 = 0.4467
+  - GoEmotions fine-tuned DistilBERT: 70/150 = 0.4667
+  - YouTube-domain adapted DistilBERT: 65/150 = 0.4333
+  - public SamLowe GoEmotions RoBERTa: 80/150 = 0.5333
+  - public RoBERTa-large seven-emotion: 62/150 = 0.4133
+- Streamlit app three-class sentiment benchmark: 105/150 = 0.7000
+- Manual label review: 23 of 150 labels revised after assistant review.
 
 ### 6. Presentation PPT
 
