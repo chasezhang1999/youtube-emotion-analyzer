@@ -18,12 +18,18 @@ class DefaultModelsTest(unittest.TestCase):
         self.assertIn(DEFAULT_EMOTION_MODEL, EMOTION_MODEL_OPTIONS.values())
         self.assertIn("chase1zhang/youtube-emotion-distilbert", EMOTION_MODEL_OPTIONS.values())
         self.assertIn("j-hartmann/emotion-english-distilroberta-base", EMOTION_MODEL_OPTIONS.values())
+        self.assertIn("j-hartmann/emotion-english-roberta-large", EMOTION_MODEL_OPTIONS.values())
         self.assertIn("SamLowe/roberta-base-go_emotions", EMOTION_MODEL_OPTIONS.values())
 
     def test_default_comparison_uses_three_fine_tuned_models(self):
         self.assertEqual(len(DEFAULT_COMPARISON_MODEL_LABELS), 3)
         for label in DEFAULT_COMPARISON_MODEL_LABELS:
             self.assertIn(label, EMOTION_MODEL_OPTIONS)
+        self.assertIn("Public GoEmotions RoBERTa (SamLowe)", DEFAULT_COMPARISON_MODEL_LABELS)
+        self.assertIn(
+            "Public DistilRoBERTa 7-emotion (j-hartmann)",
+            DEFAULT_COMPARISON_MODEL_LABELS,
+        )
 
 
 if __name__ == "__main__":

@@ -14,7 +14,7 @@ Include:
 
 Speaker notes:
 
-This project builds a deployed Streamlit app for a digital marketing agency. The app takes a YouTube video URL, analyzes the first 50 comments, and summarizes audience emotions and sentiment.
+This project builds a deployed Streamlit app for a digital marketing agency. The app takes a YouTube video URL, analyzes the first 100 comments, and summarizes audience emotions and sentiment.
 
 ## Slide 2: Business Problem
 
@@ -41,7 +41,7 @@ The app turns a video URL into an emotion dashboard and recommendation.
 Workflow:
 
 ```text
-YouTube URL -> YouTube API -> first 50 comments -> emotion model + sentiment model -> charts, table, recommendation
+YouTube URL -> YouTube API -> first 100 comments -> emotion model + sentiment model -> charts, table, recommendation
 ```
 
 Outputs:
@@ -71,8 +71,9 @@ Include:
   - test: 455
 - Labels: anger, disgust, fear, joy, neutral, sadness, surprise
 - YouTube-domain adaptation set:
-  - 1,000 comments
-  - 20 videos
+  - 2,962 comments
+  - 30 videos
+  - up to 100 comments per video
   - assistant-assisted labels
 - Independent app test:
   - 150 manually reviewed comments
@@ -94,6 +95,8 @@ Emotion pipeline:
 - Original fine-tuned model: `chase1zhang/youtube-emotion-distilbert`
 - Domain-adapted model: `chase1zhang/youtube-emotion-distilbert-domain-adapted`
 - Public comparison model: `SamLowe/roberta-base-go_emotions`
+- Public comparison model: `j-hartmann/emotion-english-distilroberta-base`
+- Optional larger comparison model: `j-hartmann/emotion-english-roberta-large`
 
 Sentiment pipeline:
 

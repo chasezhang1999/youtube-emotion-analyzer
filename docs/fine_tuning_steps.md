@@ -8,7 +8,9 @@ The current Streamlit app uses two Hugging Face text classification models.
    - default: `chase1zhang/youtube-emotion-distilbert-domain-adapted`
    - comparison options:
      - `chase1zhang/youtube-emotion-distilbert`
+     - `SamLowe/roberta-base-go_emotions`
      - `j-hartmann/emotion-english-distilroberta-base`
+     - `j-hartmann/emotion-english-roberta-large`
    - Used for: anger, disgust, fear, joy, neutral, sadness, surprise
    - Role: main audience emotion analysis pipeline
 
@@ -92,12 +94,21 @@ Prepared files:
 
 Dataset summary:
 
-- 1,000 YouTube comments
-- 20 videos
+- 2,962 YouTube comments
+- 30 videos
+- up to 100 top-level comments per video
 - seven target emotions
 - assistant-assisted labels
 - used only for domain adaptation
 - independent app evaluation uses a separate manually reviewed 150-comment set
+
+Current split sizes:
+
+| Split | Rows |
+|---|---:|
+| Train | 2,370 |
+| Validation | 592 |
+| All | 2,962 |
 
 ## Fine-Tuning Steps
 
@@ -135,10 +146,11 @@ Use conservative settings so the notebook runs reliably in Colab:
 
 1. Use a balanced training set to avoid over-predicting neutral.
 2. Compare the fine-tuned DistilBERT model against the pre-trained emotion model.
-3. Measure runtime with model loading and without model loading.
-4. Keep the final app model small enough for Streamlit Cloud.
-5. Cache model pipelines in Streamlit using `st.cache_resource`.
-6. If accuracy is weak, try:
+3. Compare against public emotion classifiers such as `SamLowe/roberta-base-go_emotions` and `j-hartmann/emotion-english-distilroberta-base`.
+4. Measure runtime with model loading and without model loading.
+5. Keep the final app model small enough for Streamlit Cloud.
+6. Cache model pipelines in Streamlit using `st.cache_resource`.
+7. If accuracy is weak, try:
    - more epochs
    - lower learning rate
    - `j-hartmann/emotion-english-distilroberta-base` as the base model

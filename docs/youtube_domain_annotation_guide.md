@@ -4,14 +4,16 @@ This file documents the assistant-assisted annotation used to create the YouTube
 
 ## Data source
 
-Twenty public YouTube videos were selected to cover common digital marketing scenarios:
+Thirty public YouTube videos were selected to cover common digital marketing scenarios:
 product launch, product review, controversial product discussion, inspirational brand advertising,
 holiday advertising, fast food advertising, beauty/social campaign, movie trailer, entertainment fandom,
 brand crisis news, customer-service failures, public-safety PSAs, health-warning campaigns,
-product-failure incidents, food-safety issues, and brand backlash.
+product-failure incidents, food-safety issues, brand backlash, brand purpose advertising,
+gaming/product reveals, streaming trailers, and app-brand campaigns.
 
-For each video, the first 50 top-level comments were collected with the YouTube Data API using relevance order.
-The resulting dataset contains 1,000 comments.
+For each video, up to 100 top-level comments were collected with the YouTube Data API using relevance order.
+Most videos returned 100 usable comments; one older video returned fewer public top-level comments.
+The resulting dataset contains 2,962 comments.
 
 ## Label set
 
@@ -48,24 +50,24 @@ These labels are intended for YouTube-domain adaptation training. They should no
 
 Recommended report wording:
 
-> To reduce domain shift, we added an assistant-assisted annotation set of 1,000 YouTube comments collected from
-> 20 marketing-related videos. The data was used only for further domain adaptation, while the original
+> To reduce domain shift, we added an assistant-assisted annotation set of 2,962 YouTube comments collected from
+> 30 marketing-related videos. The data was used only for further domain adaptation, while the original
 > 150 manually reviewed comments remained an independent application-level test set.
 
 ## Current label distribution
 
-The final 1,000-comment dataset has the following seven-emotion distribution:
+The final 2,962-comment dataset has the following seven-emotion distribution:
 
-- neutral: 468
-- joy: 289
-- anger: 71
-- disgust: 55
-- fear: 42
-- surprise: 39
-- sadness: 36
+- neutral: 1,532
+- joy: 943
+- anger: 136
+- disgust: 102
+- surprise: 88
+- sadness: 82
+- fear: 79
 
 The three-sentiment distribution is:
 
-- neutral: 480
-- positive: 291
-- negative: 229
+- neutral: 1,572
+- positive: 947
+- negative: 443

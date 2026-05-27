@@ -10,10 +10,9 @@ NEGATIVE_EMOTIONS = {"anger", "disgust", "fear", "sadness"}
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 INPUT_PATHS = [
-    PROJECT_ROOT / "data" / "youtube_domain_training_comments_unlabeled.csv",
-    PROJECT_ROOT / "data" / "youtube_domain_training_comments_extra_unlabeled.csv",
+    PROJECT_ROOT / "data" / "youtube_domain_training_comments_expanded_unlabeled.csv",
 ]
-OUTPUT_PATH = PROJECT_ROOT / "data" / "youtube_domain_training_comments_assistant_labeled.csv"
+OUTPUT_PATH = PROJECT_ROOT / "data" / "youtube_domain_training_comments_expanded_assistant_labeled.csv"
 SPLIT_DIR = PROJECT_ROOT / "data" / "youtube_domain_7class_assistant"
 
 

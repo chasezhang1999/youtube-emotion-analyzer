@@ -4,13 +4,51 @@ import os
 import pandas as pd
 import streamlit as st
 
-from youtube_emotion.core import build_marketing_recommendation, parse_video_id, summarize_predictions
+from youtube_emotion.core import (
+    build_marketing_recommendation,
+    clean_comment_text,
+    normalize_emotion_label,
+    normalize_sentiment_label,
+    parse_video_id,
+    summarize_predictions,
+)
 from youtube_emotion import model_runner
 from youtube_emotion.youtube_client import fetch_top_comments
 
 
 PROJECT_ROOT = Path(__file__).resolve().parent
 SAMPLE_COMMENTS_PATH = PROJECT_ROOT / "data" / "sample_comments.csv"
+
+DEFAULT_SENTIMENT_MODEL = getattr(
+    model_runner,
+    "DEFAULT_SENTIMENT_MODEL",
+    "cardiffnlp/twitter-roberta-base-sentiment-latest",
+)
+EMOTION_MODEL_OPTIONS = getattr(
+    model_runner,
+    "EMOTION_MODEL_OPTIONS",
+    {
+        "YouTube-domain adapted DistilBERT (recommended)": "chase1zhang/youtube-emotion-distilbert-domain-adapted",
+        "GoEmotions DistilBERT (previous fine-tuned)": "chase1zhang/youtube-emotion-distilbert",
+        "Public GoEmotions RoBERTa (SamLowe)": "SamLowe/roberta-base-go_emotions",
+        "Public DistilRoBERTa 7-emotion (j-hartmann)": "j-hartmann/emotion-english-distilroberta-base",
+        "Public RoBERTa-large 7-emotion (j-hartmann)": "j-hartmann/emotion-english-roberta-large",
+    },
+)
+DEFAULT_COMPARISON_MODEL_LABELS = [
+    label
+    for label in getattr(
+        model_runner,
+        "DEFAULT_COMPARISON_MODEL_LABELS",
+        [
+            "YouTube-domain adapted DistilBERT (recommended)",
+            "Public GoEmotions RoBERTa (SamLowe)",
+            "Public DistilRoBERTa 7-emotion (j-hartmann)",
+        ],
+    )
+    if label in EMOTION_MODEL_OPTIONS
+]
+PIPELINE_KWARGS = {"truncation": True, "return_token_type_ids": False}
 
 
 st.set_page_config(
@@ -39,6 +77,86 @@ def get_secret_value(name: str) -> str:
         return str(st.secrets.get(name, ""))
     except Exception:
         return ""
+
+
+def extract_top_prediction(output) -> tuple[str, float]:
+    extractor = getattr(model_runner, "extract_top_prediction", None)
+    if extractor is not None:
+        return extractor(output)
+
+    if isinstance(output, dict):
+        return str(output.get("label", "")), float(output.get("score", 0.0))
+
+    if isinstance(output, list) and output:
+        ranked = [item for item in output if isinstance(item, dict)]
+        if ranked:
+            best = max(ranked, key=lambda item: float(item.get("score", 0.0)))
+            return str(best.get("label", "")), float(best.get("score", 0.0))
+
+    return "neutral", 0.0
+
+
+def predict_comment_emotion_only(comments: list[str], emotion_pipeline) -> list[dict]:
+    predictor = getattr(model_runner, "predict_comment_emotion_only", None)
+    if predictor is not None:
+        return predictor(comments=comments, emotion_pipeline=emotion_pipeline)
+
+    cleaned_comments = [clean_comment_text(comment) for comment in comments]
+    cleaned_comments = [comment for comment in cleaned_comments if comment]
+    if not cleaned_comments:
+        return []
+
+    outputs = emotion_pipeline(cleaned_comments, **PIPELINE_KWARGS)
+    rows = []
+    for comment, output in zip(cleaned_comments, outputs):
+        label, score = extract_top_prediction(output)
+        rows.append(
+            {
+                "comment": comment,
+                "emotion": normalize_emotion_label(label),
+                "emotion_score": round(score, 4),
+            }
+        )
+    return rows
+
+
+def predict_comment_sentiments(comments: list[str], sentiment_pipeline) -> list[dict]:
+    predictor = getattr(model_runner, "predict_comment_sentiments", None)
+    if predictor is not None:
+        return predictor(comments=comments, sentiment_pipeline=sentiment_pipeline)
+
+    cleaned_comments = [clean_comment_text(comment) for comment in comments]
+    cleaned_comments = [comment for comment in cleaned_comments if comment]
+    if not cleaned_comments:
+        return []
+
+    outputs = sentiment_pipeline(cleaned_comments, **PIPELINE_KWARGS)
+    rows = []
+    for comment, output in zip(cleaned_comments, outputs):
+        label, score = extract_top_prediction(output)
+        rows.append(
+            {
+                "comment": comment,
+                "sentiment": normalize_sentiment_label(label),
+                "sentiment_score": round(score, 4),
+            }
+        )
+    return rows
+
+
+def predict_comment_emotions(comments: list[str], emotion_pipeline, sentiment_pipeline) -> list[dict]:
+    predictor = getattr(model_runner, "predict_comment_emotions", None)
+    if predictor is not None:
+        return predictor(
+            comments=comments,
+            emotion_pipeline=emotion_pipeline,
+            sentiment_pipeline=sentiment_pipeline,
+        )
+
+    return merge_emotion_and_sentiment_rows(
+        emotion_rows=predict_comment_emotion_only(comments, emotion_pipeline),
+        sentiment_rows=predict_comment_sentiments(comments, sentiment_pipeline),
+    )
 
 
 def display_summary(rows: list[dict]) -> None:
@@ -229,27 +347,27 @@ def main() -> None:
             "Analysis mode",
             options=["Single model", "Compare emotion models"],
             index=0,
-            help="Compare mode runs the same 50 comments through three fine-tuned emotion models.",
+            help="Compare mode runs the same 100 comments through three fine-tuned emotion models.",
         )
 
         if analysis_mode == "Single model":
             emotion_model_label = st.selectbox(
                 "Emotion model",
-                options=list(model_runner.EMOTION_MODEL_OPTIONS.keys()),
+                options=list(EMOTION_MODEL_OPTIONS.keys()),
                 index=0,
-                help="The recommended model was further fine-tuned on 1,000 YouTube-domain comments.",
+                help="The recommended model was further fine-tuned on YouTube-domain comments.",
             )
             selected_emotion_model_labels = [emotion_model_label]
         else:
             selected_emotion_model_labels = st.multiselect(
                 "Emotion models to compare",
-                options=list(model_runner.EMOTION_MODEL_OPTIONS.keys()),
-                default=model_runner.DEFAULT_COMPARISON_MODEL_LABELS,
+                options=list(EMOTION_MODEL_OPTIONS.keys()),
+                default=DEFAULT_COMPARISON_MODEL_LABELS,
                 help="The default comparison uses three fine-tuned emotion models.",
             )
 
         selected_emotion_models = {
-            label: model_runner.EMOTION_MODEL_OPTIONS[label]
+            label: EMOTION_MODEL_OPTIONS[label]
             for label in selected_emotion_model_labels
         }
         for label, model_name in selected_emotion_models.items():
@@ -257,7 +375,7 @@ def main() -> None:
 
         sentiment_model = st.text_input(
             "Sentiment model",
-            value=model_runner.DEFAULT_SENTIMENT_MODEL,
+            value=DEFAULT_SENTIMENT_MODEL,
         )
         comment_order = st.selectbox("Comment order", ["relevance", "time"], index=0)
         use_sample_comments = st.checkbox(
@@ -273,12 +391,12 @@ def main() -> None:
     analyze_clicked = st.button("Analyze comments", type="primary")
 
     if not analyze_clicked:
-        st.write("Enter a YouTube video URL, then analyze the first 50 comments.")
+        st.write("Enter a YouTube video URL, then analyze the first 100 comments.")
         return
 
     try:
         if use_sample_comments:
-            comments = load_sample_comments()[:50]
+            comments = load_sample_comments()[:100]
             st.info("Using local sample comments for demonstration.")
         else:
             video_id = parse_video_id(video_url)
@@ -286,7 +404,7 @@ def main() -> None:
                 comments = fetch_top_comments(
                     video_id=video_id,
                     api_key=api_key,
-                    max_results=50,
+                    max_results=100,
                     order=comment_order,
                 )
 
@@ -310,13 +428,13 @@ def main() -> None:
 
         if analysis_mode == "Compare emotion models":
             with st.spinner("Analyzing comments with selected emotion models..."):
-                sentiment_rows = model_runner.predict_comment_sentiments(
+                sentiment_rows = predict_comment_sentiments(
                     comments=comments,
                     sentiment_pipeline=sentiment_pipeline,
                 )
                 comparison_results = {}
                 for label, emotion_pipeline in emotion_pipelines.items():
-                    emotion_rows = model_runner.predict_comment_emotion_only(
+                    emotion_rows = predict_comment_emotion_only(
                         comments=comments,
                         emotion_pipeline=emotion_pipeline,
                     )
@@ -332,7 +450,7 @@ def main() -> None:
         else:
             selected_label = selected_emotion_model_labels[0]
             with st.spinner("Analyzing audience emotions..."):
-                rows = model_runner.predict_comment_emotions(
+                rows = predict_comment_emotions(
                     comments=comments,
                     emotion_pipeline=emotion_pipelines[selected_label],
                     sentiment_pipeline=sentiment_pipeline,

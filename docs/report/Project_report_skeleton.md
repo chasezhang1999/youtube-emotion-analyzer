@@ -18,11 +18,11 @@ InsightWave Digital Marketing Agency helps brands evaluate video campaigns and a
 
 ## 3. Project Objective
 
-This project helps a digital marketing agency classify the first 50 comments under a YouTube video into seven emotions, summarize campaign reaction, flag negative feedback risk, and generate actionable recommendations for content and messaging improvement.
+This project helps a digital marketing agency classify the first 100 comments under a YouTube video into seven emotions, summarize campaign reaction, flag negative feedback risk, and generate actionable recommendations for content and messaging improvement.
 
 ## 4. Strategy
 
-The strategy is to build a Streamlit Cloud business application that accepts a YouTube video URL, retrieves the first 50 top-level comments through the YouTube Data API, and analyzes the comments with Hugging Face transformer pipelines.
+The strategy is to build a Streamlit Cloud business application that accepts a YouTube video URL, retrieves the first 100 top-level comments through the YouTube Data API, and analyzes the comments with Hugging Face transformer pipelines.
 
 The application uses two text classification pipelines:
 
@@ -52,9 +52,11 @@ The dashboard provides:
 
 **Pre-tuning baseline emotion model:** https://huggingface.co/j-hartmann/emotion-english-distilroberta-base
 
+**Optional larger seven-emotion model:** https://huggingface.co/j-hartmann/emotion-english-roberta-large
+
 **Supporting sentiment model:** https://huggingface.co/cardiffnlp/twitter-roberta-base-sentiment-latest
 
-The final Streamlit app defaults to the domain-adapted model because it was further trained with YouTube-domain comments. The app also includes a comparison mode that runs the same comments through three fine-tuned emotion models: the YouTube-domain adapted DistilBERT, the original GoEmotions DistilBERT, and the public SamLowe GoEmotions RoBERTa model.
+The final Streamlit app defaults to the domain-adapted model because it was further trained with YouTube-domain comments. The app also includes a comparison mode that runs the same comments through three emotion models: the YouTube-domain adapted DistilBERT, the public SamLowe GoEmotions RoBERTa model, and the public j-hartmann DistilRoBERTa seven-emotion model. The original GoEmotions DistilBERT and the larger j-hartmann RoBERTa-large model remain available in the sidebar selector.
 
 ## 6. App URL
 
@@ -100,7 +102,7 @@ Prepared files:
 
 ### 8.2 YouTube-Domain Adaptation Dataset
 
-Because Reddit-style GoEmotions text is different from YouTube comments, an additional YouTube-domain adaptation dataset was created. The dataset contains 1,000 comments collected from 20 YouTube videos related to technology, brands, entertainment, product issues, public announcements, and audience reaction topics.
+Because Reddit-style GoEmotions text is different from YouTube comments, an additional YouTube-domain adaptation dataset was created. The updated dataset contains 2,962 comments collected from 30 YouTube videos related to technology, brands, entertainment, product issues, public announcements, brand purpose advertising, product launches, and audience reaction topics. The script attempts to collect up to 100 top-level comments per video; one older video returned fewer public top-level comments.
 
 The comments were labeled with assistant-assisted annotation using the same seven emotion labels. These labels were used only for additional domain adaptation. The independent app evaluation still uses a separate manually reviewed set of 150 YouTube comments, so the reported app test is not measured on the training comments.
 
@@ -108,13 +110,13 @@ YouTube-domain label distribution:
 
 | Label | Count |
 |---|---:|
-| neutral | 468 |
-| joy | 289 |
-| anger | 71 |
-| disgust | 55 |
-| fear | 42 |
-| surprise | 39 |
-| sadness | 36 |
+| neutral | 1,532 |
+| joy | 943 |
+| anger | 136 |
+| disgust | 102 |
+| surprise | 88 |
+| sadness | 82 |
+| fear | 79 |
 
 Prepared files:
 
@@ -125,7 +127,7 @@ Prepared files:
 
 ### 8.3 Manual App Testing Dataset
 
-The deployed app was evaluated on three YouTube videos with 50 comments per video, for 150 comments in total. These comments were manually reviewed for seven-emotion labels and three-class sentiment labels. The manual benchmark is stored in:
+The deployed app was evaluated on three YouTube videos with 50 manually reviewed comments per video, for 150 comments in total. This benchmark remains separate from the YouTube-domain adaptation training data. The production app now retrieves up to 100 comments per video, but the app-level accuracy table below is based on the manually reviewed 150-comment benchmark. The manual benchmark is stored in:
 
 - `experiments/app_per_comment_manual_labels.csv`
 
@@ -146,10 +148,10 @@ Model development:
 
 - Base model: `distilbert-base-uncased`
 - Stage 1: fine-tuned on the balanced seven-class GoEmotions dataset
-- Stage 2: further fine-tuned on 1,000 YouTube-domain comments
+- Stage 2: further fine-tuned on YouTube-domain comments; the updated repository dataset contains 2,962 comments for the final Colab rerun
 - Training setup: learning rate 2e-5, batch size 16, 3 epochs for the first stage
 - Model selection: validation accuracy and app-level manual testing
-- Streamlit comparison: the app can compare the deployed model with `chase1zhang/youtube-emotion-distilbert` and `SamLowe/roberta-base-go_emotions`
+- Streamlit comparison: the app can compare the deployed model with `SamLowe/roberta-base-go_emotions`, `j-hartmann/emotion-english-distilroberta-base`, `chase1zhang/youtube-emotion-distilbert`, and `j-hartmann/emotion-english-roberta-large`
 
 The SamLowe model predicts the 28-label GoEmotions label set. To compare it with this project's seven-emotion output, related labels are mapped into the seven target emotions. For example, admiration, amusement, love, gratitude, optimism, and excitement are mapped to joy; annoyance is mapped to anger; disappointment, grief, and remorse are mapped to sadness.
 
@@ -172,7 +174,7 @@ This supporting model gives stakeholders a simpler signal. In app testing, the t
 YouTube video URL
     -> parse video ID
     -> YouTube Data API commentThreads endpoint
-    -> first 50 top-level comments
+    -> first 100 top-level comments
     -> clean comment text
     -> seven-emotion pipeline
     -> three-class sentiment pipeline
@@ -270,7 +272,7 @@ In addition to the benchmark table, the Streamlit app now supports an interactiv
 
 ### 11.2 YouTube-Domain Validation
 
-The domain-adapted model was also tested on the YouTube-domain validation split.
+The domain-adapted model was also tested on the YouTube-domain validation split. The table below records the earlier benchmark from the first YouTube-domain adaptation run. After rerunning Colab on the expanded 2,962-comment dataset, this row should be refreshed with the new validation split result.
 
 | Model | Dataset | Device | Samples | Accuracy | Runtime with loading | Runtime w/o loading |
 |---|---|---:|---:|---:|---:|---:|
@@ -280,7 +282,7 @@ This result suggests that the YouTube-domain data helps the model learn platform
 
 ### 11.3 Deployed App Performance
 
-The deployed app was tested on three YouTube videos. Each video uses 50 comments. Performance is calculated as:
+The deployed app was tested on three YouTube videos. The manual benchmark uses 50 reviewed comments per video. Performance is calculated as:
 
 ```text
 Accuracy = number of comments matching the manual label / 50
@@ -319,9 +321,9 @@ Runtime for the deployed app workload:
 ### 11.4 Key Findings
 
 - The GoEmotions fine-tuned DistilBERT improves over the pre-tuning emotion baseline on the GoEmotions test set, increasing accuracy from 0.7033 to 0.7604.
-- GPU inference is much faster than CPU inference in the Colab benchmark. This matters for training and batch experiments, while Streamlit Cloud CPU runtime is still acceptable because each app run analyzes only 50 comments.
+- GPU inference is much faster than CPU inference in the Colab benchmark. This matters for training and batch experiments, while Streamlit Cloud CPU runtime is still acceptable because each app run analyzes up to 100 comments.
 - Domain adaptation improved the app result on the rare-earths video from 32/50 to 34/50 and slightly improved the Avatar video from 24/50 to 25/50.
-- Domain adaptation hurt the shooting-news video, dropping from 17/50 to 10/50, because the small YouTube-domain training set is dominated by neutral and joy comments and has fewer anger / fear / sadness examples.
+- Domain adaptation hurt the shooting-news video, dropping from 17/50 to 10/50, because the YouTube-domain training set is dominated by neutral and joy comments and has fewer anger / fear / sadness examples.
 - The Streamlit comparison mode makes this trade-off visible by showing how the same comments are labeled by three fine-tuned emotion models.
 - The three-class sentiment pipeline is the most stable app-level signal, achieving 108/150 accuracy. This shows that broad sentiment is easier than fine-grained seven-emotion classification on noisy YouTube comments.
 
@@ -363,6 +365,7 @@ The experimental results show that fine-tuning improves performance on the origi
 - [x] Original fine-tuned model: https://huggingface.co/chase1zhang/youtube-emotion-distilbert
 - [x] Domain-adapted model: https://huggingface.co/chase1zhang/youtube-emotion-distilbert-domain-adapted
 - [x] Public comparison model: https://huggingface.co/SamLowe/roberta-base-go_emotions
+- [x] Public comparison model: https://huggingface.co/j-hartmann/emotion-english-distilroberta-base
 - [x] Experimental results Excel: `experiments/Experimental_results.xlsx`
 - [x] App and dataset files prepared in the repository
 - [x] Draft PDF generated: `docs/report/Project_report.pdf`

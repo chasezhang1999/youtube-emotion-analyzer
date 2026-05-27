@@ -14,10 +14,14 @@ This checklist is based on `ISOM5240_project_requirements.pdf` and the current Y
 - Model selector added to the Streamlit sidebar for comparison
 - Three-model Streamlit comparison mode added:
   - `chase1zhang/youtube-emotion-distilbert-domain-adapted`
-  - `chase1zhang/youtube-emotion-distilbert`
   - `SamLowe/roberta-base-go_emotions`
+  - `j-hartmann/emotion-english-distilroberta-base`
+- Additional optional comparison models remain available:
+  - `chase1zhang/youtube-emotion-distilbert`
+  - `j-hartmann/emotion-english-roberta-large`
+- App comment retrieval expanded to 100 comments per video
 - GoEmotions seven-class dataset prepared: `data/go_emotions_7class/`
-- YouTube-domain adaptation dataset prepared: `data/youtube_domain_7class_assistant/`
+- YouTube-domain adaptation dataset prepared: `data/youtube_domain_7class_assistant/` with 2,962 comments from 30 videos
 - Manual app testing dataset prepared: `experiments/app_per_comment_manual_labels.csv`
 - Experimental results workbook prepared: `experiments/Experimental_results.xlsx`
 - Report screenshots captured: `docs/report/screenshots/`
@@ -76,7 +80,7 @@ Need to finish:
 - Run `Runtime -> Restart & Run All`.
 - Keep all outputs visible.
 - Make sure notebook numbers match `experiments/Experimental_results.xlsx` and the report.
-- If including the domain-adapted model in the notebook, keep the section after the original GoEmotions evaluation and upload it to `chase1zhang/youtube-emotion-distilbert-domain-adapted`.
+- Rerun the domain-adaptation section after pushing the expanded 2,962-comment dataset, then upload the refreshed model to `chase1zhang/youtube-emotion-distilbert-domain-adapted`.
 
 ### 3. GitHub App Files
 
@@ -160,7 +164,7 @@ Workbook sheets:
 Key numbers:
 
 - GoEmotions fine-tuned DistilBERT: 0.7604 on the 455-sample GoEmotions test set.
-- Domain-adapted model: 0.6400 on the 200-sample YouTube-domain validation split.
+- Domain-adapted model: 0.6400 on the earlier 200-sample YouTube-domain validation split; refresh this after rerunning on the expanded 592-sample validation split.
 - Streamlit app seven-emotion manual benchmark:
   - pre-tuning baseline: 73/150 = 0.4867
   - GoEmotions fine-tuned model: 73/150 = 0.4867

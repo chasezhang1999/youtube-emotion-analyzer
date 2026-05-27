@@ -12,7 +12,7 @@ YOUTUBE_COMMENT_THREADS_URL = "https://www.googleapis.com/youtube/v3/commentThre
 def fetch_top_comments(
     video_id: str,
     api_key: str,
-    max_results: int = 50,
+    max_results: int = 100,
     order: str = "relevance",
     request_get: Callable[..., Any] = requests.get,
 ) -> list[str]:

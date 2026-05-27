@@ -4,11 +4,11 @@ ISOM5240 Group Project — Deep learning business application for a digital mark
 
 ## Business Scenario
 
-InsightWave Digital Marketing Agency helps brands understand whether YouTube campaign videos generate the intended audience reaction. This app classifies the first 50 YouTube comments into seven emotions and provides actionable marketing recommendations.
+InsightWave Digital Marketing Agency helps brands understand whether YouTube campaign videos generate the intended audience reaction. This app classifies the first 100 YouTube comments into seven emotions and provides actionable marketing recommendations.
 
 ## Project Status
 
-- ✅ `youtube_emotion/` package fully built and tested (15 tests pass)
+- ✅ `youtube_emotion/` package fully built and tested (19 tests pass)
 - ✅ Fine-tuning Colab notebook ready
 - ✅ Testing/experiments Colab notebook ready
 - ✅ Streamlit app built
@@ -21,6 +21,8 @@ InsightWave Digital Marketing Agency helps brands understand whether YouTube cam
 - ✅ Report screenshots captured
 - ✅ Draft report PDF generated
 - ✅ Three-model Streamlit comparison mode added
+- ✅ App comment retrieval expanded to 100 comments per video
+- ✅ YouTube-domain adaptation dataset expanded to 2,962 comments from 30 videos
 
 ⏳ **Remaining: fill student names, re-export PDF, save final Colab notebook outputs, create PPT, record MP4, package Canvas submission**
 
@@ -121,8 +123,10 @@ The app now supports two analysis modes:
 Default comparison models:
 
 - `chase1zhang/youtube-emotion-distilbert-domain-adapted`
-- `chase1zhang/youtube-emotion-distilbert`
 - `SamLowe/roberta-base-go_emotions`
+- `j-hartmann/emotion-english-distilroberta-base`
+
+The previous GoEmotions DistilBERT model and the heavier `j-hartmann/emotion-english-roberta-large` model remain available in the sidebar selector.
 
 ### Step 8: App Screenshots
 
@@ -226,9 +230,11 @@ youtube_emotion_project/
 | Pipeline 1 | `text-classification` | Domain-adapted fine-tuned `distilbert-base-uncased` | Seven-emotion classification |
 | Pipeline 2 | `sentiment-analysis` | `cardiffnlp/twitter-roberta-base-sentiment-latest` | Supporting sentiment signal |
 
-Additional Streamlit comparison model:
+Additional Streamlit comparison models:
 
 - `SamLowe/roberta-base-go_emotions`, a public GoEmotions fine-tuned RoBERTa model
+- `j-hartmann/emotion-english-distilroberta-base`, a public seven-emotion DistilRoBERTa model
+- `j-hartmann/emotion-english-roberta-large`, an optional heavier seven-emotion RoBERTa-large model
 
 ## Dataset
 
@@ -238,8 +244,9 @@ Labels: anger, disgust, fear, joy, neutral, sadness, surprise
 
 Additional YouTube-domain adaptation data:
 
-- 1,000 assistant-assisted labeled YouTube comments
-- 20 videos
+- 2,962 assistant-assisted labeled YouTube comments
+- 30 videos
+- Up to 100 top-level comments per video
 - Stored in `data/youtube_domain_7class_assistant/`
 - Independent app evaluation uses a separate manually reviewed 150-comment benchmark
 

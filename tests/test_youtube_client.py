@@ -43,7 +43,7 @@ class YouTubeClientTest(unittest.TestCase):
         comments = fetch_top_comments(
             video_id="dQw4w9WgXcQ",
             api_key="test-key",
-            max_results=50,
+            max_results=100,
             order="relevance",
             request_get=fake_get,
         )
@@ -51,7 +51,7 @@ class YouTubeClientTest(unittest.TestCase):
         self.assertEqual(comments, ["Great video", "Interesting campaign"])
         self.assertEqual(calls[0]["params"]["part"], "snippet")
         self.assertEqual(calls[0]["params"]["videoId"], "dQw4w9WgXcQ")
-        self.assertEqual(calls[0]["params"]["maxResults"], 50)
+        self.assertEqual(calls[0]["params"]["maxResults"], 100)
         self.assertEqual(calls[0]["params"]["order"], "relevance")
         self.assertEqual(calls[0]["params"]["textFormat"], "plainText")
 

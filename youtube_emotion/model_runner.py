@@ -10,13 +10,14 @@ EMOTION_MODEL_OPTIONS = {
     "YouTube-domain adapted DistilBERT (recommended)": DEFAULT_EMOTION_MODEL,
     "GoEmotions DistilBERT (previous fine-tuned)": "chase1zhang/youtube-emotion-distilbert",
     "Public GoEmotions RoBERTa (SamLowe)": "SamLowe/roberta-base-go_emotions",
-    "DistilRoBERTa baseline": "j-hartmann/emotion-english-distilroberta-base",
+    "Public DistilRoBERTa 7-emotion (j-hartmann)": "j-hartmann/emotion-english-distilroberta-base",
+    "Public RoBERTa-large 7-emotion (j-hartmann)": "j-hartmann/emotion-english-roberta-large",
 }
 
 DEFAULT_COMPARISON_MODEL_LABELS = [
     "YouTube-domain adapted DistilBERT (recommended)",
-    "GoEmotions DistilBERT (previous fine-tuned)",
     "Public GoEmotions RoBERTa (SamLowe)",
+    "Public DistilRoBERTa 7-emotion (j-hartmann)",
 ]
 
 PIPELINE_KWARGS = {"truncation": True, "return_token_type_ids": False}
