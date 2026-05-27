@@ -131,12 +131,12 @@
   /* S20 Stacked Ledger */
   .stacked-ledger{display:flex;flex-direction:column;gap:0;flex:1}
   .ledger-row{display:grid;grid-template-columns:1fr 200px 48px;gap:2vw;align-items:center;padding:2.4vh 0;border-bottom:1px solid var(--border-subtle)}
-  .ledger-num{font-family:var(--sans);font-weight:200;font-size:min(13vw,16vh);line-height:.95;letter-spacing:-.04em;font-feature-settings:"tnum"}
+  .ledger-num{font-family:var(--sans);font-weight:200;font-size:min(7.5vw,11vh);line-height:.95;letter-spacing:-.04em;font-feature-settings:"tnum"}
   .ledger-lbl{font-family:var(--sans),var(--sans-zh);font-size:max(16px,1.1vw);font-weight:400;color:var(--text-secondary)}
   .ledger-icon{display:flex;justify-content:flex-end}
 
   /* S22 Image Hero */
-  .image-hero{position:relative;flex:0 0 60%;overflow:hidden;background:var(--grey-1)}
+  .image-hero{position:relative;flex:0 0 52%;overflow:hidden;background:var(--grey-1)}
   .image-hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 35%}
   .hero-overlay-block{position:absolute;left:5vw;top:11vh;background:var(--paper);padding:3.2vh 3.2vw;max-width:40vw}
   .image-hero-body{flex:1;padding:3vh 0;display:flex;flex-direction:column;justify-content:space-between}
@@ -393,7 +393,7 @@
   <!-- ====== SLIDE 07: App Screenshot 1 (S22 Image Hero) ====== -->
   <section class="slide light" data-layout="S22" data-animate="image-hero">
     <div class="canvas-card" style="padding:0;display:flex;flex-direction:column;overflow:hidden">
-      <div data-anim="img" style="position:relative;flex:0 0 60%;overflow:hidden;background:var(--grey-1)">
+      <div data-anim="img" style="position:relative;flex:0 0 52%;overflow:hidden;background:var(--grey-1)">
         <img src="images/07-app-overview.png" alt="Streamlit App Overview" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 35%">
         <div class="chrome-min" style="position:absolute;top:0;left:0;right:0;color:rgba(255,255,255,.9);padding:5.6vh 5vw 0">
           <div class="l">APPLICATION · STREAMLIT CLOUD</div>
@@ -406,9 +406,9 @@
       <div data-anim="kpi" class="image-hero-body">
         <div style="max-width:48ch;font-family:var(--sans),var(--sans-zh);font-size:max(15px,1.3vw);line-height:1.55;font-weight:300;color:var(--text-primary);letter-spacing:-.005em">输入 YouTube 视频链接，自动分析前 100 条评论的情绪分布，生成可视化仪表板和营销建议。</div>
         <div class="image-hero-stats" style="gap:4vw">
-          <div style="display:flex;flex-direction:column;gap:.6vh"><div style="height:1px;background:var(--ink)"></div><div class="t-meta">Emotions</div><div style="font-family:var(--sans);font-weight:200;font-size:min(4.6vw,7.6vh);line-height:.95;letter-spacing:-.04em">7</div><div style="height:1px;background:var(--border-subtle);margin-top:auto"></div><p class="body-sm">七情绪分类</p></div>
-          <div style="display:flex;flex-direction:column;gap:.6vh"><div style="height:1px;background:var(--ink)"></div><div class="t-meta">Models</div><div style="font-family:var(--sans);font-weight:200;font-size:min(4.6vw,7.6vh);line-height:.95;letter-spacing:-.04em">5</div><div style="height:1px;background:var(--border-subtle);margin-top:auto"></div><p class="body-sm">可选模型数</p></div>
-          <div style="display:flex;flex-direction:column;gap:.6vh"><div style="height:1px;background:var(--ink)"></div><div class="t-meta">Deploy</div><div style="font-family:var(--sans);font-weight:200;font-size:min(4.6vw,7.6vh);line-height:.95;letter-spacing:-.04em;color:var(--accent)">Cloud</div><div style="height:1px;background:var(--border-subtle);margin-top:auto"></div><p class="body-sm">Streamlit Cloud 部署</p></div>
+          <div style="display:flex;flex-direction:column;gap:.6vh"><div style="height:1px;background:var(--ink)"></div><div class="t-meta">Emotions</div><div style="font-family:var(--sans);font-weight:200;font-size:min(3.2vw,5.5vh);line-height:.95;letter-spacing:-.04em">7</div><div style="height:1px;background:var(--border-subtle);margin-top:auto"></div><p class="body-sm">七情绪分类</p></div>
+          <div style="display:flex;flex-direction:column;gap:.6vh"><div style="height:1px;background:var(--ink)"></div><div class="t-meta">Models</div><div style="font-family:var(--sans);font-weight:200;font-size:min(3.2vw,5.5vh);line-height:.95;letter-spacing:-.04em">5</div><div style="height:1px;background:var(--border-subtle);margin-top:auto"></div><p class="body-sm">可选模型数</p></div>
+          <div style="display:flex;flex-direction:column;gap:.6vh"><div style="height:1px;background:var(--ink)"></div><div class="t-meta">Deploy</div><div style="font-family:var(--sans);font-weight:200;font-size:min(3.2vw,5.5vh);line-height:.95;letter-spacing:-.04em;color:var(--accent)">Cloud</div><div style="height:1px;background:var(--border-subtle);margin-top:auto"></div><p class="body-sm">Streamlit Cloud 部署</p></div>
         </div>
       </div>
     </div>
@@ -417,7 +417,7 @@
   <!-- ====== SLIDE 08: App Screenshot 2 - Model Comparison (S22 Image Hero) ====== -->
   <section class="slide light" data-layout="S22" data-animate="image-hero">
     <div class="canvas-card" style="padding:0;display:flex;flex-direction:column;overflow:hidden">
-      <div data-anim="img" style="position:relative;flex:0 0 60%;overflow:hidden;background:var(--grey-1)">
+      <div data-anim="img" style="position:relative;flex:0 0 52%;overflow:hidden;background:var(--grey-1)">
         <img src="images/08-model-comparison.png" alt="Model Comparison Mode" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 35%">
         <div class="chrome-min" style="position:absolute;top:0;left:0;right:0;color:rgba(255,255,255,.9);padding:5.6vh 5vw 0">
           <div class="l">COMPARISON · MULTI-MODEL</div>
@@ -430,9 +430,9 @@
       <div data-anim="kpi" class="image-hero-body">
         <div style="max-width:48ch;font-family:var(--sans),var(--sans-zh);font-size:max(15px,1.3vw);line-height:1.55;font-weight:300;color:var(--text-primary);letter-spacing:-.005em">同一批评论同时通过 3 个情绪模型运行，对比主情绪、负面比率和情绪分布。</div>
         <div class="image-hero-stats" style="gap:4vw">
-          <div style="display:flex;flex-direction:column;gap:.6vh"><div style="height:1px;background:var(--ink)"></div><div class="t-meta">Metric 01</div><div style="font-family:var(--sans);font-weight:200;font-size:min(4.6vw,7.6vh);line-height:.95;letter-spacing:-.04em">3</div><div style="height:1px;background:var(--border-subtle);margin-top:auto"></div><p class="body-sm">并行对比模型数</p></div>
-          <div style="display:flex;flex-direction:column;gap:.6vh"><div style="height:1px;background:var(--ink)"></div><div class="t-meta">Metric 02</div><div style="font-family:var(--sans);font-weight:200;font-size:min(4.6vw,7.6vh);line-height:.95;letter-spacing:-.04em">100</div><div style="height:1px;background:var(--border-subtle);margin-top:auto"></div><p class="body-sm">每模型分析评论数</p></div>
-          <div style="display:flex;flex-direction:column;gap:.6vh"><div style="height:1px;background:var(--ink)"></div><div class="t-meta">Metric 03</div><div style="font-family:var(--sans);font-weight:200;font-size:min(4.6vw,7.6vh);line-height:.95;letter-spacing:-.04em;color:var(--accent)">CSV</div><div style="height:1px;background:var(--border-subtle);margin-top:auto"></div><p class="body-sm">一键导出预测结果</p></div>
+          <div style="display:flex;flex-direction:column;gap:.6vh"><div style="height:1px;background:var(--ink)"></div><div class="t-meta">Metric 01</div><div style="font-family:var(--sans);font-weight:200;font-size:min(3.2vw,5.5vh);line-height:.95;letter-spacing:-.04em">3</div><div style="height:1px;background:var(--border-subtle);margin-top:auto"></div><p class="body-sm">并行对比模型数</p></div>
+          <div style="display:flex;flex-direction:column;gap:.6vh"><div style="height:1px;background:var(--ink)"></div><div class="t-meta">Metric 02</div><div style="font-family:var(--sans);font-weight:200;font-size:min(3.2vw,5.5vh);line-height:.95;letter-spacing:-.04em">100</div><div style="height:1px;background:var(--border-subtle);margin-top:auto"></div><p class="body-sm">每模型分析评论数</p></div>
+          <div style="display:flex;flex-direction:column;gap:.6vh"><div style="height:1px;background:var(--ink)"></div><div class="t-meta">Metric 03</div><div style="font-family:var(--sans);font-weight:200;font-size:min(3.2vw,5.5vh);line-height:.95;letter-spacing:-.04em;color:var(--accent)">CSV</div><div style="height:1px;background:var(--border-subtle);margin-top:auto"></div><p class="body-sm">一键导出预测结果</p></div>
         </div>
       </div>
     </div>
