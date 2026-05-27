@@ -114,7 +114,8 @@ Current split sizes:
 
 1. Open Colab and enable GPU.
 2. Upload or copy the project notebook:
-   - `notebooks/fine_tune_go_emotions_distilbert.ipynb`
+   - `notebooks/Fine_tune_Model.ipynb`
+   - `notebooks/fine_tune_go_emotions_distilbert.ipynb` is kept as the same notebook with a descriptive filename
 3. Install training dependencies.
 4. Load the prepared CSV files.
 5. Load `distilbert-base-uncased` tokenizer and model.

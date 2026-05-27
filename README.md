@@ -45,7 +45,7 @@ For local testing without a YouTube API key, check "Use sample comments" in the 
 
 ### Step 1: Run Fine-tuning on Google Colab
 
-1. Open `notebooks/fine_tune_go_emotions_distilbert.ipynb` in Google Colab
+1. Open `notebooks/Fine_tune_Model.ipynb` in Google Colab
 2. Runtime → Change runtime type → **T4 GPU**
 3. Runtime → **Restart & Run All** (verify it runs end-to-end)
 4. Keep all cell outputs visible (TA will verify this)
@@ -194,7 +194,8 @@ youtube_emotion_project/
 │   ├── youtube_domain_7class_assistant/ # YouTube-domain adaptation dataset
 │   └── sample_comments.csv              # Demo comments (no API key needed)
 ├── notebooks/
-│   ├── fine_tune_go_emotions_distilbert.ipynb   # Colab fine-tuning
+│   ├── Fine_tune_Model.ipynb                    # Submission-ready Colab fine-tuning
+│   ├── fine_tune_go_emotions_distilbert.ipynb   # Same fine-tuning notebook, descriptive name
 │   └── testing_experiments.ipynb                 # Colab experiments
 ├── tests/
 │   ├── test_core.py

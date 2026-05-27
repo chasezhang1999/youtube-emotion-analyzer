@@ -69,7 +69,7 @@ Testing_Experiments.ipynb
 Use these project files:
 
 ```text
-notebooks/fine_tune_go_emotions_distilbert.ipynb
+notebooks/Fine_tune_Model.ipynb
 notebooks/testing_experiments.ipynb
 ```
 

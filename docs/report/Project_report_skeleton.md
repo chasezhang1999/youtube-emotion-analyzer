@@ -198,6 +198,7 @@ youtube_emotion_project/
 |   |-- youtube_domain_7class_assistant/
 |   `-- sample_comments.csv
 |-- notebooks/
+|   |-- Fine_tune_Model.ipynb
 |   |-- fine_tune_go_emotions_distilbert.ipynb
 |   `-- testing_experiments.ipynb
 |-- experiments/
