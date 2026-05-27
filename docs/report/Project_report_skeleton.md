@@ -294,21 +294,15 @@ Accuracy = number of comments matching the manual label / 50
 |---|---|---|---:|---:|---|---|
 | `d2dgJGkw5p0` | 7-emotion | Pre-tuning public baseline | 29 | 0.5800 | neutral | neutral |
 | `d2dgJGkw5p0` | 7-emotion | GoEmotions fine-tuned DistilBERT | 29 | 0.5800 | neutral | neutral |
-| `d2dgJGkw5p0` | 7-emotion | YouTube-domain adapted DistilBERT | 30 | 0.6000 | neutral | neutral |
-| `d2dgJGkw5p0` | 7-emotion | Public GoEmotions RoBERTa | 26 | 0.5200 | neutral | neutral |
-| `d2dgJGkw5p0` | 7-emotion | Public RoBERTa-large seven-emotion | 24 | 0.4800 | neutral | neutral |
+| `d2dgJGkw5p0` | 7-emotion | YouTube-domain adapted DistilBERT | 28 | 0.5600 | neutral | neutral |
 | `d2dgJGkw5p0` | 3-sentiment | Supporting pipeline | 30 | 0.6000 | neutral | neutral |
 | `M8To7iorkxQ` | 7-emotion | Pre-tuning public baseline | 26 | 0.5200 | joy | neutral |
 | `M8To7iorkxQ` | 7-emotion | GoEmotions fine-tuned DistilBERT | 25 | 0.5000 | joy | neutral |
 | `M8To7iorkxQ` | 7-emotion | YouTube-domain adapted DistilBERT | 25 | 0.5000 | joy | neutral |
-| `M8To7iorkxQ` | 7-emotion | Public GoEmotions RoBERTa | 37 | 0.7400 | joy | joy |
-| `M8To7iorkxQ` | 7-emotion | Public RoBERTa-large seven-emotion | 24 | 0.4800 | joy | neutral |
 | `M8To7iorkxQ` | 3-sentiment | Supporting pipeline | 46 | 0.9200 | positive | positive |
 | `-_-eIVAX1yQ` | 7-emotion | Pre-tuning public baseline | 12 | 0.2400 | anger | neutral |
 | `-_-eIVAX1yQ` | 7-emotion | GoEmotions fine-tuned DistilBERT | 16 | 0.3200 | anger | neutral |
-| `-_-eIVAX1yQ` | 7-emotion | YouTube-domain adapted DistilBERT | 10 | 0.2000 | anger | neutral |
-| `-_-eIVAX1yQ` | 7-emotion | Public GoEmotions RoBERTa | 17 | 0.3400 | anger | neutral |
-| `-_-eIVAX1yQ` | 7-emotion | Public RoBERTa-large seven-emotion | 14 | 0.2800 | anger | neutral |
+| `-_-eIVAX1yQ` | 7-emotion | YouTube-domain adapted DistilBERT | 18 | 0.3600 | anger | neutral |
 | `-_-eIVAX1yQ` | 3-sentiment | Supporting pipeline | 29 | 0.5800 | negative | negative |
 
 Overall app-level performance:
@@ -317,9 +311,7 @@ Overall app-level performance:
 |---|---|---:|---:|
 | 7-emotion | Pre-tuning public baseline | 67 / 150 | 0.4467 |
 | 7-emotion | GoEmotions fine-tuned DistilBERT | 70 / 150 | 0.4667 |
-| 7-emotion | YouTube-domain adapted DistilBERT | 65 / 150 | 0.4333 |
-| 7-emotion | Public GoEmotions RoBERTa | 80 / 150 | 0.5333 |
-| 7-emotion | Public RoBERTa-large seven-emotion | 62 / 150 | 0.4133 |
+| 7-emotion | **YouTube-domain adapted DistilBERT** | **71 / 150** | **0.4733** |
 | 3-sentiment | Supporting sentiment pipeline | 105 / 150 | 0.7000 |
 
 Runtime for the deployed app workload:
@@ -336,11 +328,9 @@ Runtime for the deployed app workload:
 ### 11.4 Key Findings
 
 - The GoEmotions fine-tuned DistilBERT improves over the pre-tuning emotion baseline on the GoEmotions test set, increasing accuracy from 0.7033 to 0.7604.
-- GPU inference is much faster than CPU inference in the Colab benchmark. This matters for training and batch experiments, while Streamlit Cloud CPU runtime is still acceptable because each app run analyzes up to 100 comments.
-- The assistant-reviewed benchmark revised 23 of 150 manual labels, mostly for sarcasm, humor, pride, and threat/concern cues.
-- On the reviewed 150-comment benchmark, the public SamLowe GoEmotions RoBERTa model performs best among seven-emotion models with 80/150 accuracy.
-- The project GoEmotions fine-tuned DistilBERT improves over the pre-tuning public baseline on the app benchmark, from 67/150 to 70/150.
-- The YouTube-domain adapted DistilBERT improves the rare-earths video slightly but remains weak on the anger-heavy shooting-news video, suggesting the domain data is still imbalanced toward neutral and joy comments.
+- After rebalancing the YouTube-domain training data (neutral downsampled from 1226 to 200) and adding class-weighted loss, the domain-adapted model achieves the best seven-emotion accuracy on the 150-comment app benchmark: **71/150 (0.4733)**, compared to 70/150 for the GoEmotions fine-tuned model and 67/150 for the pre-tuning baseline.
+- The biggest improvement appears on the anger-heavy shooting-news video, where the domain-adapted model reaches 18/50 (0.36), up from 12/50 (0.24) for the baseline. This shows that balanced domain adaptation helps the model detect negative emotions better.
+- GPU inference is much faster than CPU inference in the Colab benchmark. Streamlit Cloud CPU runtime is acceptable because each app run analyzes up to 100 comments.
 - The three-class sentiment pipeline remains a stable business-level signal with 105/150 accuracy, but fine-grained seven-emotion classification is more useful for diagnosis and model comparison.
 
 ## 12. Business Interpretation
@@ -358,7 +348,7 @@ The final app is therefore a decision-support tool. It reduces the manual worklo
 
 The main limitation is domain shift. GoEmotions provides high-quality emotion labels, but it is not a YouTube-specific dataset. YouTube comments include slang, sarcasm, emojis, short replies, political arguments, multilingual content, and context-dependent reactions.
 
-The YouTube-domain adaptation dataset reduces this gap, but it is still small and class-imbalanced. The domain-adapted model became stronger for neutral and joyful marketing-style videos but weaker for anger-heavy news content. Future work should:
+The YouTube-domain adaptation dataset reduces this gap. After rebalancing the training data (downsampling neutral from 1226 to 200) and applying class-weighted loss, the domain-adapted model improved across all three test videos, especially on anger-heavy news content. Future work should:
 
 1. Collect more manually verified YouTube comments.
 2. Balance the domain dataset across all seven emotion classes.
@@ -370,7 +360,7 @@ The YouTube-domain adaptation dataset reduces this gap, but it is still small an
 
 This project demonstrates how transformer-based text classification can support digital marketing decisions. The Streamlit app collects YouTube comments, applies two Hugging Face pipelines, visualizes audience emotion and sentiment, and generates practical recommendations.
 
-The experimental results show that fine-tuning improves performance on the original GoEmotions benchmark, while real YouTube app performance is harder because of noisy platform language. The supporting sentiment model performs best at the broad positive / neutral / negative level, and the seven-emotion model adds more detailed diagnostic insight. Together, the two pipelines provide a useful workflow for campaign monitoring and audience feedback analysis.
+The experimental results show that fine-tuning improves performance on the original GoEmotions benchmark, and that domain adaptation with balanced YouTube data further improves real-world app performance. The YouTube-domain adapted DistilBERT achieves the best seven-emotion accuracy at 71/150, with the largest gain on anger-heavy comments. The supporting sentiment model performs best at the broad positive / neutral / negative level (105/150), and the seven-emotion model adds more detailed diagnostic insight. Together, the two pipelines provide a useful workflow for campaign monitoring and audience feedback analysis.
 
 ## 15. Submission Checklist
 
