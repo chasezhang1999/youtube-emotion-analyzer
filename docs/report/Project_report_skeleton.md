@@ -5,8 +5,8 @@
 **Project title:** YouTube Audience Emotion Analyzer for Digital Marketing Campaigns
 
 **Student names:**
-- [Student name 1, student ID]
-- [Student name 2, student ID]
+- ZHANG Xinchao, 21257618
+- Yao Ziyue, 21260768
 
 ## 2. Company Name and Website URL
 
@@ -373,7 +373,7 @@ The experimental results show that fine-tuning improves performance on the origi
 
 ## 15. Submission Checklist
 
-- [ ] Fill in student names and IDs.
+- [x] Fill in student names and IDs.
 - [x] Insert five Streamlit screenshots before exporting the final PDF.
 - [x] GitHub repository: https://github.com/chasezhang1999/youtube-emotion-analyzer
 - [x] Streamlit app: https://youtube-emotion-analyzer.streamlit.app/
