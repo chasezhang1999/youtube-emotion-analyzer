@@ -80,6 +80,27 @@
   .card-outlined{background:transparent;border:1px solid var(--border-subtle);padding:var(--sp-6);border-radius:0}
   .hr-hairline{width:100%;height:1px;background:var(--border-subtle)}
   .mono{font-family:var(--mono);font-feature-settings:"tnum","ss01"}
+  .canvas-card{width:100%;height:100%;display:flex;flex-direction:column;position:relative}
+  .screenshot-wall{display:grid;grid-template-columns:1.35fr .72fr;grid-template-rows:1fr .42fr;gap:var(--sp-5);height:100%;min-height:0}
+  .shot-frame{position:relative;overflow:hidden;background:#fff;border:1px solid var(--border-subtle);box-shadow:0 20px 48px rgba(10,10,10,.08)}
+  .shot-frame img{width:100%;height:100%;object-fit:contain;display:block}
+  .shot-main{grid-row:1 / span 2}
+  .shot-stack{display:grid;grid-template-rows:.52fr .48fr;gap:var(--sp-5);min-height:0}
+  .shot-caption{position:absolute;left:14px;top:12px;background:rgba(250,250,248,.92);border:1px solid var(--border-subtle);padding:6px 9px;font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+  .case-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-6);height:100%;align-items:stretch}
+  .case-card{display:flex;flex-direction:column;justify-content:space-between;gap:2vh;border-top:2px solid var(--accent);padding-top:2vh;min-width:0}
+  .case-card h3{font-family:var(--sans),var(--sans-zh);font-weight:250;font-size:min(3.2vw,5.4vh);line-height:1.03;letter-spacing:-.03em}
+  .case-metric{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-4)}
+  .case-metric div{background:var(--grey-1);padding:var(--sp-5)}
+  .case-metric span{display:block;font-family:var(--mono);font-size:max(11px,.74vw);letter-spacing:.1em;text-transform:uppercase;color:var(--text-helper)}
+  .case-metric strong{display:block;margin-top:.8vh;font-family:var(--sans);font-size:min(3vw,5.2vh);font-weight:200;line-height:.95;letter-spacing:-.04em}
+  .decision-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:4vw;flex:1;align-items:center}
+  .signal-stack{display:flex;flex-direction:column;gap:1.8vh}
+  .signal-row{display:grid;grid-template-columns:96px 1fr;gap:var(--sp-5);align-items:start;padding:1.9vh 0;border-bottom:1px solid var(--border-subtle)}
+  .signal-row b{font-family:var(--mono);font-size:max(12px,.86vw);letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+  .signal-row p{font-size:max(15px,1.02vw);line-height:1.45;color:var(--text-secondary)}
+  .risk-panel{background:var(--ink);color:var(--paper);padding:var(--sp-8);display:flex;flex-direction:column;gap:3vh}
+  .risk-panel p{color:rgba(255,255,255,.74)}
 
   /* S01 Cover */
   .cover-split{display:grid;grid-template-columns:1fr 1fr;gap:0;padding:0;overflow:hidden}
@@ -168,7 +189,7 @@
       <canvas class="ascii-bg" aria-hidden="true"></canvas>
       <div class="chrome-min">
         <div class="l">InsightWave Digital · ISOM5240</div>
-        <div class="r">SS · 2026.05 · 01 / 10</div>
+        <div class="r">SS · 2026.05 · 01 / 13</div>
       </div>
       <div style="flex:1;padding:0;display:grid;grid-template-rows:auto 1fr auto;gap:2.6vh">
         <div data-anim="kicker" class="t-meta" style="color:rgba(255,255,255,.78);letter-spacing:.22em">DEEP LEARNING BUSINESS APPLICATIONS</div>
@@ -185,7 +206,7 @@
   </section>
 
   <!-- ====== SLIDE 02: Problem Statement (S03 Split Statement) ====== -->
-  <section class="slide" data-layout="S03" data-animate="statement-rise">
+  <section class="slide light" data-layout="S03" data-animate="statement-rise">
     <div class="canvas-card" style="padding:0">
       <div class="cover-split" style="height:100%">
         <div class="cover-ink">
@@ -219,7 +240,7 @@
     <div class="canvas-card">
       <div class="chrome-min">
         <div class="l">PIPELINE · WORKFLOW</div>
-        <div class="r">03 / 10</div>
+        <div class="r">03 / 13</div>
       </div>
       <div style="flex:1;display:grid;grid-template-rows:auto auto 1fr auto;gap:3vh">
         <div data-anim="head" style="display:flex;flex-direction:column;gap:1.4vh">
@@ -270,7 +291,7 @@
     <div class="canvas-card">
       <div class="chrome-min">
         <div class="l">FEATURES · CAPABILITIES</div>
-        <div class="r">04 / 10</div>
+        <div class="r">04 / 13</div>
       </div>
       <div style="flex:1;display:grid;grid-template-rows:auto 1fr;gap:5vh">
         <div data-anim="head" style="display:flex;flex-direction:column;gap:1.4vh">
@@ -308,7 +329,7 @@
     <div class="canvas-card">
       <div class="chrome-min">
         <div class="l">METRICS · KEY NUMBERS</div>
-        <div class="r">05 / 10</div>
+        <div class="r">05 / 13</div>
       </div>
       <div style="flex:1;display:grid;grid-template-rows:auto 1fr;gap:4vh">
         <div data-anim="head" style="display:flex;flex-direction:column;gap:1.4vh">
@@ -346,7 +367,7 @@
     <div class="canvas-card">
       <div class="chrome-min">
         <div class="l">EXPERIMENT · MODEL COMPARISON</div>
-        <div class="r">06 / 10</div>
+        <div class="r">06 / 13</div>
       </div>
       <div style="flex:1;display:grid;grid-template-rows:auto auto 1fr auto;gap:3vh">
         <div data-anim="head" style="display:flex;flex-direction:column;gap:1.4vh">
@@ -394,10 +415,10 @@
   <section class="slide light" data-layout="S22" data-animate="image-hero">
     <div class="canvas-card" style="padding:0;display:flex;flex-direction:column;overflow:hidden">
       <div data-anim="img" style="position:relative;flex:0 0 52%;overflow:hidden;background:var(--grey-1)">
-        <img src="images/07-app-overview.png" alt="Streamlit App Overview" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center top">
+        <img src="images/07-input-with-url.png" alt="Streamlit App URL input screen" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center top">
         <div class="chrome-min" style="position:absolute;top:0;left:0;right:0;color:rgba(255,255,255,.9);padding:5.6vh 5vw 0">
           <div class="l">APPLICATION · STREAMLIT CLOUD</div>
-          <div class="r">07 / 10</div>
+          <div class="r">07 / 13</div>
         </div>
         <div data-anim="title-block" style="position:absolute;left:5vw;top:11vh;background:var(--paper);padding:3.2vh 3.2vw;max-width:40vw">
           <div style="font-family:var(--sans),var(--sans-zh);font-weight:200;font-size:min(5.2vw,9vh);line-height:1;letter-spacing:-.035em;color:var(--text-primary)">Streamlit<br>应用概览</div>
@@ -414,36 +435,134 @@
     </div>
   </section>
 
-  <!-- ====== SLIDE 08: App Screenshot 2 - Model Comparison (S22 Image Hero) ====== -->
+  <!-- ====== SLIDE 08: Dashboard Results Screenshot Wall ====== -->
+  <section class="slide light" data-layout="S16" data-animate="image-grid">
+    <div class="canvas-card">
+      <div class="chrome-min">
+        <div class="l">DEMO · RESULT DASHBOARD</div>
+        <div class="r">08 / 13</div>
+      </div>
+      <div style="flex:1;display:grid;grid-template-rows:auto 1fr;gap:3vh;min-height:0">
+        <div data-anim="head" style="display:flex;align-items:end;justify-content:space-between;gap:4vw">
+          <div>
+            <div class="t-meta">PROJECT SCREENSHOTS</div>
+            <h2 class="h-xl-zh">从链接到洞察</h2>
+          </div>
+          <p class="lead" style="max-width:34ch">演示页展示真实应用输出：摘要指标、情绪分布、逐条评论预测和营销建议。</p>
+        </div>
+        <div class="screenshot-wall" data-anim="shots">
+          <div class="shot-frame shot-main">
+            <span class="shot-caption">Comment-level results</span>
+            <img src="images/08-comment-level-results.png" alt="Comment-level prediction table">
+          </div>
+          <div class="shot-stack">
+            <div class="shot-frame">
+              <span class="shot-caption">Summary metrics</span>
+              <img src="images/08-summary-metrics.png" alt="Summary metrics">
+            </div>
+            <div class="shot-frame">
+              <span class="shot-caption">Emotion distribution</span>
+              <img src="images/08-emotion-distribution.png" alt="Emotion distribution chart">
+            </div>
+          </div>
+          <div class="shot-frame">
+            <span class="shot-caption">Marketing recommendation</span>
+            <img src="images/08-marketing-recommendation.png" alt="Marketing recommendation output">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== SLIDE 09: App Screenshot 2 - Model Comparison (S22 Image Hero) ====== -->
   <section class="slide light" data-layout="S22" data-animate="image-hero">
     <div class="canvas-card" style="padding:0;display:flex;flex-direction:column;overflow:hidden">
       <div data-anim="img" style="position:relative;flex:0 0 52%;overflow:hidden;background:var(--grey-1)">
-        <img src="images/08-model-comparison.png" alt="Model Comparison Mode" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center top">
+        <img src="images/09-model-comparison-mode.png" alt="Model Comparison Mode" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center top">
         <div class="chrome-min" style="position:absolute;top:0;left:0;right:0;color:rgba(255,255,255,.9);padding:5.6vh 5vw 0">
           <div class="l">COMPARISON · MULTI-MODEL</div>
-          <div class="r">08 / 10</div>
+          <div class="r">09 / 13</div>
         </div>
         <div data-anim="title-block" style="position:absolute;left:5vw;top:11vh;background:var(--paper);padding:3.2vh 3.2vw;max-width:40vw">
           <div style="font-family:var(--sans),var(--sans-zh);font-weight:200;font-size:min(5.2vw,9vh);line-height:1;letter-spacing:-.035em;color:var(--text-primary)">多模型<br>对比模式</div>
         </div>
       </div>
       <div data-anim="kpi" class="image-hero-body">
-        <div style="max-width:48ch;font-family:var(--sans),var(--sans-zh);font-size:max(15px,1.3vw);line-height:1.55;font-weight:300;color:var(--text-primary);letter-spacing:-.005em">同一批评论同时通过 3 个情绪模型运行，对比主情绪、负面比率和情绪分布。</div>
+        <div style="max-width:52ch;font-family:var(--sans),var(--sans-zh);font-size:max(15px,1.3vw);line-height:1.55;font-weight:300;color:var(--text-primary);letter-spacing:-.005em">同一批评论同时通过 3 个情绪模型运行，帮助业务用户识别模型分歧和需要人工复核的评论。</div>
         <div class="image-hero-stats" style="gap:4vw">
-          <div style="display:flex;flex-direction:column;gap:.6vh"><div style="height:1px;background:var(--ink)"></div><div class="t-meta">Metric 01</div><div style="font-family:var(--sans);font-weight:200;font-size:min(3.2vw,5.5vh);line-height:.95;letter-spacing:-.04em">3</div><div style="height:1px;background:var(--border-subtle);margin-top:auto"></div><p class="body-sm">并行对比模型数</p></div>
-          <div style="display:flex;flex-direction:column;gap:.6vh"><div style="height:1px;background:var(--ink)"></div><div class="t-meta">Metric 02</div><div style="font-family:var(--sans);font-weight:200;font-size:min(3.2vw,5.5vh);line-height:.95;letter-spacing:-.04em">100</div><div style="height:1px;background:var(--border-subtle);margin-top:auto"></div><p class="body-sm">每模型分析评论数</p></div>
-          <div style="display:flex;flex-direction:column;gap:.6vh"><div style="height:1px;background:var(--ink)"></div><div class="t-meta">Metric 03</div><div style="font-family:var(--sans);font-weight:200;font-size:min(3.2vw,5.5vh);line-height:.95;letter-spacing:-.04em;color:var(--accent)">CSV</div><div style="height:1px;background:var(--border-subtle);margin-top:auto"></div><p class="body-sm">一键导出预测结果</p></div>
+          <div style="display:flex;flex-direction:column;gap:.6vh"><div style="height:1px;background:var(--ink)"></div><div class="t-meta">Models</div><div style="font-family:var(--sans);font-weight:200;font-size:min(3.2vw,5.5vh);line-height:.95;letter-spacing:-.04em">3</div><div style="height:1px;background:var(--border-subtle);margin-top:auto"></div><p class="body-sm">并行对比模型</p></div>
+          <div style="display:flex;flex-direction:column;gap:.6vh"><div style="height:1px;background:var(--ink)"></div><div class="t-meta">Scale</div><div style="font-family:var(--sans);font-weight:200;font-size:min(3.2vw,5.5vh);line-height:.95;letter-spacing:-.04em">100</div><div style="height:1px;background:var(--border-subtle);margin-top:auto"></div><p class="body-sm">每次分析评论</p></div>
+          <div style="display:flex;flex-direction:column;gap:.6vh"><div style="height:1px;background:var(--ink)"></div><div class="t-meta">Export</div><div style="font-family:var(--sans);font-weight:200;font-size:min(3.2vw,5.5vh);line-height:.95;letter-spacing:-.04em;color:var(--accent)">CSV</div><div style="height:1px;background:var(--border-subtle);margin-top:auto"></div><p class="body-sm">下载预测结果</p></div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ====== SLIDE 09: Before/After (S08 Duo Compare) ====== -->
+  <!-- ====== SLIDE 10: Case Demonstrations ====== -->
+  <section class="slide light" data-layout="S19" data-animate="four-cards">
+    <div class="canvas-card">
+      <div class="chrome-min">
+        <div class="l">CASE DEMO · THREE VIDEOS</div>
+        <div class="r">10 / 13</div>
+      </div>
+      <div style="flex:1;display:grid;grid-template-rows:auto 1fr auto;gap:4vh">
+        <div data-anim="head" style="display:flex;align-items:end;justify-content:space-between;gap:4vw">
+          <div>
+            <div class="t-meta">MANUAL BENCHMARK</div>
+            <h2 class="h-xl-zh">三个案例看业务含义</h2>
+          </div>
+          <p class="lead" style="max-width:36ch">每个案例抽取 50 条人工审核评论，用来验证模型输出是否能支持营销判断。</p>
+        </div>
+        <div class="case-grid" data-anim="cards">
+          <div class="case-card">
+            <div>
+              <span class="t-meta">CASE 01 · d2dgJGkw5p0</span>
+              <h3>中性讨论<br><span style="color:var(--accent)">夹杂愤怒线索</span></h3>
+            </div>
+            <p class="body-sm">稀土议题评论以政策讨论为主，但双边指责类评论会产生负面风险。</p>
+            <div class="case-metric">
+              <div><span>Manual main</span><strong>Neutral</strong></div>
+              <div><span>Final model</span><strong>28/50</strong></div>
+            </div>
+          </div>
+          <div class="case-card">
+            <div>
+              <span class="t-meta">CASE 02 · M8To7iorkxQ</span>
+              <h3>喜悦反馈<br><span style="color:var(--accent)">情感模型更稳</span></h3>
+            </div>
+            <p class="body-sm">人工主标签是 joy；三分类情感模型抓到 positive 信号，适合快速判断活动热度。</p>
+            <div class="case-metric">
+              <div><span>Sentiment</span><strong>46/50</strong></div>
+              <div><span>Manual main</span><strong>Joy</strong></div>
+            </div>
+          </div>
+          <div class="case-card">
+            <div>
+              <span class="t-meta">CASE 03 · -_-eIVAX1yQ</span>
+              <h3>愤怒场景<br><span style="color:var(--accent)">需要人工复核</span></h3>
+            </div>
+            <p class="body-sm">新闻评论更具争议性；领域适配后七情绪匹配从 12/50 提升到 18/50。</p>
+            <div class="case-metric">
+              <div><span>Improvement</span><strong>+50%</strong></div>
+              <div><span>Final model</span><strong>18/50</strong></div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;gap:3vw;align-items:center">
+          <div class="hr-hairline" style="flex:1"></div>
+          <span class="t-meta">Demo message: emotion labels become campaign actions, not just model outputs</span>
+          <div class="hr-hairline" style="flex:1"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== SLIDE 11: Before/After (S08 Duo Compare) ====== -->
   <section class="slide light" data-layout="S08" data-animate="duo-mirror">
     <div class="canvas-card">
       <div class="chrome-min">
         <div class="l">OPTIMIZATION · BEFORE / AFTER</div>
-        <div class="r">09 / 10</div>
+        <div class="r">11 / 13</div>
       </div>
       <div style="flex:1;display:grid;grid-template-rows:auto 1fr;gap:5vh">
         <div data-anim="head" style="display:flex;flex-direction:column;gap:1.4vh">
@@ -475,12 +594,61 @@
     </div>
   </section>
 
-  <!-- ====== SLIDE 10: Closing (S10 Split Closing) ====== -->
-  <section class="slide" data-layout="S10" data-animate="split-statement">
+  <!-- ====== SLIDE 12: Business Rules and Limits ====== -->
+  <section class="slide light" data-layout="S08" data-animate="duo-mirror">
+    <div class="canvas-card">
+      <div class="chrome-min">
+        <div class="l">BUSINESS VALUE · LIMITS</div>
+        <div class="r">12 / 13</div>
+      </div>
+      <div style="flex:1;display:grid;grid-template-rows:auto 1fr;gap:4vh">
+        <div data-anim="head" style="display:flex;align-items:end;justify-content:space-between;gap:4vw">
+          <div>
+            <div class="t-meta">DECISION SUPPORT</div>
+            <h2 class="h-xl-zh">把情绪变成营销动作</h2>
+          </div>
+          <p class="lead" style="max-width:38ch">这个工具不替代人工判断，而是帮助团队把高风险视频和高价值评论更快捞出来。</p>
+        </div>
+        <div class="decision-grid" data-anim="compare">
+          <div class="signal-stack">
+            <div class="signal-row">
+              <b>Joy</b>
+              <p>喜悦和惊讶占主导：继续当前创意方向，优先复用能激发正向互动的内容元素。</p>
+            </div>
+            <div class="signal-row">
+              <b>Neutral</b>
+              <p>中性占主导：内容传递清楚但情绪吸引力不足，优化标题、CTA 和故事框架。</p>
+            </div>
+            <div class="signal-row">
+              <b>Negative</b>
+              <p>负面情绪超过 40%：进入人工审查，识别评论主题，再决定是否调整投放策略。</p>
+            </div>
+            <div class="signal-row">
+              <b>Disagree</b>
+              <p>七情绪与三分类结论冲突：标记为复核样本，而不是直接用模型结果做最终决策。</p>
+            </div>
+          </div>
+          <div class="risk-panel">
+            <div class="t-meta" style="color:rgba(255,255,255,.58)">KNOWN LIMITATIONS</div>
+            <h3 style="font-family:var(--sans),var(--sans-zh);font-weight:200;font-size:min(5vw,8.8vh);line-height:1;letter-spacing:-.04em">噪声、讽刺、多语言</h3>
+            <p class="body-sm">YouTube 评论短、口语化且常带讽刺。七情绪分类比三分类情感更难，因此需要扩大人工标注数据、平衡各类情绪，并加入置信度阈值。</p>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-4);margin-top:auto">
+              <div><div class="t-meta" style="color:rgba(255,255,255,.48)">Review</div><div class="num-mega" style="font-size:min(4vw,7vh);color:var(--accent-bright)">150</div></div>
+              <div><div class="t-meta" style="color:rgba(255,255,255,.48)">Changed</div><div class="num-mega" style="font-size:min(4vw,7vh);color:var(--accent-bright)">23</div></div>
+              <div><div class="t-meta" style="color:rgba(255,255,255,.48)">Next</div><div class="num-mega" style="font-size:min(4vw,7vh);color:var(--accent-bright)">F1</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== SLIDE 13: Closing (S10 Split Closing) ====== -->
+  <section class="slide light" data-layout="S10" data-animate="split-statement">
     <div class="canvas-card" style="padding:0">
       <div class="closing-split">
         <div class="cl-ink">
-          <div class="chrome-min" style="margin-bottom:0"><div class="l" style="color:rgba(255,255,255,.5)">CLOSING</div><div class="r" style="color:rgba(255,255,255,.5)">10 / 10</div></div>
+          <div class="chrome-min" style="margin-bottom:0"><div class="l" style="color:rgba(255,255,255,.5)">CLOSING</div><div class="r" style="color:rgba(255,255,255,.5)">13 / 13</div></div>
           <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:2vh">
             <div class="t-meta" style="color:rgba(255,255,255,.6);letter-spacing:.22em">TAKEAWAY</div>
             <p class="line-mega">情绪洞察<br>驱动<span style="font-style:italic;font-weight:300">营销决策</span></p>
