@@ -1,9 +1,0 @@
-Model,Device,Test Samples,Accuracy,Runtime with loading (s),Runtime w/o loading (s)
-j-hartmann/emotion-english-distilroberta-base,CPU,2160,0.6204,148.3473,118.4442
-j-hartmann/emotion-english-distilroberta-base,GPU,2160,0.6204,27.6285,13.8853
-chase1zhang/youtube-emotion-distilbert,CPU,2160,0.863,138.9428,122.6187
-chase1zhang/youtube-emotion-distilbert,GPU,2160,0.863,11.8892,10.9848
-chase1zhang/youtube-emotion-distilbert-domain-adapted,CPU,2160,0.4944,131.0709,121.8811
-chase1zhang/youtube-emotion-distilbert-domain-adapted,GPU,2160,0.4944,12.0165,10.8856
-cardiffnlp/twitter-roberta-base-sentiment-latest,CPU,2160,0.5444,244.9532,241.3229
-cardiffnlp/twitter-roberta-base-sentiment-latest,GPU,2160,0.5444,23.0184,21.3009
