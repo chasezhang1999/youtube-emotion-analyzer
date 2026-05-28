@@ -1,0 +1,45 @@
+video,model,repo,task,matched,total,accuracy,load_s,infer_s
+https://www.youtube.com/watch?v=d2dgJGkw5p0,Pre-tuning baseline,j-hartmann/emotion-english-distilroberta-base,7-emotion,29,50,0.58,1.2324,1.0282
+https://www.youtube.com/watch?v=M8To7iorkxQ,Pre-tuning baseline,j-hartmann/emotion-english-distilroberta-base,7-emotion,26,50,0.52,1.2324,1.0282
+https://www.youtube.com/watch?v=-_-eIVAX1yQ,Pre-tuning baseline,j-hartmann/emotion-english-distilroberta-base,7-emotion,12,50,0.24,1.2324,1.0282
+https://www.youtube.com/watch?v=d2dgJGkw5p0,GoEmotions fine-tuned,chase1zhang/youtube-emotion-distilbert,7-emotion,24,50,0.48,0.0582,0.8488
+https://www.youtube.com/watch?v=M8To7iorkxQ,GoEmotions fine-tuned,chase1zhang/youtube-emotion-distilbert,7-emotion,17,50,0.34,0.0582,0.8488
+https://www.youtube.com/watch?v=-_-eIVAX1yQ,GoEmotions fine-tuned,chase1zhang/youtube-emotion-distilbert,7-emotion,8,50,0.16,0.0582,0.8488
+https://www.youtube.com/watch?v=d2dgJGkw5p0,YouTube-domain adapted (your model),chase1zhang/youtube-emotion-distilbert-domain-adapted,7-emotion,27,50,0.54,0.0385,0.9343
+https://www.youtube.com/watch?v=M8To7iorkxQ,YouTube-domain adapted (your model),chase1zhang/youtube-emotion-distilbert-domain-adapted,7-emotion,33,50,0.66,0.0385,0.9343
+https://www.youtube.com/watch?v=-_-eIVAX1yQ,YouTube-domain adapted (your model),chase1zhang/youtube-emotion-distilbert-domain-adapted,7-emotion,24,50,0.48,0.0385,0.9343
+https://www.youtube.com/watch?v=d2dgJGkw5p0,Public GoEmotions RoBERTa (SamLowe),SamLowe/roberta-base-go_emotions,7-emotion,26,50,0.52,0.9086,1.8941
+https://www.youtube.com/watch?v=M8To7iorkxQ,Public GoEmotions RoBERTa (SamLowe),SamLowe/roberta-base-go_emotions,7-emotion,37,50,0.74,0.9086,1.8941
+https://www.youtube.com/watch?v=-_-eIVAX1yQ,Public GoEmotions RoBERTa (SamLowe),SamLowe/roberta-base-go_emotions,7-emotion,17,50,0.34,0.9086,1.8941
+https://www.youtube.com/watch?v=d2dgJGkw5p0,Public RoBERTa-large 7-emotion,j-hartmann/emotion-english-roberta-large,7-emotion,24,50,0.48,1.4107,7.1657
+https://www.youtube.com/watch?v=M8To7iorkxQ,Public RoBERTa-large 7-emotion,j-hartmann/emotion-english-roberta-large,7-emotion,24,50,0.48,1.4107,7.1657
+https://www.youtube.com/watch?v=-_-eIVAX1yQ,Public RoBERTa-large 7-emotion,j-hartmann/emotion-english-roberta-large,7-emotion,14,50,0.28,1.4107,7.1657
+https://www.youtube.com/watch?v=d2dgJGkw5p0,YouTube-domain adapted RoBERTa (SamLowe),chase1zhang/youtube-emotion-samlowe-roberta-domain-adapted,7-emotion,30,50,0.6,0.1597,2.0179
+https://www.youtube.com/watch?v=M8To7iorkxQ,YouTube-domain adapted RoBERTa (SamLowe),chase1zhang/youtube-emotion-samlowe-roberta-domain-adapted,7-emotion,42,50,0.84,0.1597,2.0179
+https://www.youtube.com/watch?v=-_-eIVAX1yQ,YouTube-domain adapted RoBERTa (SamLowe),chase1zhang/youtube-emotion-samlowe-roberta-domain-adapted,7-emotion,21,50,0.42,0.1597,2.0179
+https://www.youtube.com/watch?v=d2dgJGkw5p0,YouTube-domain adapted DistilRoBERTa (j-hartmann),chase1zhang/youtube-emotion-jhartmann-distilroberta-domain-adapted,7-emotion,25,50,0.5,0.0912,1.0381
+https://www.youtube.com/watch?v=M8To7iorkxQ,YouTube-domain adapted DistilRoBERTa (j-hartmann),chase1zhang/youtube-emotion-jhartmann-distilroberta-domain-adapted,7-emotion,36,50,0.72,0.0912,1.0381
+https://www.youtube.com/watch?v=-_-eIVAX1yQ,YouTube-domain adapted DistilRoBERTa (j-hartmann),chase1zhang/youtube-emotion-jhartmann-distilroberta-domain-adapted,7-emotion,22,50,0.44,0.0912,1.0381
+https://www.youtube.com/watch?v=d2dgJGkw5p0,YouTube-domain adapted RoBERTa-large (j-hartmann),chase1zhang/youtube-emotion-roberta-large-domain-adapted,7-emotion,30,50,0.6,0.186,7.3825
+https://www.youtube.com/watch?v=M8To7iorkxQ,YouTube-domain adapted RoBERTa-large (j-hartmann),chase1zhang/youtube-emotion-roberta-large-domain-adapted,7-emotion,43,50,0.86,0.186,7.3825
+https://www.youtube.com/watch?v=-_-eIVAX1yQ,YouTube-domain adapted RoBERTa-large (j-hartmann),chase1zhang/youtube-emotion-roberta-large-domain-adapted,7-emotion,21,50,0.42,0.186,7.3825
+https://www.youtube.com/watch?v=d2dgJGkw5p0,CardiffNLP Twitter RoBERTa,cardiffnlp/twitter-roberta-base-sentiment-latest,3-sentiment,30,50,0.6,1.2355,2.0197
+https://www.youtube.com/watch?v=M8To7iorkxQ,CardiffNLP Twitter RoBERTa,cardiffnlp/twitter-roberta-base-sentiment-latest,3-sentiment,46,50,0.92,1.2355,2.0197
+https://www.youtube.com/watch?v=-_-eIVAX1yQ,CardiffNLP Twitter RoBERTa,cardiffnlp/twitter-roberta-base-sentiment-latest,3-sentiment,29,50,0.58,1.2355,2.0197
+https://www.youtube.com/watch?v=d2dgJGkw5p0,lxyuan DistilBERT Multilingual,lxyuan/distilbert-base-multilingual-cased-sentiments-student,3-sentiment,23,50,0.46,1.1556,0.8353
+https://www.youtube.com/watch?v=M8To7iorkxQ,lxyuan DistilBERT Multilingual,lxyuan/distilbert-base-multilingual-cased-sentiments-student,3-sentiment,37,50,0.74,1.1556,0.8353
+https://www.youtube.com/watch?v=-_-eIVAX1yQ,lxyuan DistilBERT Multilingual,lxyuan/distilbert-base-multilingual-cased-sentiments-student,3-sentiment,34,50,0.68,1.1556,0.8353
+https://www.youtube.com/watch?v=d2dgJGkw5p0,FiniteAutomata BERTweet,finiteautomata/bertweet-base-sentiment-analysis,3-sentiment,0,50,0.0,1.2548,1.7107
+https://www.youtube.com/watch?v=M8To7iorkxQ,FiniteAutomata BERTweet,finiteautomata/bertweet-base-sentiment-analysis,3-sentiment,0,50,0.0,1.2548,1.7107
+https://www.youtube.com/watch?v=-_-eIVAX1yQ,FiniteAutomata BERTweet,finiteautomata/bertweet-base-sentiment-analysis,3-sentiment,0,50,0.0,1.2548,1.7107
+OVERALL,Pre-tuning baseline,j-hartmann/emotion-english-distilroberta-base,7-emotion,67,150,0.4467,1.2324,1.0282
+OVERALL,GoEmotions fine-tuned,chase1zhang/youtube-emotion-distilbert,7-emotion,49,150,0.3267,0.0582,0.8488
+OVERALL,YouTube-domain adapted (your model),chase1zhang/youtube-emotion-distilbert-domain-adapted,7-emotion,84,150,0.56,0.0385,0.9343
+OVERALL,Public GoEmotions RoBERTa (SamLowe),SamLowe/roberta-base-go_emotions,7-emotion,80,150,0.5333,0.9086,1.8941
+OVERALL,Public RoBERTa-large 7-emotion,j-hartmann/emotion-english-roberta-large,7-emotion,62,150,0.4133,1.4107,7.1657
+OVERALL,YouTube-domain adapted RoBERTa (SamLowe),chase1zhang/youtube-emotion-samlowe-roberta-domain-adapted,7-emotion,93,150,0.62,0.1597,2.0179
+OVERALL,YouTube-domain adapted DistilRoBERTa (j-hartmann),chase1zhang/youtube-emotion-jhartmann-distilroberta-domain-adapted,7-emotion,83,150,0.5533,0.0912,1.0381
+OVERALL,YouTube-domain adapted RoBERTa-large (j-hartmann),chase1zhang/youtube-emotion-roberta-large-domain-adapted,7-emotion,94,150,0.6267,0.186,7.3825
+OVERALL,CardiffNLP Twitter RoBERTa,cardiffnlp/twitter-roberta-base-sentiment-latest,3-sentiment,105,150,0.7,1.2355,2.0197
+OVERALL,lxyuan DistilBERT Multilingual,lxyuan/distilbert-base-multilingual-cased-sentiments-student,3-sentiment,94,150,0.6267,1.1556,0.8353
+OVERALL,FiniteAutomata BERTweet,finiteautomata/bertweet-base-sentiment-analysis,3-sentiment,0,150,0.0,1.2548,1.7107

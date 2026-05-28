@@ -283,14 +283,14 @@ GoEmotions 微调 DistilBERT 将原始 GoEmotions 测试基准从 0.6680 提升�
 
 | 模型 | 数据集 | 设备 | 样本数 | 准确率 | 含加载运行时间 | 不含加载运行时间 |
 |---|---|---:|---:|---:|---:|---:|
-| `j-hartmann/emotion-english-distilroberta-base` | YouTube 域验证评论 | CPU | 798 | 0.4574 | - | - |
-| `chase1zhang/youtube-emotion-distilbert` | YouTube 域验证评论 | CPU | 798 | 0.3985 | - | - |
-| `chase1zhang/youtube-emotion-distilbert-domain-adapted` | YouTube 域验证评论 | CPU | 798 | 0.6028 | - | - |
-| `SamLowe/roberta-base-go_emotions` | YouTube 域验证评论 | CPU | 798 | 0.4586 | - | - |
-| `j-hartmann/emotion-english-roberta-large` | YouTube 域验证评论 | CPU | 798 | 0.5138 | - | - |
-| `chase1zhang/youtube-emotion-samlowe-roberta-domain-adapted` | YouTube 域验证评论 | CPU | 798 | 0.6504 | - | - |
-| `chase1zhang/youtube-emotion-jhartmann-distilroberta-domain-adapted` | YouTube 域验证评论 | CPU | 798 | 0.6291 | - | - |
-| `chase1zhang/youtube-emotion-roberta-large-domain-adapted` | YouTube 域验证评论 | CPU | 798 | **0.6717** | - | - |
+| `j-hartmann/emotion-english-distilroberta-base` | YouTube 域验证评论 | CPU | 798 | 0.4574 | 7.6660s | 6.4336s |
+| `chase1zhang/youtube-emotion-distilbert` | YouTube 域验证评论 | CPU | 798 | 0.3985 | 6.3855s | 6.3273s |
+| `chase1zhang/youtube-emotion-distilbert-domain-adapted` | YouTube 域验证评论 | CPU | 798 | 0.6028 | 6.4497s | 6.4113s |
+| `SamLowe/roberta-base-go_emotions` | YouTube 域验证评论 | CPU | 798 | 0.4586 | 14.2942s | 13.3855s |
+| `j-hartmann/emotion-english-roberta-large` | YouTube 域验证评论 | CPU | 798 | 0.5138 | 49.6610s | 48.2503s |
+| `chase1zhang/youtube-emotion-samlowe-roberta-domain-adapted` | YouTube 域验证评论 | CPU | 798 | 0.6504 | 13.6037s | 13.4440s |
+| `chase1zhang/youtube-emotion-jhartmann-distilroberta-domain-adapted` | YouTube 域验证评论 | CPU | 798 | 0.6291 | 6.7531s | 6.6620s |
+| `chase1zhang/youtube-emotion-roberta-large-domain-adapted` | YouTube 域验证评论 | CPU | 798 | **0.6717** | 46.3959s | 46.2100s |
 
 域适配 DistilBERT 在 798 样本验证集上达到 0.6028 准确率，域适配 RoBERTa-large 达到最佳 **0.6717**，显著领先于其他基线模型。
 
@@ -341,7 +341,7 @@ CardiffNLP 在应用基准上表现最佳（105/150），提供最稳定的正�
 - GoEmotions 微调 DistilBERT 在 GoEmotions 测试集上将准确率从 0.6680 提升到 0.7030。
 - 在 YouTube 域验证集上，域适配 RoBERTa-large 达到最佳准确率 **0.6717**，域适配 RoBERTa 达到 **0.6504**，验证了 YouTube 域适配的有效性。
 - 在 150 条评论应用基准上，YouTube 域适配 RoBERTa-large 表现最佳（**94/150, 0.6267**），其次是域适配 RoBERTa（93/150, 0.6200）。
-- 最大的改进出现在愤怒主导的视频上，域适配模型从基线的 12/50（0.24）提升到 18/50（0.36），表明平衡的域适配有助于模型更好地检测负面情绪。
+- 最大的改进出现在愤怒主导的视频上，域适配模型从基线的 12/50（0.24）提升到 24/50（0.48），表明平衡的域适配有助于模型更好地检测负面情绪。
 - 三分类情感 pipeline 仍然是稳定的商业级信号（105/150 准确率），但细粒度的七情绪分类对诊断和模型对比更有用。
 
 ## 12. 业务解读
