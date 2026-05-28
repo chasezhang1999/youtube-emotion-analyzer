@@ -129,6 +129,13 @@ def load_labeled_frame(csv_path: str):
     if "text" not in df.columns:
         raise ValueError(f"{csv_path} must contain a text column.")
 
+    if "label_id" in df.columns:
+        if "label" in df.columns:
+            sample_val = df["label"].iloc[0]
+            if isinstance(sample_val, str) or not isinstance(sample_val, (int, float)):
+                df = df.rename(columns={"label": "label_name"})
+        df = df.rename(columns={"label_id": "label"})
+
     if "label" not in df.columns:
         if "label_name" not in df.columns:
             raise ValueError(f"{csv_path} must contain label or label_name.")
