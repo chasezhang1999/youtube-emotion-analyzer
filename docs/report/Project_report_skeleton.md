@@ -132,11 +132,12 @@ Prepared files:
 - `data/youtube_domain_7class_deepseek/validation.csv`
 - `data/youtube_domain_training_comments_8000_deepseek_labeled.csv`
 
-### 8.3 Manual App Testing Dataset
+### 8.3 App Testing Dataset
 
-The deployed app was evaluated on three YouTube videos with 50 manually reviewed comments per video, for 150 comments in total. This benchmark remains separate from the YouTube-domain adaptation training data. The production app now retrieves up to 100 comments per video, but the app-level accuracy table below is based on the manually reviewed 150-comment benchmark. A second assistant manual review was completed on May 27, 2026; 23 labels were revised to better handle sarcasm, humor, pride, and threat/concern cues. The reviewed benchmark is stored in:
+The deployed app was evaluated on 500 comments across 10 YouTube videos (50 comments per video). Of these, 150 comments from 3 videos were manually reviewed by humans, and 350 comments from 7 additional videos were labeled by DeepSeek v4pro AI. This benchmark remains separate from the YouTube-domain adaptation training data. The 10 videos cover diverse topics: rare earths, avatar clips, shooting news, brand crisis, public safety, PSA, product failure, food safety, joy trailer, and negative brand crisis. The benchmark is stored in:
 
-- `experiments/app_per_comment_manual_labels.csv`
+- `experiments/app_per_comment_manual_labels.csv` (150 manually reviewed comments)
+- `experiments/app_per_comment_manual_labels_500.csv` (full 500-comment benchmark)
 
 ## 9. Model
 
