@@ -1,0 +1,19 @@
+Video,Task,Model Stage,Model,# Comments,Matched Comments,Accuracy,Manual Main Label,Model Main Label
+https://www.youtube.com/watch?v=d2dgJGkw5p0,7-emotion,pre-tuning baseline,j-hartmann/emotion-english-distilroberta-base,50,29,0.58,neutral,neutral
+https://www.youtube.com/watch?v=d2dgJGkw5p0,7-emotion,GoEmotions fine-tuned,chase1zhang/youtube-emotion-distilbert,50,29,0.58,neutral,neutral
+https://www.youtube.com/watch?v=d2dgJGkw5p0,7-emotion,YouTube-domain adapted,chase1zhang/youtube-emotion-distilbert-domain-adapted,50,28,0.56,neutral,neutral
+https://www.youtube.com/watch?v=d2dgJGkw5p0,7-emotion,Public RoBERTa-large,j-hartmann/emotion-english-roberta-large,50,24,0.48,neutral,neutral
+https://www.youtube.com/watch?v=d2dgJGkw5p0,7-emotion,Public GoEmotions RoBERTa,SamLowe/roberta-base-go_emotions,50,21,0.42,neutral,neutral
+https://www.youtube.com/watch?v=d2dgJGkw5p0,3-sentiment,sentiment pipeline,cardiffnlp/twitter-roberta-base-sentiment-latest,50,30,0.6,neutral,neutral
+https://www.youtube.com/watch?v=M8To7iorkxQ,7-emotion,pre-tuning baseline,j-hartmann/emotion-english-distilroberta-base,50,26,0.52,joy,neutral
+https://www.youtube.com/watch?v=M8To7iorkxQ,7-emotion,GoEmotions fine-tuned,chase1zhang/youtube-emotion-distilbert,50,25,0.5,joy,neutral
+https://www.youtube.com/watch?v=M8To7iorkxQ,7-emotion,YouTube-domain adapted,chase1zhang/youtube-emotion-distilbert-domain-adapted,50,25,0.5,joy,neutral
+https://www.youtube.com/watch?v=M8To7iorkxQ,7-emotion,Public RoBERTa-large,j-hartmann/emotion-english-roberta-large,50,24,0.48,joy,neutral
+https://www.youtube.com/watch?v=M8To7iorkxQ,7-emotion,Public GoEmotions RoBERTa,SamLowe/roberta-base-go_emotions,50,10,0.2,joy,neutral
+https://www.youtube.com/watch?v=M8To7iorkxQ,3-sentiment,sentiment pipeline,cardiffnlp/twitter-roberta-base-sentiment-latest,50,46,0.92,positive,positive
+https://www.youtube.com/watch?v=-_-eIVAX1yQ,7-emotion,pre-tuning baseline,j-hartmann/emotion-english-distilroberta-base,50,12,0.24,anger,neutral
+https://www.youtube.com/watch?v=-_-eIVAX1yQ,7-emotion,GoEmotions fine-tuned,chase1zhang/youtube-emotion-distilbert,50,16,0.32,anger,neutral
+https://www.youtube.com/watch?v=-_-eIVAX1yQ,7-emotion,YouTube-domain adapted,chase1zhang/youtube-emotion-distilbert-domain-adapted,50,18,0.36,anger,neutral
+https://www.youtube.com/watch?v=-_-eIVAX1yQ,7-emotion,Public RoBERTa-large,j-hartmann/emotion-english-roberta-large,50,14,0.28,anger,neutral
+https://www.youtube.com/watch?v=-_-eIVAX1yQ,7-emotion,Public GoEmotions RoBERTa,SamLowe/roberta-base-go_emotions,50,10,0.2,anger,neutral
+https://www.youtube.com/watch?v=-_-eIVAX1yQ,3-sentiment,sentiment pipeline,cardiffnlp/twitter-roberta-base-sentiment-latest,50,29,0.58,negative,negative

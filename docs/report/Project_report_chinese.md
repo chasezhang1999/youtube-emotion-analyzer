@@ -268,16 +268,20 @@ youtube_emotion_project/
 
 ### 11.1 GoEmotions 测试集上的模型选择
 
-该基准遵循课程 pipeline 选择思路：比较包含模型加载和不包含模型加载的准确率与运行时间。使用扩展的 1,000 行 GoEmotions 测试集和 2026 年 5 月 27 日可用的最新 Hugging Face 模型版本。
+该基准遵循课程 pipeline 选择思路：比较包含模型加载和不包含模型加载的准确率与运行时间。使用完整的 2,160 行 GoEmotions 测试集。
 
 | 模型 | 设备 | 测试样本 | 准确率 | 含加载运行时间 | 不含加载运行时间 | 备注 |
 |---|---:|---:|---:|---:|---:|---|
-| `j-hartmann/emotion-english-distilroberta-base` | CPU | 1,000 | 0.6680 | 4.9459s | 3.7197s | 微调前基线 |
-| `chase1zhang/youtube-emotion-distilbert` | CPU | 1,000 | 0.7030 | 3.6476s | 3.5653s | GoEmotions 微调 |
-| `chase1zhang/youtube-emotion-distilbert-domain-adapted` | CPU | 1,000 | 0.6280 | 3.6880s | 3.6196s | YouTube 域适配 |
-| `cardiffnlp/twitter-roberta-base-sentiment-latest` | CPU | 1,000 | 0.6460 | 8.7494s | 7.5034s | 辅助情感模型 |
+| `j-hartmann/emotion-english-distilroberta-base` | CPU | 2,160 | 0.6204 | 148.35s | 118.44s | 微调前基线 |
+| `j-hartmann/emotion-english-distilroberta-base` | GPU | 2,160 | 0.6204 | 27.63s | 13.89s | 微调前基线 |
+| `chase1zhang/youtube-emotion-distilbert` | CPU | 2,160 | **0.8630** | 138.94s | 122.62s | GoEmotions 微调 |
+| `chase1zhang/youtube-emotion-distilbert` | GPU | 2,160 | **0.8630** | 11.89s | 10.98s | GoEmotions 微调 |
+| `chase1zhang/youtube-emotion-distilbert-domain-adapted` | CPU | 2,160 | 0.4944 | 131.07s | 121.88s | YouTube 域适配 |
+| `chase1zhang/youtube-emotion-distilbert-domain-adapted` | GPU | 2,160 | 0.4944 | 12.02s | 10.89s | YouTube 域适配 |
+| `cardiffnlp/twitter-roberta-base-sentiment-latest` | CPU | 2,160 | 0.5444 | 244.95s | 241.32s | 辅助情感模型 |
+| `cardiffnlp/twitter-roberta-base-sentiment-latest` | GPU | 2,160 | 0.5444 | 23.02s | 21.30s | 辅助情感模型 |
 
-GoEmotions 微调 DistilBERT 将原始 GoEmotions 测试基准从 0.6680 提升到 0.7030 准确率。域适配模型在此测试集上较低，因为它被进一步优化为 YouTube 风格评论而非原始 GoEmotions 分布。
+GoEmotions 微调 DistilBERT 在 GoEmotions 测试集上达到 **0.8630** 准确率，相比微调前基线（0.6204）大幅提升。域适配模型在此测试集上较低（0.4944），因为它用域内准确率换取了 YouTube 域性能。这一取舍在 Section 11.2 的 YouTube 域验证结果中得到了验证。GPU 推理速度约为 CPU 的 10 倍。
 
 ### 11.2 YouTube 域验证
 
@@ -313,35 +317,23 @@ CardiffNLP 在应用基准上表现最佳（105/150），提供最稳定的正�
 | 任务 | 模型 / Pipeline | 匹配 / 总数 | 准确率 |
 |---|---|---:|---:|
 | 七情绪 | 微调前基线 | 67 / 150 | 0.4467 |
-| 七情绪 | GoEmotions 微调 | 49 / 150 | 0.3267 |
-| 七情绪 | YouTube 域适配 DistilBERT | 84 / 150 | 0.5600 |
-| 七情绪 | 公开 GoEmotions RoBERTa | 80 / 150 | 0.5333 |
+| 七情绪 | GoEmotions 微调 | 70 / 150 | 0.4667 |
+| 七情绪 | YouTube 域适配 DistilBERT | 71 / 150 | 0.4733 |
+| 七情绪 | 公开 GoEmotions RoBERTa | 41 / 150 | 0.2733 |
 | 七情绪 | 公开 RoBERTa-large | 62 / 150 | 0.4133 |
 | 七情绪 | YouTube 域适配 RoBERTa | 93 / 150 | **0.6200** |
 | 七情绪 | YouTube 域适配 DistilRoBERTa | 83 / 150 | 0.5533 |
 | 七情绪 | YouTube 域适配 RoBERTa-large | 94 / 150 | **0.6267** |
 | 三情感 | CardiffNLP 情感 pipeline | 105 / 150 | 0.7000 |
-| 三情感 | lxyuan 情感 | 94 / 150 | 0.6267 |
-| 三情感 | BERTweet 情感 | 0 / 150 | 0.0000* |
 
-**应用运行时间（150 条评论，CPU）：**
-
-| 模型 | 含加载运行时间 | 不含加载运行时间 |
-|---|---:|---:|
-| YouTube 域适配 DistilBERT | 0.9555s | 0.8825s |
-| YouTube 域适配 DistilRoBERTa | - | 1.0414s |
-| GoEmotions 微调 DistilBERT | 0.9679s | 0.8708s |
-| YouTube 域适配 RoBERTa | - | 1.8465s |
-| CardiffNLP 情感 | 3.3064s | 2.0808s |
-| 公开 GoEmotions RoBERTa | 2.9287s | 1.9036s |
-| 公开 RoBERTa-large | 8.8184s | 6.8085s |
+*注：域适配 RoBERTa、DistilRoBERTa 和 RoBERTa-large 的结果来自先前的评估运行；其上方五个模型已在最新 Colab 运行中重新评估。*
 
 ### 11.5 关键发现
 
-- GoEmotions 微调 DistilBERT 在 GoEmotions 测试集上将准确率从 0.6680 提升到 0.7030。
-- 在 YouTube 域验证集上，域适配 RoBERTa-large 达到最佳准确率 **0.6717**，域适配 RoBERTa 达到 **0.6504**，验证了 YouTube 域适配的有效性。
-- 在 150 条评论应用基准上，YouTube 域适配 RoBERTa-large 表现最佳（**94/150, 0.6267**），其次是域适配 RoBERTa（93/150, 0.6200）。
-- 最大的改进出现在愤怒主导的视频上，域适配模型从基线的 12/50（0.24）提升到 24/50（0.48），表明平衡的域适配有助于模型更好地检测负面情绪。
+- GoEmotions 微调 DistilBERT 在完整 2,160 样本 GoEmotions 测试集上达到 **0.8630** 准确率，相比微调前基线（0.6204）大幅提升，确认微调阶段在域内数据上有效。
+- 域适配模型在 GoEmotions 测试集上较低（0.4944），因为它用域内准确率换取了 YouTube 域性能。这一取舍在 YouTube 域验证结果中得到验证：域适配 RoBERTa-large 达到 **0.6717**，域适配 DistilBERT 达到 **0.6028**，均显著领先于非适配基线。
+- 在 150 条评论应用基准上，YouTube 域适配 RoBERTa-large 表现最佳（**94/150, 0.6267**），其次是域适配 RoBERTa（93/150, 0.6200）。在重新评估的五个基础模型中，GoEmotions 微调和域适配 DistilBERT 接近（70/150 vs 71/150）。
+- 最大的改进出现在愤怒主导的视频上，域适配模型从基线的 12/50（0.24）提升到 18/50（0.36），表明平衡的域适配有助于模型更好地检测负面情绪。
 - 三分类情感 pipeline 仍然是稳定的商业级信号（105/150 准确率），但细粒度的七情绪分类对诊断和模型对比更有用。
 
 ## 12. 业务解读
