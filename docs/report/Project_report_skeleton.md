@@ -360,29 +360,28 @@ Accuracy = number of comments matching the manual label / 50
 | `-_-eIVAX1yQ` | 7-emotion | Public GoEmotions RoBERTa | 10 | 0.20 | anger | neutral |
 | `-_-eIVAX1yQ` | 3-sentiment | Sentiment pipeline | 29 | 0.58 | negative | negative |
 
-Overall app-level performance:
+Overall app-level performance (500 comments, 10 videos):
 
-| Task | Model / Pipeline | Matched / Total | Accuracy |
+| Task | Model / Pipeline | Matched / 500 | Accuracy |
 |---|---|---:|---:|
-| 7-emotion | Pre-tuning baseline | 67 / 150 | 0.4467 |
-| 7-emotion | GoEmotions fine-tuned | 70 / 150 | 0.4667 |
-| 7-emotion | YouTube-domain adapted DistilBERT | 71 / 150 | 0.4733 |
-| 7-emotion | Public GoEmotions RoBERTa | 41 / 150 | 0.2733 |
-| 7-emotion | Public RoBERTa-large | 62 / 150 | 0.4133 |
-| 7-emotion | YouTube-domain adapted RoBERTa | 93 / 150 | **0.6200** |
-| 7-emotion | YouTube-domain adapted DistilRoBERTa | 83 / 150 | 0.5533 |
-| 7-emotion | YouTube-domain adapted RoBERTa-large | 94 / 150 | **0.6267** |
-| 3-sentiment | Sentiment pipeline | 105 / 150 | 0.7000 |
-
-*Note: Domain-adapted RoBERTa, DistilRoBERTa, and RoBERTa-large results are from a prior evaluation run; the five models above them were re-evaluated on the latest Colab run.*
+| 7-emotion | Pre-tuning baseline | 179 / 500 | 0.3580 |
+| 7-emotion | GoEmotions fine-tuned | 141 / 500 | 0.2820 |
+| 7-emotion | YouTube-domain adapted DistilBERT | 317 / 500 | **0.6340** |
+| 7-emotion | Public GoEmotions RoBERTa | 208 / 500 | 0.4160 |
+| 7-emotion | Public RoBERTa-large | 185 / 500 | 0.3700 |
+| 7-emotion | YouTube-domain adapted RoBERTa | 315 / 500 | **0.6300** |
+| 7-emotion | YouTube-domain adapted DistilRoBERTa | 306 / 500 | 0.6120 |
+| 3-sentiment | CardiffNLP sentiment pipeline | 334 / 500 | **0.6680** |
+| 3-sentiment | lxyuan sentiment | 306 / 500 | 0.6120 |
+| 3-sentiment | BERTweet sentiment | 228 / 500 | 0.4560 |
 
 ### 11.5 Key Findings
 
 - The GoEmotions fine-tuned DistilBERT achieves **0.8630** accuracy on the full 2,160-sample GoEmotions test set, a major improvement over the pre-tuning baseline (0.6204). This confirms the fine-tuning stage is effective on in-domain data.
 - The domain-adapted model scores lower on the GoEmotions test set (0.4944) because it traded in-domain accuracy for YouTube-domain performance. This trade-off is validated by the YouTube-domain validation results: domain-adapted RoBERTa-large achieves **0.6717** and domain-adapted DistilBERT achieves **0.6028**, both significantly ahead of the non-adapted baselines.
-- On the 150-comment app benchmark, YouTube-domain adapted RoBERTa-large performs best at **94/150 (0.6267)**, followed by domain-adapted RoBERTa at **93/150 (0.6200)**. Among the five re-evaluated base models, GoEmotions fine-tuned and domain-adapted DistilBERT are close (70/150 vs 71/150).
-- The biggest improvement from domain adaptation appears on the anger-heavy video, where the domain-adapted model reaches 18/50 (0.36), up from 12/50 (0.24) for the baseline. This shows that balanced domain adaptation helps the model detect negative emotions better.
-- The three-class sentiment pipeline remains a stable business-level signal with 105/150 accuracy, but fine-grained seven-emotion classification is more useful for diagnosis and model comparison.
+- On the 500-comment app benchmark (10 videos), YouTube-domain adapted DistilBERT performs best among project-owned models at **317/500 (0.6340)**, followed closely by domain-adapted RoBERTa at **315/500 (0.6300)**. Both significantly outperform the non-adapted baselines (pre-tuning 0.3580, GoEmotions fine-tuned 0.2820).
+- The biggest improvement from domain adaptation appears on emotion-specific videos: anger brand crisis (0.72), disgust food safety (0.72), and surprise product failure (0.72). The hardest video remains shooting news (0.34), where sarcasm and political context challenge all models.
+- The three-class sentiment pipeline achieves **334/500 (0.6680)** accuracy, providing a stable business-level signal. Fine-grained seven-emotion classification is more useful for diagnosis and model comparison.
 
 ## 12. Business Interpretation
 

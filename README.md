@@ -253,19 +253,16 @@ Additional YouTube-domain adaptation data:
 - 71 videos
 - Balanced as far as possible without duplicating minority-class comments
 - Stored in `data/youtube_domain_7class_deepseek/`
-- Independent app evaluation uses a separate manually reviewed 150-comment benchmark
+- Independent app evaluation uses a 500-comment benchmark across 10 videos (150 manually reviewed + 350 DeepSeek-labeled)
 
 ## Latest Evaluation Summary
 
 | Evaluation | Best / selected model | Result |
 |---|---|---:|
-| GoEmotions 1,000-row test | GoEmotions fine-tuned DistilBERT | 0.7030 |
-| YouTube-domain 592-row validation | YouTube-domain adapted DistilBERT | 0.6622 |
-| 150-comment app benchmark | Public SamLowe GoEmotions RoBERTa | 80/150 |
-| 150-comment app benchmark, project-owned model | YouTube-domain adapted DistilBERT | 71/150 |
-| 150-comment app sentiment benchmark | CardiffNLP sentiment pipeline | 105/150 |
-
-Note: the YouTube-domain dataset has since been rebuilt to 5,000 rows from an 8,000-comment pool. The model metrics above are the latest completed evaluation before the 5,000-row dataset refresh and should be rerun after the next fine-tuning pass.
+| GoEmotions 2,160-row test | GoEmotions fine-tuned DistilBERT | 0.8630 |
+| YouTube-domain 798-row validation | YouTube-domain adapted RoBERTa-large | 0.6717 |
+| 500-comment app benchmark (7-emotion) | YouTube-domain adapted DistilBERT | 317/500 (0.6340) |
+| 500-comment app benchmark (3-sentiment) | CardiffNLP sentiment pipeline | 334/500 (0.6680) |
 
 ## YouTube API Key
 
