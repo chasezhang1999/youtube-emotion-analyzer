@@ -136,7 +136,7 @@ Prepared files:
 
 The deployed app was evaluated on 500 comments across 10 YouTube videos (50 comments per video). Of these, 150 comments from 3 videos were manually reviewed by humans, and 350 comments from 7 additional videos were labeled by DeepSeek v4pro AI. This benchmark remains separate from the YouTube-domain adaptation training data. The 10 videos cover diverse topics: rare earths, avatar clips, shooting news, brand crisis, public safety, PSA, product failure, food safety, joy trailer, and negative brand crisis. The benchmark is stored in:
 
-- `experiments/app_per_comment_manual_labels_500.csv`
+- `data/app_per_comment_manual_labels_500.csv`
 
 ## 9. Model
 
@@ -191,18 +191,185 @@ The decision logic is implemented in `build_campaign_decision()` in `core.py`. I
 ### 9.4 Application Pipeline
 
 ```text
-YouTube video URL
-    -> parse video ID
-    -> YouTube Data API commentThreads endpoint
-    -> first 100 top-level comments
-    -> clean comment text
-    -> seven-emotion pipeline
-    -> three-class sentiment pipeline
-    -> emotion summary, sentiment summary, risk ratio
-    -> Streamlit dashboard and CSV export
+┌─────────────────────────────────────────────────────────────────────┐
+│                    BUSINESS WORKFLOW DIAGRAM                         │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  ┌──────────┐    ┌──────────────┐    ┌──────────────┐              │
+│  │  User     │───>│ YouTube URL  │───>│ YouTube API  │              │
+│  │ (Nike     │    │ Input        │    │ commentThreads│             │
+│  │  marketer)│    └──────────────┘    └──────┬───────┘              │
+│  └──────────┘                                │                      │
+│                                              v                      │
+│                                   ┌──────────────────┐             │
+│                                   │ 100 Top Comments │             │
+│                                   │ + Text Cleaning  │             │
+│                                   └────────┬─────────┘             │
+│                                            │                        │
+│                          ┌─────────────────┼─────────────────┐     │
+│                          v                                   v     │
+│               ┌─────────────────────┐          ┌─────────────────┐ │
+│               │ Pipeline 1          │          │ Pipeline 2       │ │
+│               │ Seven-Emotion       │          │ Three-Sentiment  │ │
+│               │ Classification      │          │ Classification   │ │
+│               │                     │          │                  │ │
+│               │ Domain-adapted      │          │ CardiffNLP       │ │
+│               │ DistilBERT          │          │ RoBERTa          │ │
+│               │ (7 labels)          │          │ (3 labels)       │ │
+│               └──────────┬──────────┘          └────────┬─────────┘ │
+│                          │                              │           │
+│                          └──────────┬───────────────────┘           │
+│                                     v                               │
+│                          ┌─────────────────────┐                   │
+│                          │ Pipeline 3           │                   │
+│                          │ Business Decision    │                   │
+│                          │ Engine (rule-based)  │                   │
+│                          └──────────┬──────────┘                   │
+│                                     │                               │
+│                          ┌──────────v──────────┐                   │
+│                          │ Streamlit Dashboard  │                   │
+│                          │ ┌─────────────────┐ │                   │
+│                          │ │ Emotion Chart   │ │                   │
+│                          │ │ Sentiment Chart │ │                   │
+│                          │ │ Risk Indicator  │ │                   │
+│                          │ │ Recommendations │ │                   │
+│                          │ │ CSV Export      │ │                   │
+│                          │ └─────────────────┘ │                   │
+│                          └─────────────────────┘                   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
 ```
 
-### 9.5 Code Structure
+### 9.5 Model Relationship Diagram
+
+```text
+┌──────────────────────────────────────────────────────────────────────────┐
+│                     PIPELINE 1: SEVEN-EMOTION MODELS                     │
+├──────────────────────────────────────────────────────────────────────────┤
+│                                                                          │
+│  TRAINING DATA                      PRE-TRAINED MODEL                    │
+│  ─────────────                      ─────────────────                    │
+│                                                                          │
+│  ┌─────────────────┐               ┌──────────────────────┐             │
+│  │ GoEmotions      │               │ distilbert-base-     │             │
+│  │ 7-class         │──────────────>│ uncased              │             │
+│  │ (17,166 train)  │   Stage 1     │ (base model)         │             │
+│  └─────────────────┘   Fine-tune   └──────────┬───────────┘             │
+│                                                │                         │
+│                                                v                         │
+│                                     ┌──────────────────────┐             │
+│  ┌─────────────────┐                │ GoEmotions           │             │
+│  │ YouTube-Domain  │                │ Fine-tuned           │             │
+│  │ DeepSeek-labeled│──────────────>│ DistilBERT           │             │
+│  │ (3,991 train)   │   Stage 2     │ chase1zhang/         │             │
+│  └─────────────────┘   Domain      │ youtube-emotion-     │             │
+│                          Adapt     │ distilbert           │             │
+│                                    └──────────┬───────────┘             │
+│                                                │                         │
+│                                                v                         │
+│                                     ┌──────────────────────┐             │
+│                                     │ Domain-Adapted       │             │
+│                                     │ DistilBERT  ★DEFAULT │             │
+│                                     │ chase1zhang/         │             │
+│                                     │ youtube-emotion-     │             │
+│                                     │ distilbert-domain-   │             │
+│                                     │ adapted              │             │
+│                                     └──────────────────────┘             │
+│                                                                          │
+│  ADDITIONAL COMPARISON MODELS (domain-adapted in Colab):                 │
+│  ┌────────────────────────┐  ┌────────────────────────┐                  │
+│  │ SamLowe RoBERTa-base   │  │ j-hartmann Distil-     │                  │
+│  │ (GoEmotions public)    │  │ RoBERTa-base (public)  │                  │
+│  │ → domain-adapted       │  │ → domain-adapted       │                  │
+│  │   val 0.6504           │  │   val 0.6291           │                  │
+│  └────────────────────────┘  └────────────────────────┘                  │
+│                                                                          │
+│  PUBLIC BASELINES (no fine-tuning, no domain adaptation):                │
+│  ┌────────────────────────┐  ┌────────────────────────┐                  │
+│  │ j-hartmann Distil-     │  │ j-hartmann RoBERTa-    │                  │
+│  │ RoBERTa-base (public)  │  │ large (public)         │                  │
+│  │ val 0.4574             │  │ val 0.5138             │                  │
+│  └────────────────────────┘  └────────────────────────┘                  │
+│                                                                          │
+│  7-EMOTION ACCURACY (500-comment app benchmark):                         │
+│                                                                          │
+│  Domain-Adapted DistilBERT     ████████████████████████████  317/500     │
+│  Domain-Adapted RoBERTa        ████████████████████████████  315/500     │
+│  Domain-Adapted DistilRoBERTa  ██████████████████████████    306/500     │
+│  Public GoEmotions RoBERTa     █████████████████             208/500     │
+│  Public RoBERTa-large          ████████████████              185/500     │
+│  Pre-tuning Baseline           ███████████████               179/500     │
+│  GoEmotions Fine-tuned         ████████████                  141/500     │
+│                                                                          │
+└──────────────────────────────────────────────────────────────────────────┘
+
+┌──────────────────────────────────────────────────────────────────────────┐
+│                    PIPELINE 2: THREE-SENTIMENT MODELS                    │
+├──────────────────────────────────────────────────────────────────────────┤
+│                                                                          │
+│  All three models are PRE-TRAINED (no project fine-tuning).              │
+│  They classify each comment as positive / neutral / negative.            │
+│                                                                          │
+│  ┌────────────────────────────────────────────────────────────────┐      │
+│  │  CardiffNLP twitter-roberta-base-sentiment-latest  ★ RECOMMENDED     │
+│  │  Task: 3-class sentiment (positive / neutral / negative)       │      │
+│  │  App benchmark: 334 / 500 (0.6680)                             │      │
+│  │  Strength: Most stable business-level signal                   │      │
+│  └────────────────────────────────────────────────────────────────┘      │
+│                                                                          │
+│  ┌────────────────────────────────────────────────────────────────┐      │
+│  │  lxyuan distilbert-base-multilingual-cased-sentiments-student  │      │
+│  │  Task: 3-class sentiment (positive / neutral / negative)       │      │
+│  │  App benchmark: 306 / 500 (0.6120)                             │      │
+│  │  Strength: Fastest inference; multilingual support              │      │
+│  └────────────────────────────────────────────────────────────────┘      │
+│                                                                          │
+│  ┌────────────────────────────────────────────────────────────────┐      │
+│  │  FiniteAutomata bertweet-base-sentiment-analysis               │      │
+│  │  Task: 3-class sentiment (neg / neu / pos)                     │      │
+│  │  App benchmark: 228 / 500 (0.4560)                             │      │
+│  │  Note: Label format differs; model output is correct but       │      │
+│  │        automatic accuracy script undercounts matches            │      │
+│  └────────────────────────────────────────────────────────────────┘      │
+│                                                                          │
+│  3-SENTIMENT ACCURACY (500-comment app benchmark):                       │
+│                                                                          │
+│  CardiffNLP RoBERTa         █████████████████████████████  334/500      │
+│  lxyuan DistilBERT          ██████████████████████████     306/500      │
+│  BERTweet                   ████████████████████           228/500      │
+│                                                                          │
+└──────────────────────────────────────────────────────────────────────────┘
+
+┌──────────────────────────────────────────────────────────────────────────┐
+│                   PIPELINE 3: BUSINESS DECISION ENGINE                   │
+├──────────────────────────────────────────────────────────────────────────┤
+│                                                                          │
+│  Combines Pipeline 1 (emotion) + Pipeline 2 (sentiment) outputs.         │
+│  Rule-based heuristics → campaign action + risk level.                   │
+│                                                                          │
+│  Pipeline 1                    Pipeline 2                                │
+│  (7-emotion)                   (3-sentiment)                             │
+│       │                             │                                    │
+│       └──────────┬──────────────────┘                                    │
+│                  v                                                        │
+│       ┌─────────────────────┐                                            │
+│       │ Decision Engine     │                                            │
+│       │ (build_campaign_    │                                            │
+│       │  decision())        │                                            │
+│       └──────────┬──────────┘                                            │
+│                  v                                                        │
+│       ┌─────────────────────┐                                            │
+│       │ Output:             │                                            │
+│       │ - Decision label    │                                            │
+│       │ - Risk level        │                                            │
+│       │ - Key ratios        │                                            │
+│       │ - Next actions      │                                            │
+│       └─────────────────────┘                                            │
+│                                                                          │
+└──────────────────────────────────────────────────────────────────────────┘
+```
+
+### 9.6 Code Structure
 
 ```text
 youtube_emotion_project/
@@ -222,10 +389,7 @@ youtube_emotion_project/
 |   `-- testing_experiments.ipynb
 |-- experiments/
 |   |-- Experimental_results.xlsx
-|   |-- app_performance_model_comparison.csv
-|   |-- app_per_comment_manual_labels.csv
-|   |-- app_runtime_summary.csv
-|   `-- youtube_domain_validation_performance.csv
+|   `-- Performance_result.xlsx
 |-- tests/
 |-- docs/
 `-- requirements.txt
@@ -321,15 +485,15 @@ This section compares three pre-trained sentiment models on the YouTube-domain v
 
 *FiniteAutomata BERTweet uses neg/neu/pos label format which does not fully match the evaluation script's label mapping, resulting in 0 automatic accuracy. The model output is correct; manual review is recommended.
 
-**App benchmark (150 manually reviewed comments):**
+**App benchmark (500 comments, 10 videos):**
 
-| Model | Matched / 150 | Accuracy | Runtime w/o loading |
-|---|---:|---:|---:|
-| CardiffNLP Twitter RoBERTa | 105 | 0.7000 | 1.9316s |
-| lxyuan DistilBERT Multilingual | 94 | 0.6267 | 0.8794s |
-| FiniteAutomata BERTweet | 0* | 0.0000* | 1.7399s |
+| Model | Matched / 500 | Accuracy |
+|---|---:|---:|
+| CardiffNLP Twitter RoBERTa | 334 | **0.6680** |
+| lxyuan DistilBERT Multilingual | 306 | 0.6120 |
+| FiniteAutomata BERTweet | 228 | 0.4560 |
 
-CardiffNLP performs best on the app benchmark (105/150) and provides the most stable positive / neutral / negative signal. lxyuan has the fastest inference (0.88s), making it suitable for latency-sensitive scenarios.
+CardiffNLP performs best on the 500-comment app benchmark (334/500) and provides the most stable positive / neutral / negative signal. lxyuan has the fastest inference, making it suitable for latency-sensitive scenarios.
 
 ### 11.4 Deployed App Performance
 
