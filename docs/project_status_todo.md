@@ -43,11 +43,11 @@
 | `docs/report/PPT_design.md` | 已更新 | PPT 设计说明 |
 | `README.md` | 已更新 | 项目说明 |
 | `scripts/evaluate_updated_results.py` | 已完成 | 当前可复跑评估脚本 |
-| `scripts/build_youtube_domain_balanced_dataset.py` | 已新增 | 抓取、分类、平衡 YouTube-domain 评论 |
+| `scripts/build_deepseek_training_data.py` | 已新增 | 抓取、分类、平衡 YouTube-domain 评论 |
 | `scripts/train_youtube_domain_all_models.py` | 已新增 | 多模型 YouTube-domain fine-tuning 脚本 |
 | `notebooks/fine_tune_youtube_domain_all_models.ipynb` | 已新增 | Colab 多模型调优 notebook |
-| `data/youtube_domain_training_comments_8000_assistant_labeled.csv` | 已生成 | 8,000 条 YouTube-domain 标注原始池 |
-| `data/youtube_domain_7class_assistant/all.csv` | 已刷新 | 5,000 条最终 YouTube-domain adaptation 数据集 |
+| `data/youtube_domain_training_comments_8000_deepseek_labeled.csv` | 已生成 | 8,000 条 YouTube-domain 标注原始池 |
+| `data/youtube_domain_7class_deepseek/all.csv` | 已刷新 | 5,000 条最终 YouTube-domain adaptation 数据集 |
 
 ### 3.2 项目目录外但属于作业要求的文件
 
@@ -88,10 +88,10 @@ youtube_emotion_project/
 |   |   |-- validation.csv  406 条验证数据
 |   |   `-- test.csv        1,000 条测试数据
 |   |
-|   |-- youtube_domain_7class_assistant/
-|   |   |-- train.csv       4,000 条训练数据
-|   |   |-- validation.csv  1,000 条验证数据
-|   |   `-- all.csv         5,000 条总数据
+|   |-- youtube_domain_7class_deepseek/
+|   |   |-- train.csv       3,193 条训练数据
+|   |   |-- validation.csv  798 条验证数据
+|   |   `-- all.csv         3,991 条总数据
 |   |
 |   |-- youtube_domain_7class_balanced/
 |   |   早期平衡版本 YouTube-domain 数据。
@@ -137,10 +137,10 @@ youtube_emotion_project/
 |   |-- expand_youtube_domain_dataset.py
 |   |   扩展 YouTube-domain 评论数据。
 |   |
-|   |-- label_youtube_domain_comments.py
+|   |-- label_youtube_with_deepseek.py
 |   |   生成 assistant-labeled YouTube-domain split。
 |   |
-|   |-- build_youtube_domain_balanced_dataset.py
+|   |-- build_deepseek_training_data.py
 |   |   抓取、分类、平衡 YouTube-domain 评论，生成 8,000 原始池和 5,000 最终数据集。
 |   |
 |   |-- review_app_manual_labels.py
@@ -259,10 +259,10 @@ youtube_emotion_project/
 | GoEmotions train | `data/go_emotions_7class/train.csv` | 5,000 |
 | GoEmotions validation | `data/go_emotions_7class/validation.csv` | 406 |
 | GoEmotions test | `data/go_emotions_7class/test.csv` | 1,000 |
-| YouTube-domain train | `data/youtube_domain_7class_assistant/train.csv` | 4,000 |
-| YouTube-domain validation | `data/youtube_domain_7class_assistant/validation.csv` | 1,000 |
-| YouTube-domain all | `data/youtube_domain_7class_assistant/all.csv` | 5,000 |
-| YouTube-domain raw pool | `data/youtube_domain_training_comments_8000_assistant_labeled.csv` | 8,000 |
+| YouTube-domain train | `data/youtube_domain_7class_deepseek/train.csv` | 3,193 |
+| YouTube-domain validation | `data/youtube_domain_7class_deepseek/validation.csv` | 798 |
+| YouTube-domain all | `data/youtube_domain_7class_deepseek/all.csv` | 3,991 |
+| YouTube-domain raw pool | `data/youtube_domain_training_comments_8000_deepseek_labeled.csv` | 8,000 |
 | App benchmark | `experiments/app_per_comment_manual_labels.csv` | 150 |
 
 注意：CSV 的 `wc -l` 会比数据行多 1，因为包含 header。
@@ -397,8 +397,8 @@ youtube_emotion_project/
 - [x] 新增 `scripts/train_youtube_domain_all_models.py`。
 - [x] 新增 `notebooks/fine_tune_youtube_domain_all_models.ipynb`，用于一次性训练多个基准模型。
 - [x] 所有模型使用同一份数据：
-  - train：`data/youtube_domain_7class_assistant/train.csv`
-  - validation：`data/youtube_domain_7class_assistant/validation.csv`
+  - train：`data/youtube_domain_7class_deepseek/train.csv`
+  - validation：`data/youtube_domain_7class_deepseek/validation.csv`
 - [x] 统一七情绪 label mapping：
   - anger = 0
   - disgust = 1

@@ -25,7 +25,7 @@ PIPELINE_KWARGS = {
 
 GO_EMOTIONS_TEST_PATH = PROJECT_ROOT / "data" / "go_emotions_7class" / "test.csv"
 YOUTUBE_VALIDATION_PATH = (
-    PROJECT_ROOT / "data" / "youtube_domain_7class_assistant" / "validation.csv"
+    PROJECT_ROOT / "data" / "youtube_domain_7class_deepseek" / "validation.csv"
 )
 MANUAL_LABELS_PATH = PROJECT_ROOT / "experiments" / "app_per_comment_manual_labels.csv"
 

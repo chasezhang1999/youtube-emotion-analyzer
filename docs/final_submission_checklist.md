@@ -21,8 +21,8 @@ This checklist is based on `ISOM5240_project_requirements.pdf` and the current Y
   - `j-hartmann/emotion-english-roberta-large`
 - App comment retrieval expanded to 100 comments per video
 - GoEmotions seven-class dataset prepared: `data/go_emotions_7class/`
-- YouTube-domain raw pool prepared: `data/youtube_domain_training_comments_8000_assistant_labeled.csv` with 8,000 comments from 71 videos
-- YouTube-domain adaptation dataset prepared: `data/youtube_domain_7class_assistant/` with 5,000 selected comments
+- YouTube-domain raw pool prepared: `data/youtube_domain_training_comments_8000_deepseek_labeled.csv` with 8,000 comments from 71 videos
+- YouTube-domain adaptation dataset prepared: `data/youtube_domain_7class_deepseek/` with 3,991 balanced comments
 - Manual app testing dataset prepared: `experiments/app_per_comment_manual_labels.csv`
 - Experimental results workbook prepared: `experiments/Experimental_results.xlsx`
 - Performance result workbook prepared: `experiments/Performance_result.xlsx`
@@ -130,11 +130,11 @@ Include:
 data/go_emotions_7class/train.csv
 data/go_emotions_7class/validation.csv
 data/go_emotions_7class/test.csv
-data/youtube_domain_7class_assistant/all.csv
-data/youtube_domain_7class_assistant/train.csv
-data/youtube_domain_7class_assistant/validation.csv
+data/youtube_domain_7class_deepseek/all.csv
+data/youtube_domain_7class_deepseek/train.csv
+data/youtube_domain_7class_deepseek/validation.csv
 data/youtube_domain_training_comments_8000_unlabeled.csv
-data/youtube_domain_training_comments_8000_assistant_labeled.csv
+data/youtube_domain_training_comments_8000_deepseek_labeled.csv
 data/youtube_domain_training_comments_5000_balanced_assistant_labeled.csv
 data/sample_comments.csv
 fine_tuned_model_files/youtube-emotion-distilbert/

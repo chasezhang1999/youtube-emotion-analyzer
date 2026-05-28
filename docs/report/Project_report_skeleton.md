@@ -107,9 +107,9 @@ Prepared files:
 
 ### 8.2 YouTube-Domain Adaptation Dataset
 
-Because Reddit-style GoEmotions text is different from YouTube comments, an additional YouTube-domain adaptation dataset was created. The updated collection contains an 8,000-comment assistant-assisted raw pool from 71 YouTube videos related to technology, brands, entertainment, product issues, public announcements, brand purpose advertising, product launches, and audience reaction topics. From that pool, the final adaptation dataset selects 5,000 comments while balancing labels as far as possible without duplicating minority-class comments.
+Because Reddit-style GoEmotions text is different from YouTube comments, an additional YouTube-domain adaptation dataset was created. The updated collection contains an 8,000-comment DeepSeek AI-labeled raw pool from 71 YouTube videos related to technology, brands, entertainment, product issues, public announcements, brand purpose advertising, product launches, and audience reaction topics. From that pool, the final adaptation dataset selects 3,991 balanced comments.
 
-The comments were labeled with assistant-assisted annotation using the same seven emotion labels. These labels were used only for additional domain adaptation. The independent app evaluation still uses a separate manually reviewed set of 150 YouTube comments, so the reported app test is not measured on the training comments.
+The comments were labeled with DeepSeek v4pro AI annotation using the same seven emotion labels. These labels were used only for additional domain adaptation. The independent app evaluation still uses a separate manually reviewed set of 500 YouTube comments, so the reported app test is not measured on the training comments.
 
 YouTube-domain label distribution:
 
@@ -125,10 +125,10 @@ YouTube-domain label distribution:
 
 Prepared files:
 
-- `data/youtube_domain_7class_assistant/all.csv`
-- `data/youtube_domain_7class_assistant/train.csv`
-- `data/youtube_domain_7class_assistant/validation.csv`
-- `data/youtube_domain_training_comments_8000_assistant_labeled.csv`
+- `data/youtube_domain_7class_deepseek/all.csv`
+- `data/youtube_domain_7class_deepseek/train.csv`
+- `data/youtube_domain_7class_deepseek/validation.csv`
+- `data/youtube_domain_training_comments_8000_deepseek_labeled.csv`
 - `docs/youtube_domain_annotation_guide.md`
 
 ### 8.3 Manual App Testing Dataset
@@ -155,7 +155,7 @@ Model development:
 
 - Base model: `distilbert-base-uncased`
 - Stage 1: fine-tuned on the balanced seven-class GoEmotions dataset
-- Stage 2: further fine-tuned on YouTube-domain comments; the updated repository dataset contains 5,000 selected comments from an 8,000-comment raw pool for the next Colab rerun
+- Stage 2: further fine-tuned on YouTube-domain comments; the updated repository dataset contains 3,991 balanced comments from an 8,000-comment DeepSeek-labeled raw pool for the next Colab rerun
 - Training setup: learning rate 2e-5, batch size 16, 3 epochs for the first stage
 - Model selection: validation accuracy and app-level manual testing
 - Streamlit comparison: the app can compare the deployed model with `SamLowe/roberta-base-go_emotions`, `j-hartmann/emotion-english-distilroberta-base`, `chase1zhang/youtube-emotion-distilbert`, and `j-hartmann/emotion-english-roberta-large`
@@ -215,7 +215,7 @@ youtube_emotion_project/
 |   `-- __init__.py
 |-- data/
 |   |-- go_emotions_7class/
-|   |-- youtube_domain_7class_assistant/
+|   |-- youtube_domain_7class_deepseek/
 |   `-- sample_comments.csv
 |-- notebooks/
 |   |-- Fine_tune_Model.ipynb

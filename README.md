@@ -169,7 +169,7 @@ GroupXX_program/
 
 GroupXX_Dataset_files/
 ├── data/go_emotions_7class/
-├── data/youtube_domain_7class_assistant/
+├── data/youtube_domain_7class_deepseek/
 └── Fine-tuned_Model_files/
     ├── youtube-emotion-distilbert/
     └── youtube-emotion-distilbert-domain-adapted/
@@ -195,7 +195,7 @@ youtube_emotion_project/
 │   │   ├── train.csv                    (5,000 samples)
 │   │   ├── validation.csv               (406 samples)
 │   │   └── test.csv                     (1,000 samples)
-│   ├── youtube_domain_7class_assistant/ # YouTube-domain adaptation dataset
+│   ├── youtube_domain_7class_deepseek/ # YouTube-domain adaptation dataset
 │   └── sample_comments.csv              # Demo comments (no API key needed)
 ├── notebooks/
 │   ├── Fine_tune_Model.ipynb                    # Submission-ready Colab fine-tuning
@@ -253,7 +253,7 @@ Additional YouTube-domain adaptation data:
 - 5,000 selected comments in the final adaptation dataset
 - 71 videos
 - Balanced as far as possible without duplicating minority-class comments
-- Stored in `data/youtube_domain_7class_assistant/`
+- Stored in `data/youtube_domain_7class_deepseek/`
 - Independent app evaluation uses a separate manually reviewed 150-comment benchmark
 
 ## Latest Evaluation Summary

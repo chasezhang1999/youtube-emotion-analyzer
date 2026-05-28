@@ -85,6 +85,6 @@ The final 5,000-comment three-sentiment distribution is:
 The raw and selected datasets are stored in:
 
 - `data/youtube_domain_training_comments_8000_unlabeled.csv`
-- `data/youtube_domain_training_comments_8000_assistant_labeled.csv`
+- `data/youtube_domain_training_comments_8000_deepseek_labeled.csv`
 - `data/youtube_domain_training_comments_5000_balanced_assistant_labeled.csv`
-- `data/youtube_domain_7class_assistant/`
+- `data/youtube_domain_7class_deepseek/`

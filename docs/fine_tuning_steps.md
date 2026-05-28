@@ -88,14 +88,14 @@ The original GoEmotions fine-tuned model was further adapted with YouTube-domain
 
 Prepared files:
 
-- `data/youtube_domain_7class_assistant/all.csv`
-- `data/youtube_domain_7class_assistant/train.csv`
-- `data/youtube_domain_7class_assistant/validation.csv`
+- `data/youtube_domain_7class_deepseek/all.csv`
+- `data/youtube_domain_7class_deepseek/train.csv`
+- `data/youtube_domain_7class_deepseek/validation.csv`
 
 Dataset summary:
 
-- 8,000 assistant-assisted labeled YouTube comments in the raw pool
-- 5,000 selected comments in the final adaptation dataset
+- 8,000 DeepSeek AI-labeled YouTube comments in the raw pool
+- 3,991 balanced comments in the final adaptation dataset
 - 71 videos
 - balanced as far as possible without duplicating minority-class comments
 - seven target emotions

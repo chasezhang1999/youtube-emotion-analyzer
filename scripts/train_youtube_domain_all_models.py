@@ -87,12 +87,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--model", choices=choices, default="all")
     parser.add_argument(
         "--train-csv",
-        default=str(PROJECT_ROOT / "data" / "youtube_domain_7class_assistant" / "train.csv"),
+        default=str(PROJECT_ROOT / "data" / "youtube_domain_7class_deepseek" / "train.csv"),
     )
     parser.add_argument(
         "--validation-csv",
         default=str(
-            PROJECT_ROOT / "data" / "youtube_domain_7class_assistant" / "validation.csv"
+            PROJECT_ROOT / "data" / "youtube_domain_7class_deepseek" / "validation.csv"
         ),
     )
     parser.add_argument(
