@@ -25,17 +25,17 @@ if str(PROJECT_ROOT) not in sys.path:
 
 from youtube_emotion.youtube_client import fetch_top_comments
 
-BENCHMARK_PATH = PROJECT_ROOT / "experiments" / "app_per_comment_manual_labels_reviewed.csv"
+BENCHMARK_PATH = PROJECT_ROOT / "experiments" / "app_per_comment_manual_labels.csv"
 OUTPUT_PATH = PROJECT_ROOT / "experiments" / "app_per_comment_manual_labels_500.csv"
 
 VIDEO_SPECS = [
-    {"video_short": "tech_review", "video_id": "dQw4w9WgXcQ", "theme": "tech_review"},
-    {"video_short": "brand_ad_positive", "video_id": "ORdA_sS01kk", "theme": "brand_campaign"},
-    {"video_short": "food_controversy", "video_id": "CbC5LCn4O0Q", "theme": "food_controversy"},
-    {"video_short": "movie_reaction", "video_id": "JfVOs4VSpmA", "theme": "entertainment"},
-    {"video_short": "public_safety", "video_id": "V7StWnM_b7Y", "theme": "fear_psa"},
-    {"video_short": "sadness_story", "video_id": "8tPw2v_gYPE", "theme": "sadness_story"},
-    {"video_short": "surprise_launch", "video_id": "5Nr9pd_fVPE", "theme": "surprise_launch"},
+    {"video_short": "anger_brand_crisis", "video_id": "VrDWY6C1178", "theme": "anger"},
+    {"video_short": "fear_public_safety", "video_id": "O8MQV40pOtk", "theme": "fear"},
+    {"video_short": "sadness_psa", "video_id": "B2rFTbvwteo", "theme": "sadness"},
+    {"video_short": "surprise_product_fail", "video_id": "8H6jz30Im_Y", "theme": "surprise"},
+    {"video_short": "disgust_food_safety", "video_id": "--OnclX8yac", "theme": "disgust"},
+    {"video_short": "joy_trailer", "video_id": "LEjhY15eCx0", "theme": "joy"},
+    {"video_short": "brand_crisis_negative", "video_id": "JVxCp22WatU", "theme": "negative"},
 ]
 
 SYSTEM_PROMPT = """You are an emotion and sentiment annotation expert for YouTube comments.
@@ -147,13 +147,8 @@ def main() -> None:
 
     new_df = pd.DataFrame(new_rows)
 
-    # Keep only shared columns for clean merge
-    shared_cols = ["video", "video_short", "comment_index", "comment", "manual_7_emotion", "manual_3_sentiment"]
-    existing_trimmed = existing[shared_cols].copy()
-    existing_trimmed["manual_review_note"] = existing.get("manual_review_note", "")
-    existing_trimmed["manual_review_source"] = existing.get("manual_review_source", "assistant_manual_review")
-
-    combined = pd.concat([existing_trimmed, new_df], ignore_index=True)
+    # Append new rows to existing benchmark, preserving all existing columns
+    combined = pd.concat([existing, new_df], ignore_index=True)
     combined.to_csv(OUTPUT_PATH, index=False)
 
     print(f"\nDone! Total: {len(combined)} comments ({len(existing)} old + {len(new_df)} new)")
