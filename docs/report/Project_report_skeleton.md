@@ -388,8 +388,7 @@ youtube_emotion_project/
 |   |-- fine_tune_all_models.ipynb
 |   `-- testing_experiments.ipynb
 |-- experiments/
-|   |-- Experimental_results.xlsx
-|   `-- Performance_result.xlsx
+|   `-- Experimental_results.xlsx
 |-- tests/
 |-- docs/
 `-- requirements.txt
