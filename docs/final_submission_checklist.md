@@ -64,7 +64,7 @@ GroupXX_program/Python_notebooks/
 Files:
 
 ```text
-Fine_tune_Model.ipynb
+fine_tune_go_emotions_distilbert.ipynb
 Testing_Experiments.ipynb
 fine_tune_youtube_domain_all_models.ipynb
 ```
@@ -72,7 +72,7 @@ fine_tune_youtube_domain_all_models.ipynb
 Use these project files:
 
 ```text
-notebooks/Fine_tune_Model.ipynb
+notebooks/fine_tune_go_emotions_distilbert.ipynb
 notebooks/testing_experiments.ipynb
 notebooks/fine_tune_youtube_domain_all_models.ipynb
 ```
@@ -133,9 +133,7 @@ data/go_emotions_7class/test.csv
 data/youtube_domain_7class_deepseek/all.csv
 data/youtube_domain_7class_deepseek/train.csv
 data/youtube_domain_7class_deepseek/validation.csv
-data/youtube_domain_training_comments_8000_unlabeled.csv
 data/youtube_domain_training_comments_8000_deepseek_labeled.csv
-data/youtube_domain_training_comments_5000_balanced_assistant_labeled.csv
 data/sample_comments.csv
 fine_tuned_model_files/youtube-emotion-distilbert/
 fine_tuned_model_files/youtube-emotion-distilbert-domain-adapted/
@@ -283,7 +281,7 @@ GroupXX_documentation/
 
 GroupXX_program/
 |-- Python_notebooks/
-|   |-- Fine_tune_Model.ipynb
+|   |-- fine_tune_go_emotions_distilbert.ipynb
 |   |-- Testing_Experiments.ipynb
 |   `-- fine_tune_youtube_domain_all_models.ipynb
 `-- GitHub_App_Files/

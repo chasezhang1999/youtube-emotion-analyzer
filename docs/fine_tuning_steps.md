@@ -107,15 +107,15 @@ Current split sizes:
 
 | Split | Rows |
 |---|---:|
-| Train | 4,000 |
-| Validation | 1,000 |
-| All | 5,000 |
+| Train | 3,193 |
+| Validation | 798 |
+| All | 3,991 |
 
 ## Fine-Tuning Steps
 
 1. Open Colab and enable GPU.
 2. Upload or copy the project notebook:
-   - `notebooks/Fine_tune_Model.ipynb`
+   - `notebooks/fine_tune_go_emotions_distilbert.ipynb`
    - `notebooks/fine_tune_go_emotions_distilbert.ipynb` is kept as the same notebook with a descriptive filename
 3. Install training dependencies.
 4. Load the prepared CSV files.
