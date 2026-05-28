@@ -355,17 +355,40 @@ def train_one_model(spec: TrainingSpec, args: argparse.Namespace) -> dict[str, A
         trainer.model.push_to_hub(repo_id)
         tokenizer.push_to_hub(repo_id)
 
-    validation_pipe = pipeline(
-        "text-classification",
-        model=str(output_dir),
-        tokenizer=str(output_dir),
-        device=-1,
-    )
-    sample_outputs = validation_pipe(
-        validation_df["text"].head(10).astype(str).tolist(),
-        truncation=True,
-        max_length=args.max_length,
-    )
+    sample_texts = validation_df["text"].head(10).astype(str).tolist()
+    try:
+        validation_pipe = pipeline(
+            "text-classification",
+            model=str(output_dir),
+            tokenizer=str(output_dir),
+            device=-1,
+        )
+        sample_outputs = validation_pipe(
+            sample_texts,
+            truncation=True,
+            max_length=args.max_length,
+        )
+    except TypeError:
+        # DistilBERT does not accept token_type_ids; fall back to direct inference.
+        import torch
+
+        model = trainer.model
+        model.eval()
+        device = model.device
+        encodings = tokenizer(
+            sample_texts,
+            truncation=True,
+            max_length=args.max_length,
+            padding=True,
+            return_tensors="pt",
+        ).to(device)
+        with torch.no_grad():
+            logits = model(**encodings).logits
+        probs = torch.softmax(logits, dim=-1).cpu().tolist()
+        sample_outputs = [
+            {"label": ID_TO_LABEL[int(torch.argmax(torch.tensor(p)))], "score": float(max(p))}
+            for p in probs
+        ]
 
     result = {
         "spec": asdict(spec),
