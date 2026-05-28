@@ -57,7 +57,11 @@ The dashboard provides:
 
 **Supporting sentiment model:** https://huggingface.co/cardiffnlp/twitter-roberta-base-sentiment-latest
 
-The final Streamlit app defaults to the domain-adapted model because it was further trained with YouTube-domain comments. The app also includes a comparison mode that runs the same comments through three emotion models: the YouTube-domain adapted DistilBERT, the public SamLowe GoEmotions RoBERTa model, and the public j-hartmann DistilRoBERTa seven-emotion model. The original GoEmotions DistilBERT and the larger j-hartmann RoBERTa-large model remain available in the sidebar selector.
+**Alternative sentiment model (fast CPU):** https://huggingface.co/lxyuan/distilbert-base-multilingual-cased-sentiments-student
+
+**Alternative sentiment model (social media):** https://huggingface.co/finiteautomata/bertweet-base-sentiment-analysis
+
+The final Streamlit app defaults to the domain-adapted model because it was further trained with YouTube-domain comments. The app also includes a comparison mode that runs the same comments through three emotion models: the YouTube-domain adapted DistilBERT, the public SamLowe GoEmotions RoBERTa model, and the public j-hartmann DistilRoBERTa seven-emotion model. The original GoEmotions DistilBERT and the larger j-hartmann RoBERTa-large model remain available in the sidebar selector. For sentiment analysis, the app supports switching between three pre-trained models via a dropdown selector: CardiffNLP (recommended), lxyuan (fast CPU inference, multilingual), and FiniteAutomata BERTweet (robust on social media text).
 
 ## 6. App URL
 
@@ -171,7 +175,20 @@ pipeline(
 
 This supporting model gives stakeholders a simpler signal. In app testing, the three-class sentiment task was more stable than seven-emotion classification because YouTube comments are short, noisy, sarcastic, and sometimes multilingual.
 
-### 9.3 Application Pipeline
+### 9.3 Pipeline 3: Business Decision Engine
+
+Pipeline 3 uses rule-based heuristics to map predictions from Pipeline 1 (emotions) and Pipeline 2 (sentiments) to high-level strategic actions:
+
+| Rule | Condition | Decision | Risk Level |
+|---|---|---|---|
+| High Risk | Negative emotion ratio >= 40% OR Negative sentiment ratio >= 40% | Review before scaling | High |
+| Low Risk | Dominant emotion is Joy/Surprise AND Positive sentiment ratio >= 50% | Scale positive creative | Low |
+| Medium Risk (engagement) | Dominant emotion is Neutral | Improve engagement hook | Medium |
+| Medium Risk (mixed) | All other mixed signals | Monitor and review samples | Medium |
+
+The decision logic is implemented in `build_campaign_decision()` in `core.py`. It combines the seven-emotion distribution and three-class sentiment output to produce a decision label, risk level, key ratios, and recommended next actions.
+
+### 9.4 Application Pipeline
 
 ```text
 YouTube video URL
@@ -185,7 +202,7 @@ YouTube video URL
     -> Streamlit dashboard and CSV export
 ```
 
-### 9.4 Code Structure
+### 9.5 Code Structure
 
 ```text
 youtube_emotion_project/
@@ -285,7 +302,31 @@ Before the latest 5,000-row dataset refresh, the models were tested on the expan
 
 The domain-adapted DistilBERT performs best on this 1,000-sample validation split with 0.6650 accuracy, significantly ahead of the other baseline models. This supports keeping the domain-adapted model as the default project-owned model.
 
-### 11.3 Deployed App Performance
+### 11.3 Pipeline 2 Sentiment Model Comparison
+
+This section compares three pre-trained sentiment models on the YouTube-domain validation set and the 150-comment app benchmark.
+
+**YouTube-domain validation (1,000 samples):**
+
+| Model | Samples | Accuracy | Runtime w/o loading |
+|---|---:|---:|---:|
+| CardiffNLP Twitter RoBERTa | 1,000 | 0.5970 | 18.5965s |
+| lxyuan DistilBERT Multilingual | 1,000 | 0.5840 | 10.7391s |
+| FiniteAutomata BERTweet | 1,000 | 0.0000* | 14.6395s |
+
+*FiniteAutomata BERTweet uses neg/neu/pos label format which does not fully match the evaluation script's label mapping, resulting in 0 automatic accuracy. The model output is correct; manual review is recommended.
+
+**App benchmark (150 manually reviewed comments):**
+
+| Model | Matched / 150 | Accuracy | Runtime w/o loading |
+|---|---:|---:|---:|
+| CardiffNLP Twitter RoBERTa | 105 | 0.7000 | 1.9316s |
+| lxyuan DistilBERT Multilingual | 94 | 0.6267 | 0.8794s |
+| FiniteAutomata BERTweet | 0* | 0.0000* | 1.7399s |
+
+CardiffNLP performs best on the app benchmark (105/150) and provides the most stable positive / neutral / negative signal. lxyuan has the fastest inference (0.88s), making it suitable for latency-sensitive scenarios.
+
+### 11.4 Deployed App Performance
 
 The deployed app was tested on three YouTube videos. The manual benchmark uses 50 reviewed comments per video. Performance is calculated as:
 
@@ -336,7 +377,7 @@ Runtime for the deployed app workload:
 | `j-hartmann/emotion-english-roberta-large` | 150 reviewed app comments | CPU | 150 | 8.8184s | 6.8085s |
 | `cardiffnlp/twitter-roberta-base-sentiment-latest` | 150 reviewed app comments | CPU | 150 | 3.3064s | 2.0808s |
 
-### 11.4 Key Findings
+### 11.5 Key Findings
 
 - The GoEmotions fine-tuned DistilBERT improves over the pre-tuning emotion baseline on the expanded GoEmotions test set, increasing accuracy from 0.6680 to 0.7030.
 - On the refreshed 1,000-sample YouTube-domain validation split, the domain-adapted model achieved the best validation accuracy of **665/1000 (0.6650)**, validating the effectiveness of YouTube-domain adaptation.

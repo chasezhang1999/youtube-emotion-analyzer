@@ -119,21 +119,38 @@ EMOTION_MODELS = [
     ),
 ]
 
-SENTIMENT_MODEL = ModelSpec(
-    stage="supporting sentiment pipeline",
-    display_name="3-sentiment pipeline",
-    column_prefix="sentiment_pipeline",
-    model_name="cardiffnlp/twitter-roberta-base-sentiment-latest",
-    task="3-sentiment",
-    pipeline_task="sentiment-analysis",
-)
+SENTIMENT_MODELS = [
+    ModelSpec(
+        stage="supporting sentiment pipeline",
+        display_name="CardiffNLP Twitter RoBERTa",
+        column_prefix="sentiment_pipeline",
+        model_name="cardiffnlp/twitter-roberta-base-sentiment-latest",
+        task="3-sentiment",
+        pipeline_task="sentiment-analysis",
+    ),
+    ModelSpec(
+        stage="alternative sentiment model 1",
+        display_name="lxyuan DistilBERT Multilingual",
+        column_prefix="lxyuan_sentiment",
+        model_name="lxyuan/distilbert-base-multilingual-cased-sentiments-student",
+        task="3-sentiment",
+        pipeline_task="sentiment-analysis",
+    ),
+    ModelSpec(
+        stage="alternative sentiment model 2",
+        display_name="FiniteAutomata BERTweet",
+        column_prefix="bertweet_sentiment",
+        model_name="finiteautomata/bertweet-base-sentiment-analysis",
+        task="3-sentiment",
+        pipeline_task="sentiment-analysis",
+    ),
+]
 
 GO_EMOTIONS_MODEL_SELECTION = [
     EMOTION_MODELS[0],
     EMOTION_MODELS[1],
     EMOTION_MODELS[2],
-    SENTIMENT_MODEL,
-]
+] + SENTIMENT_MODELS
 
 
 def distribution_string(values: list[str]) -> str:
@@ -199,7 +216,16 @@ def run_predictions(
     label_normalizer: Callable[[str], str],
 ) -> tuple[list[tuple[str, str, float]], float]:
     predict_start = time.time()
-    outputs = pipe(texts, batch_size=16, **PIPELINE_KWARGS)
+    
+    # Determine the maximum sequence length dynamically
+    model_max_len = getattr(pipe.tokenizer, "model_max_length", 512)
+    if not model_max_len or model_max_len > 512:
+        model_max_len = 512
+        
+    local_kwargs = dict(PIPELINE_KWARGS)
+    local_kwargs["max_length"] = model_max_len
+    
+    outputs = pipe(texts, batch_size=16, **local_kwargs)
     predict_seconds = time.time() - predict_start
 
     predictions = []
@@ -287,6 +313,7 @@ def update_wide_manual_file(
     manual_df: pd.DataFrame,
     detail_df: pd.DataFrame,
     specs: list[ModelSpec],
+    sentiment_specs: list[ModelSpec],
 ) -> pd.DataFrame:
     updated = manual_df.copy()
 
@@ -310,11 +337,13 @@ def update_wide_manual_file(
         updated[f"{spec.column_prefix}_7_score"] = scores
         updated[f"{spec.column_prefix}_7_match"] = matches
 
-    sentiment_rows = detail_df[
-        (detail_df["model_name"] == SENTIMENT_MODEL.model_name)
-        & (detail_df["evaluation_task"] == "3-sentiment")
-    ].sort_values(["video_short", "comment_index"])
-    if not sentiment_rows.empty:
+    for spec in sentiment_specs:
+        sentiment_rows = detail_df[
+            (detail_df["model_name"] == spec.model_name)
+            & (detail_df["evaluation_task"] == "3-sentiment")
+        ].sort_values(["video_short", "comment_index"])
+        if sentiment_rows.empty:
+            continue
         lookup = sentiment_rows.set_index(["video_short", "comment_index"])
         labels, scores, matches = [], [], []
         for row in updated.itertuples(index=False):
@@ -323,9 +352,14 @@ def update_wide_manual_file(
             scores.append(pred_row["prediction_score"])
             matches.append(pred_row["match"])
 
-        updated["sentiment_pipeline_3"] = labels
-        updated["sentiment_pipeline_3_score"] = scores
-        updated["sentiment_3_match"] = matches
+        col_lbl = "sentiment_pipeline_3" if spec.column_prefix == "sentiment_pipeline" else f"{spec.column_prefix}_3"
+        col_scr = "sentiment_pipeline_3_score" if spec.column_prefix == "sentiment_pipeline" else f"{spec.column_prefix}_3_score"
+        col_mtch = "sentiment_3_match" if spec.column_prefix == "sentiment_pipeline" else f"{spec.column_prefix}_3_match"
+
+        updated[col_lbl] = labels
+        updated[col_scr] = scores
+        updated[col_mtch] = matches
+
     return updated
 
 
@@ -333,9 +367,10 @@ def make_app_5model_summary(
     app_summary: pd.DataFrame,
     runtime_df: pd.DataFrame,
     specs: list[ModelSpec],
+    sentiment_specs: list[ModelSpec],
 ) -> pd.DataFrame:
     runtime_lookup = runtime_df.set_index("model_name")
-    display_lookup = {spec.model_name: spec.display_name for spec in specs + [SENTIMENT_MODEL]}
+    display_lookup = {spec.model_name: spec.display_name for spec in specs + sentiment_specs}
 
     rows = []
     for row in app_summary.itertuples(index=False):
@@ -372,7 +407,7 @@ def main() -> None:
     app_detail_rows: list[dict[str, Any]] = []
     app_runtime_rows: list[dict[str, Any]] = []
 
-    all_specs = EMOTION_MODELS + [SENTIMENT_MODEL]
+    all_specs = EMOTION_MODELS + SENTIMENT_MODELS
 
     for spec in all_specs:
         print(f"Loading {spec.stage}: {spec.model_name}", flush=True)
@@ -498,8 +533,9 @@ def main() -> None:
         app_summary=app_summary_df,
         runtime_df=app_runtime_df,
         specs=EMOTION_MODELS,
+        sentiment_specs=SENTIMENT_MODELS,
     )
-    updated_manual_df = update_wide_manual_file(manual_df, app_detail_df, EMOTION_MODELS)
+    updated_manual_df = update_wide_manual_file(manual_df, app_detail_df, EMOTION_MODELS, SENTIMENT_MODELS)
     revision_df = pd.DataFrame(revision_rows)
 
     model_selection_df.to_csv(MODEL_SELECTION_PATH, index=False)

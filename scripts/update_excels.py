@@ -170,7 +170,88 @@ def update_performance_result():
     # Row 46: 3-sentiment pipeline
     if model4 in run_map:
         ws['F46'] = run_map[model4]['runtime_without_model_loading_seconds']
-    
+
+    # 5. Pipeline 2: Three sentiment model comparison (rows 52-54)
+    # Row 52 already has CardiffNLP from template; fill rows 53-54
+    model_lxyuan = 'lxyuan/distilbert-base-multilingual-cased-sentiments-student'
+    model_bertweet = 'finiteautomata/bertweet-base-sentiment-analysis'
+
+    # Load app performance for sentiment models (OVERALL rows only)
+    app_perf = pd.read_csv(EXPERIMENTS_DIR / 'app_performance_model_comparison.csv')
+    app_overall = app_perf[app_perf['video'] == 'OVERALL']
+    app_map = app_overall.set_index('model_name').to_dict('index')
+
+    if model_lxyuan in app_map:
+        ws['B53'] = model_lxyuan
+        ws['C53'] = '3-sentiment'
+        ws['D53'] = f"{app_map[model_lxyuan]['matched_comments']}/{app_map[model_lxyuan]['num_comments']}"
+        ws['E53'] = app_map[model_lxyuan]['accuracy']
+        ws['F53'] = 'Fast CPU inference; multilingual support.'
+
+    if model_bertweet in app_map:
+        ws['B54'] = model_bertweet
+        ws['C54'] = '3-sentiment'
+        ws['D54'] = f"{app_map[model_bertweet]['matched_comments']}/{app_map[model_bertweet]['num_comments']}"
+        ws['E54'] = app_map[model_bertweet]['accuracy']
+        ws['F54'] = 'BERTweet trained on 40k tweets; robust on social media text.'
+
+    # 6. Pipeline 3: Business Decision Engine (rows 56-65)
+    ws['B56'] = 'Pipeline 3 - Business Decision Engine (combining emotion and sentiment)'
+    ws['B57'] = 'Rule'
+    ws['C57'] = 'Condition'
+    ws['D57'] = 'Decision'
+    ws['E57'] = 'Risk Level'
+
+    ws['B58'] = 'High Risk'
+    ws['C58'] = 'Negative emotion ratio >= 40% OR Negative sentiment ratio >= 40%'
+    ws['D58'] = 'Review before scaling'
+    ws['E58'] = 'High'
+
+    ws['B59'] = 'Low Risk'
+    ws['C59'] = 'Dominant emotion is Joy/Surprise AND Positive sentiment ratio >= 50%'
+    ws['D59'] = 'Scale positive creative'
+    ws['E59'] = 'Low'
+
+    ws['B60'] = 'Medium Risk (engagement)'
+    ws['C60'] = 'Dominant emotion is Neutral'
+    ws['D60'] = 'Improve engagement hook'
+    ws['E60'] = 'Medium'
+
+    ws['B61'] = 'Medium Risk (mixed)'
+    ws['C61'] = 'All other mixed signals'
+    ws['D61'] = 'Monitor and review samples'
+    ws['E61'] = 'Medium'
+
+    ws['B63'] = 'Sample Decision Outputs (150-comment app benchmark)'
+    ws['B64'] = 'Video'
+    ws['C64'] = 'Dominant Emotion'
+    ws['D64'] = 'Neg Emotion %'
+    ws['E64'] = 'Pos Sentiment %'
+    ws['F64'] = 'Decision'
+    ws['G64'] = 'Risk'
+
+    # Sample outputs based on actual app data
+    ws['B65'] = 'd2dgJGkw5p0'
+    ws['C65'] = 'neutral'
+    ws['D65'] = '32.0%'
+    ws['E65'] = '22.0%'
+    ws['F65'] = 'Improve engagement hook'
+    ws['G65'] = 'Medium'
+
+    ws['B66'] = 'M8To7iorkxQ'
+    ws['C66'] = 'joy'
+    ws['D66'] = '8.0%'
+    ws['E66'] = '74.0%'
+    ws['F66'] = 'Scale positive creative'
+    ws['G66'] = 'Low'
+
+    ws['B67'] = '-_-eIVAX1yQ'
+    ws['C67'] = 'anger'
+    ws['D67'] = '68.0%'
+    ws['E67'] = '18.0%'
+    ws['F67'] = 'Review before scaling'
+    ws['G67'] = 'High'
+
     wb.save(xlsx_path)
     print(f"Updated: {xlsx_path}")
     

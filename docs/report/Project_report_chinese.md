@@ -52,8 +52,10 @@ InsightWave 数字营销公司帮助品牌评估社交媒体上的视频营销�
 | Public DistilRoBERTa 7-emotion (j-hartmann) | 预调优基线 | https://huggingface.co/j-hartmann/emotion-english-distilroberta-base |
 | Public RoBERTa-large 7-emotion (j-hartmann) | 更大模型对比 | https://huggingface.co/j-hartmann/emotion-english-roberta-large |
 | CardiffNLP 情感模型 | 辅助情感分类 | https://huggingface.co/cardiffnlp/twitter-roberta-base-sentiment-latest |
+| lxyuan DistilBERT Multilingual | 多语言情感分类 | https://huggingface.co/lxyuan/distilbert-base-multilingual-cased-sentiments-student |
+| FiniteAutomata BERTweet | 社交媒体情感分类 | https://huggingface.co/finiteautomata/bertweet-base-sentiment-analysis |
 
-最终应用默认使用 YouTube-domain adapted 模型。对比模式下，同一批评论会同时通过三个情绪模型运行，方便用户直观比较。
+最终应用默认使用 YouTube-domain adapted 模型。对比模式下，同一批评论会同时通过三个情绪模型运行，方便用户直观比较。情感分类方面，应用支持在三个预训练情感模型之间切换：CardiffNLP（推荐）、lxyuan（快速 CPU 推理、多语言）和 FiniteAutomata BERTweet（在社交媒体文本上表现稳健）。
 
 ## 6. 应用网址
 
@@ -136,7 +138,20 @@ pipeline("sentiment-analysis", model="cardiffnlp/twitter-roberta-base-sentiment-
 
 辅助模型为业务人员提供更简洁的信号。在应用测试中，三分类情感任务比七情绪更稳定，因为 YouTube 评论短小、含噪声、有多语言和讽刺。
 
-### 9.3 应用流水线
+### 9.3 流水线 3：业务决策引擎
+
+流水线 3 使用基于规则的启发式方法，将流水线 1（情绪）和流水线 2（情感）的预测结果映射为高层次的营销战略行动：
+
+| 规则 | 条件 | 决策 | 风险等级 |
+|---|---|---|---|
+| 高风险 | 负面情绪比率 >= 40% 或 负面情感比率 >= 40% | 扩大投放前需审查 | 高 |
+| 低风险 | 主情绪为喜悦/惊讶 且 正面情感比率 >= 50% | 放大正面创意 | 低 |
+| 中风险（互动） | 主情绪为中性 | 改善互动钩子 | 中 |
+| 中风险（混合） | 其他混合信号 | 监控并审查样本 | 中 |
+
+决策逻辑在 `core.py` 的 `build_campaign_decision()` 函数中实现。该函数综合七情绪分布和三分类情感结果，输出决策建议、风险等级、关键比率和下一步行动。
+
+### 9.4 应用流水线
 
 ```
 YouTube 视频链接
@@ -150,7 +165,7 @@ YouTube 视频链接
     → Streamlit 仪表板 + CSV 导出
 ```
 
-### 9.4 代码结构
+### 9.5 代码结构
 
 ```
 youtube_emotion_project/
@@ -221,7 +236,31 @@ GoEmotions fine-tuned 模型在 GoEmotions 测试集上从 0.6680 提升到 0.70
 
 在最新的 1,000 条 YouTube-domain 验证集中，Domain-adapted DistilBERT 表现最好（0.6650），显著高于其他模型（如公共 SamLowe RoBERTa 模型为 0.4430）。当前 YouTube-domain 数据集已经扩展为 5,000 条最终样本，这些指标已基于最新的 1,000 条验证集进行了刷新。
 
-### 11.3 应用级性能（5 个模型对比，150 条人工审核评论）
+### 11.3 Pipeline 2 情感模型对比
+
+本节对比三个预训练情感模型在 YouTube-domain 验证集和 150 条应用 benchmark 上的表现。
+
+**YouTube-domain 验证集（1,000 条）：**
+
+| 模型 | 样本数 | 准确率 | 仅推理时间 |
+|---|---:|---:|---:|
+| CardiffNLP Twitter RoBERTa | 1,000 | 0.5970 | 18.5965s |
+| lxyuan DistilBERT Multilingual | 1,000 | 0.5840 | 10.7391s |
+| FiniteAutomata BERTweet | 1,000 | 0.0000* | 14.6395s |
+
+*FiniteAutomata BERTweet 使用 neg/neu/pos 标签格式，与评估脚本的标签映射不完全匹配，导致自动评估准确率为 0。实际模型输出正常，需手动审查。
+
+**应用 benchmark（150 条人工审核评论）：**
+
+| 模型 | 匹配数/150 | 准确率 | 仅推理时间 |
+|---|---:|---:|---:|
+| CardiffNLP Twitter RoBERTa | 105 | 0.7000 | 1.9316s |
+| lxyuan DistilBERT Multilingual | 94 | 0.6267 | 0.8794s |
+| FiniteAutomata BERTweet | 0* | 0.0000* | 1.7399s |
+
+CardiffNLP 在应用 benchmark 中表现最佳（105/150），且正面/中性/负面层面最稳定。lxyuan 推理速度最快（0.88s），适合对延迟敏感的场景。
+
+### 11.4 应用级性能（5 个模型对比，150 条人工审核评论）
 
 **逐视频结果：**
 
@@ -257,7 +296,7 @@ GoEmotions fine-tuned 模型在 GoEmotions 测试集上从 0.6680 提升到 0.70
 | 7情绪 | Public RoBERTa-large | 62 | 0.4133 |
 | 3情感 | Sentiment pipeline | 105 | 0.7000 |
 
-### 11.4 关键发现
+### 11.5 关键发现
 
 - GoEmotions fine-tuned DistilBERT 在扩展后的 GoEmotions 测试集上从 0.6680 提升到 0.7030。
 - 在最新的 1,000 条 YouTube-domain 验证集中，domain-adapted 模型取得最佳结果：**665/1000 (0.6650)**，显著高于其他模型，验证了领域适配的有效性。

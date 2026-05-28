@@ -25,6 +25,11 @@ DEFAULT_SENTIMENT_MODEL = getattr(
     "DEFAULT_SENTIMENT_MODEL",
     "cardiffnlp/twitter-roberta-base-sentiment-latest",
 )
+SENTIMENT_MODEL_OPTIONS = {
+    "CardiffNLP Twitter RoBERTa (recommended)": "cardiffnlp/twitter-roberta-base-sentiment-latest",
+    "lxyuan DistilBERT Multilingual": "lxyuan/distilbert-base-multilingual-cased-sentiments-student",
+    "FiniteAutomata BERTweet": "finiteautomata/bertweet-base-sentiment-analysis",
+}
 EMOTION_MODEL_OPTIONS = getattr(
     model_runner,
     "EMOTION_MODEL_OPTIONS",
@@ -421,10 +426,13 @@ def main() -> None:
         for label, model_name in selected_emotion_models.items():
             st.caption(f"{label}: `{model_name}`")
 
-        sentiment_model = st.text_input(
+        sentiment_model_label = st.selectbox(
             "Sentiment model",
-            value=DEFAULT_SENTIMENT_MODEL,
+            options=list(SENTIMENT_MODEL_OPTIONS.keys()),
+            index=0,
+            help="Sentiment analysis baseline model for Pipeline 2.",
         )
+        sentiment_model = SENTIMENT_MODEL_OPTIONS[sentiment_model_label]
         comment_order = st.selectbox("Comment order", ["relevance", "time"], index=0)
         use_sample_comments = st.checkbox(
             "Use sample comments",

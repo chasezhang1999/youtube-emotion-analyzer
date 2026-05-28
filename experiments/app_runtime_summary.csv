@@ -1,9 +1,11 @@
 model_name,dataset,device,num_comments,runtime_with_model_loading_seconds,runtime_without_model_loading_seconds,notes
-j-hartmann/emotion-english-distilroberta-base,150 reviewed Streamlit app comments,CPU,150,2.4741,1.1386,pre-tuning public baseline
-chase1zhang/youtube-emotion-distilbert,150 reviewed Streamlit app comments,CPU,150,0.9543,0.8515,GoEmotions fine-tuned DistilBERT
-chase1zhang/youtube-emotion-distilbert-domain-adapted,150 reviewed Streamlit app comments,CPU,150,0.901,0.8547,YouTube-domain adapted DistilBERT
-SamLowe/roberta-base-go_emotions,150 reviewed Streamlit app comments,CPU,150,2.8756,1.945,public GoEmotions RoBERTa
-j-hartmann/emotion-english-roberta-large,150 reviewed Streamlit app comments,CPU,150,8.2112,6.8108,public RoBERTa-large seven-emotion
-chase1zhang/youtube-emotion-samlowe-roberta-domain-adapted,150 reviewed Streamlit app comments,CPU,150,2.1098,1.9588,YouTube-domain adapted RoBERTa
-chase1zhang/youtube-emotion-jhartmann-distilroberta-domain-adapted,150 reviewed Streamlit app comments,CPU,150,1.0728,0.979,YouTube-domain adapted DistilRoBERTa
-cardiffnlp/twitter-roberta-base-sentiment-latest,150 reviewed Streamlit app comments,CPU,150,2.9998,1.8761,supporting sentiment pipeline
+j-hartmann/emotion-english-distilroberta-base,150 reviewed Streamlit app comments,CPU,150,2.2592,0.9759,pre-tuning public baseline
+chase1zhang/youtube-emotion-distilbert,150 reviewed Streamlit app comments,CPU,150,1.0139,0.8977,GoEmotions fine-tuned DistilBERT
+chase1zhang/youtube-emotion-distilbert-domain-adapted,150 reviewed Streamlit app comments,CPU,150,0.9656,0.8952,YouTube-domain adapted DistilBERT
+SamLowe/roberta-base-go_emotions,150 reviewed Streamlit app comments,CPU,150,2.9093,2.0221,public GoEmotions RoBERTa
+j-hartmann/emotion-english-roberta-large,150 reviewed Streamlit app comments,CPU,150,7.795,6.463,public RoBERTa-large seven-emotion
+chase1zhang/youtube-emotion-samlowe-roberta-domain-adapted,150 reviewed Streamlit app comments,CPU,150,1.9926,1.8465,YouTube-domain adapted RoBERTa
+chase1zhang/youtube-emotion-jhartmann-distilroberta-domain-adapted,150 reviewed Streamlit app comments,CPU,150,1.1502,1.0414,YouTube-domain adapted DistilRoBERTa
+cardiffnlp/twitter-roberta-base-sentiment-latest,150 reviewed Streamlit app comments,CPU,150,3.0461,1.9316,supporting sentiment pipeline
+lxyuan/distilbert-base-multilingual-cased-sentiments-student,150 reviewed Streamlit app comments,CPU,150,2.0837,0.8794,alternative sentiment model 1
+finiteautomata/bertweet-base-sentiment-analysis,150 reviewed Streamlit app comments,CPU,150,3.1519,1.7399,alternative sentiment model 2
