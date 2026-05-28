@@ -473,7 +473,7 @@ The domain-adapted DistilBERT performs best among DistilBERT-family models on th
 
 ### 11.3 Pipeline 2 Sentiment Model Comparison
 
-This section compares three pre-trained sentiment models on the YouTube-domain validation set and the 150-comment app benchmark.
+This section compares three pre-trained sentiment models on the YouTube-domain validation set and the 500-comment app benchmark.
 
 **YouTube-domain validation (1,000 samples):**
 
@@ -574,7 +574,7 @@ The YouTube-domain adaptation dataset reduces this gap. The raw pool contains 8,
 
 This project demonstrates how transformer-based text classification can support digital marketing decisions. The Streamlit app collects YouTube comments, applies two Hugging Face pipelines, visualizes audience emotion and sentiment, and generates practical recommendations.
 
-The experimental results show that fine-tuning improves performance on the original GoEmotions benchmark, and that domain adaptation with balanced YouTube data gives the strongest project-owned model on YouTube-domain validation. The public SamLowe RoBERTa model is the best app-benchmark comparator, while the YouTube-domain adapted DistilBERT remains the final default model because it is compact, project-owned, and strongest on the dedicated YouTube validation split. The supporting sentiment model performs best at the broad positive / neutral / negative level (105/150), and the seven-emotion model adds more detailed diagnostic insight. Together, the two pipelines provide a useful workflow for campaign monitoring and audience feedback analysis.
+The experimental results show that fine-tuning improves performance on the original GoEmotions benchmark, and that domain adaptation with balanced YouTube data gives the strongest project-owned model on YouTube-domain validation. The public SamLowe RoBERTa model is the best app-benchmark comparator, while the YouTube-domain adapted DistilBERT remains the final default model because it is compact, project-owned, and strongest on the dedicated YouTube validation split. The supporting sentiment model performs best at the broad positive / neutral / negative level (334/500), and the seven-emotion model adds more detailed diagnostic insight. Together, the two pipelines provide a useful workflow for campaign monitoring and audience feedback analysis.
 
 ## 15. Submission Checklist
 

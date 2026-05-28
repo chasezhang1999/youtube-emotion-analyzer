@@ -18,7 +18,7 @@ Nike's marketing team needs to understand whether YouTube campaign videos genera
 - ✅ GitHub repository pushed
 - ✅ Streamlit Cloud app deployed and tested
 - ✅ Experimental results workbook prepared
-- ✅ 150-comment app benchmark manually reviewed and refreshed
+- ✅ 500-comment app benchmark (150 manually reviewed + 350 DeepSeek-labeled)
 - ✅ Report screenshots captured
 - ✅ Draft report PDF generated
 - ✅ Three-model Streamlit comparison mode added
