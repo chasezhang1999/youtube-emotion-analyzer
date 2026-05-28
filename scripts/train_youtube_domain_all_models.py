@@ -9,6 +9,12 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
 
+# Workaround for Hugging Face datasets torchvision import bug in Colab
+try:
+    import datasets.config as datasets_config
+    datasets_config.TORCHVISION_AVAILABLE = False
+except ImportError:
+    pass
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
