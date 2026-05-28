@@ -1,10 +1,10 @@
 # YouTube Audience Emotion Analyzer
 
-ISOM5240 Group Project — Deep learning business application for a digital marketing agency.
+ISOM5240 Group Project — Deep learning business application for Nike's YouTube marketing analytics.
 
 ## Business Scenario
 
-InsightWave Digital Marketing Agency helps brands understand whether YouTube campaign videos generate the intended audience reaction. This app classifies the first 100 YouTube comments into seven emotions, runs a sentiment pipeline, and adds a decision pipeline for campaign actions.
+Nike's marketing team needs to understand whether YouTube campaign videos generate the intended audience reaction. This app classifies the first 100 YouTube comments into seven emotions, runs a sentiment pipeline, and adds a decision pipeline for campaign actions.
 
 ## Project Status
 

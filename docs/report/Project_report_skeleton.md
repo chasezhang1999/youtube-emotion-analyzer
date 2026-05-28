@@ -10,15 +10,17 @@
 
 ## 2. Company Name and Website URL
 
-**Company:** InsightWave Digital Marketing Agency (course project scenario)
+**Company:** Nike, Inc.
 
-**Website / application URL:** https://youtube-emotion-analyzer.streamlit.app/
+**Website:** https://www.nike.com
 
-InsightWave Digital Marketing Agency helps brands evaluate video campaigns and audience engagement on social media. YouTube comments contain useful customer reactions, but manually reading comments is slow, subjective, and difficult to scale. This project builds a deep learning application that summarizes the main emotions in YouTube comments and turns them into practical marketing recommendations.
+**Application URL:** https://youtube-emotion-analyzer.streamlit.app/
+
+Nike runs large-scale YouTube marketing campaigns for product launches, athlete partnerships, and brand advertising. YouTube comments contain useful customer reactions, but manually reading comments is slow, subjective, and difficult to scale. This project builds a deep learning application that summarizes the main emotions in YouTube comments and turns them into practical marketing recommendations for Nike's digital marketing team.
 
 ## 3. Project Objective
 
-This project helps a digital marketing agency classify the first 100 comments under a YouTube video into seven emotions, summarize campaign reaction, flag negative feedback risk, and generate actionable recommendations for content and messaging improvement.
+This project helps Nike classify the first 100 comments under a YouTube video into seven emotions, summarize campaign reaction, flag negative feedback risk, and generate actionable recommendations for content and messaging improvement.
 
 ## 4. Strategy
 
@@ -88,9 +90,9 @@ The raw GoEmotions dataset is multi-label. For this project, it was filtered to 
 
 | Split | Samples | Class balance |
 |---|---:|---|
-| Train | 5,000 | Stratified; capped by available minority-class rows |
-| Validation | 406 | 58 per class |
-| Test | 1,000 | Stratified; capped by available minority-class rows |
+| Train | 17,166 | Stratified; capped by available minority-class rows |
+| Validation | 2,105 | Stratified |
+| Test | 2,160 | Stratified; capped by available minority-class rows |
 
 Preprocessing steps:
 
@@ -115,13 +117,13 @@ YouTube-domain label distribution:
 
 | Label | Count |
 |---|---:|
-| anger | 905 |
-| disgust | 505 |
-| fear | 608 |
-| joy | 904 |
-| neutral | 904 |
-| sadness | 802 |
-| surprise | 372 |
+| anger | 714 |
+| disgust | 292 |
+| fear | 201 |
+| joy | 714 |
+| neutral | 714 |
+| sadness | 714 |
+| surprise | 642 |
 
 Prepared files:
 
@@ -129,14 +131,12 @@ Prepared files:
 - `data/youtube_domain_7class_deepseek/train.csv`
 - `data/youtube_domain_7class_deepseek/validation.csv`
 - `data/youtube_domain_training_comments_8000_deepseek_labeled.csv`
-- `docs/youtube_domain_annotation_guide.md`
 
 ### 8.3 Manual App Testing Dataset
 
 The deployed app was evaluated on three YouTube videos with 50 manually reviewed comments per video, for 150 comments in total. This benchmark remains separate from the YouTube-domain adaptation training data. The production app now retrieves up to 100 comments per video, but the app-level accuracy table below is based on the manually reviewed 150-comment benchmark. A second assistant manual review was completed on May 27, 2026; 23 labels were revised to better handle sarcasm, humor, pride, and threat/concern cues. The reviewed benchmark is stored in:
 
 - `experiments/app_per_comment_manual_labels.csv`
-- `experiments/app_per_comment_manual_labels_reviewed.csv`
 
 ## 9. Model
 
@@ -388,11 +388,11 @@ Runtime for the deployed app workload:
 
 ## 12. Business Interpretation
 
-For a digital marketing agency, the most useful output is not only the exact per-comment label but also the campaign-level pattern:
+For Nike's marketing team, the most useful output is not only the exact per-comment label but also the campaign-level pattern:
 
-- If joy and surprise dominate, the campaign is likely generating positive excitement. The agency can continue similar storytelling, tone, and creative direction.
-- If neutral dominates, the video may be informative but not emotionally engaging. The agency can improve the hook, call to action, or emotional framing.
-- If anger, disgust, fear, or sadness rise above 40%, the agency should review comment themes manually and consider messaging changes before scaling the campaign.
+- If joy and surprise dominate, the campaign is likely generating positive excitement. Nike's team can continue similar storytelling, tone, and creative direction.
+- If neutral dominates, the video may be informative but not emotionally engaging. Nike's team can improve the hook, call to action, or emotional framing.
+- If anger, disgust, fear, or sadness rise above 40%, Nike's team should review comment themes manually and consider messaging changes before scaling the campaign.
 - If the seven-emotion model and three-class sentiment model disagree, the team should treat the output as a signal for manual review instead of an automatic decision.
 
 The final app is therefore a decision-support tool. It reduces the manual workload of comment reading and helps marketing teams quickly identify whether a video is generating enthusiasm, indifference, or reputational risk.
@@ -401,7 +401,7 @@ The final app is therefore a decision-support tool. It reduces the manual worklo
 
 The main limitation is domain shift. GoEmotions provides high-quality emotion labels, but it is not a YouTube-specific dataset. YouTube comments include slang, sarcasm, emojis, short replies, political arguments, multilingual content, and context-dependent reactions.
 
-The YouTube-domain adaptation dataset reduces this gap. The latest data refresh expands the raw pool to 8,000 YouTube comments and selects a 5,000-comment balanced-as-possible adaptation set; remaining minority-class imbalance is handled with class-weighted loss during training. Future work should:
+The YouTube-domain adaptation dataset reduces this gap. The raw pool contains 8,000 YouTube comments, and the final adaptation set selects 3,991 balanced comments; remaining minority-class imbalance is handled with class-weighted loss during training. Future work should:
 
 1. Collect more manually verified YouTube comments.
 2. Balance the domain dataset across all seven emotion classes.
