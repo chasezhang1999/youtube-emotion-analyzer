@@ -8,6 +8,8 @@ DEFAULT_SENTIMENT_MODEL = "cardiffnlp/twitter-roberta-base-sentiment-latest"
 
 EMOTION_MODEL_OPTIONS = {
     "YouTube-domain adapted DistilBERT (recommended)": DEFAULT_EMOTION_MODEL,
+    "YouTube-domain adapted RoBERTa (SamLowe)": "chase1zhang/youtube-emotion-samlowe-roberta-domain-adapted",
+    "YouTube-domain adapted DistilRoBERTa (j-hartmann)": "chase1zhang/youtube-emotion-jhartmann-distilroberta-domain-adapted",
     "GoEmotions DistilBERT (previous fine-tuned)": "chase1zhang/youtube-emotion-distilbert",
     "Public GoEmotions RoBERTa (SamLowe)": "SamLowe/roberta-base-go_emotions",
     "Public DistilRoBERTa 7-emotion (j-hartmann)": "j-hartmann/emotion-english-distilroberta-base",
@@ -16,8 +18,8 @@ EMOTION_MODEL_OPTIONS = {
 
 DEFAULT_COMPARISON_MODEL_LABELS = [
     "YouTube-domain adapted DistilBERT (recommended)",
-    "Public GoEmotions RoBERTa (SamLowe)",
-    "Public DistilRoBERTa 7-emotion (j-hartmann)",
+    "YouTube-domain adapted RoBERTa (SamLowe)",
+    "YouTube-domain adapted DistilRoBERTa (j-hartmann)",
 ]
 
 PIPELINE_KWARGS = {"truncation": True, "return_token_type_ids": False}

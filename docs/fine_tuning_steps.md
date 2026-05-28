@@ -94,9 +94,10 @@ Prepared files:
 
 Dataset summary:
 
-- 2,962 YouTube comments
-- 30 videos
-- up to 100 top-level comments per video
+- 8,000 assistant-assisted labeled YouTube comments in the raw pool
+- 5,000 selected comments in the final adaptation dataset
+- 71 videos
+- balanced as far as possible without duplicating minority-class comments
 - seven target emotions
 - assistant-assisted labels
 - used only for domain adaptation
@@ -106,9 +107,9 @@ Current split sizes:
 
 | Split | Rows |
 |---|---:|
-| Train | 2,370 |
-| Validation | 592 |
-| All | 2,962 |
+| Train | 4,000 |
+| Validation | 1,000 |
+| All | 5,000 |
 
 ## Fine-Tuning Steps
 

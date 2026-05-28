@@ -101,6 +101,22 @@ EMOTION_MODELS = [
         task="7-emotion",
         pipeline_task="text-classification",
     ),
+    ModelSpec(
+        stage="YouTube-domain adapted RoBERTa",
+        display_name="YouTube-domain adapted RoBERTa (SamLowe)",
+        column_prefix="samlowe_roberta_adapted",
+        model_name="chase1zhang/youtube-emotion-samlowe-roberta-domain-adapted",
+        task="7-emotion",
+        pipeline_task="text-classification",
+    ),
+    ModelSpec(
+        stage="YouTube-domain adapted DistilRoBERTa",
+        display_name="YouTube-domain adapted DistilRoBERTa (j-hartmann)",
+        column_prefix="jhartmann_distilroberta_adapted",
+        model_name="chase1zhang/youtube-emotion-jhartmann-distilroberta-domain-adapted",
+        task="7-emotion",
+        pipeline_task="text-classification",
+    ),
 ]
 
 SENTIMENT_MODEL = ModelSpec(
@@ -279,6 +295,8 @@ def update_wide_manual_file(
             (detail_df["model_name"] == spec.model_name)
             & (detail_df["evaluation_task"] == "7-emotion")
         ].sort_values(["video_short", "comment_index"])
+        if model_rows.empty:
+            continue
         lookup = model_rows.set_index(["video_short", "comment_index"])
         labels, scores, matches = [], [], []
 
@@ -296,17 +314,18 @@ def update_wide_manual_file(
         (detail_df["model_name"] == SENTIMENT_MODEL.model_name)
         & (detail_df["evaluation_task"] == "3-sentiment")
     ].sort_values(["video_short", "comment_index"])
-    lookup = sentiment_rows.set_index(["video_short", "comment_index"])
-    labels, scores, matches = [], [], []
-    for row in updated.itertuples(index=False):
-        pred_row = lookup.loc[(row.video_short, int(row.comment_index))]
-        labels.append(pred_row["predicted_label"])
-        scores.append(pred_row["prediction_score"])
-        matches.append(pred_row["match"])
+    if not sentiment_rows.empty:
+        lookup = sentiment_rows.set_index(["video_short", "comment_index"])
+        labels, scores, matches = [], [], []
+        for row in updated.itertuples(index=False):
+            pred_row = lookup.loc[(row.video_short, int(row.comment_index))]
+            labels.append(pred_row["predicted_label"])
+            scores.append(pred_row["prediction_score"])
+            matches.append(pred_row["match"])
 
-    updated["sentiment_pipeline_3"] = labels
-    updated["sentiment_pipeline_3_score"] = scores
-    updated["sentiment_3_match"] = matches
+        updated["sentiment_pipeline_3"] = labels
+        updated["sentiment_pipeline_3_score"] = scores
+        updated["sentiment_3_match"] = matches
     return updated
 
 
@@ -360,7 +379,11 @@ def main() -> None:
         normalizer = (
             normalize_emotion_label if spec.task == "7-emotion" else normalize_sentiment_label
         )
-        pipe, load_seconds, metadata = load_pipeline(spec.model_name, spec.pipeline_task)
+        try:
+            pipe, load_seconds, metadata = load_pipeline(spec.model_name, spec.pipeline_task)
+        except Exception as exc:
+            print(f"Skipping model {spec.model_name} due to load error: {exc}", flush=True)
+            continue
         revision_rows.append(
             {
                 **metadata,
@@ -420,7 +443,7 @@ def main() -> None:
                 predictions=predicted_labels,
                 load_seconds=load_seconds,
                 predict_seconds=predict_seconds,
-                notes=f"{spec.stage}; refreshed on expanded 592-comment validation split",
+                notes=f"{spec.stage}; refreshed on current YouTube-domain validation split",
             )
         )
 

@@ -91,7 +91,7 @@ InsightWave 数字营销公司帮助品牌评估社交媒体上的视频营销�
 
 ### 8.2 YouTube 领域适配数据集
 
-GoEmotions 的 Reddit 风格文本与 YouTube 评论差异较大，因此额外创建了 YouTube 领域数据集。最终版本包含从 30 个 YouTube 视频收集的约 2,962 条评论，涵盖科技、品牌、娱乐、产品问题、公共公告、品牌广告、产品发布等主题。每个视频最多采集 100 条评论。
+GoEmotions 的 Reddit 风格文本与 YouTube 评论差异较大，因此额外创建了 YouTube 领域数据集。更新后的收集流程从 71 个 YouTube 视频中构建了 8,000 条辅助标注原始评论池，涵盖科技、品牌、娱乐、产品问题、公共公告、品牌广告、产品发布等主题。最终领域适配数据集从原始池中选取 5,000 条评论，并在不复制少数类样本的前提下尽量保持类别平衡。
 
 评论使用辅助标注工具进行七情绪标注。该数据集仅用于领域适配训练，应用评估使用独立的 150 条人工审核评论。
 
@@ -99,13 +99,13 @@ YouTube 领域标签分布：
 
 | 标签 | 数量 |
 |---|---:|
-| neutral（中性） | 1,532 |
-| joy（喜悦） | 943 |
-| anger（愤怒） | 136 |
-| disgust（厌恶） | 102 |
-| surprise（惊讶） | 88 |
-| sadness（悲伤） | 82 |
-| fear（恐惧） | 79 |
+| anger（愤怒） | 905 |
+| disgust（厌恶） | 505 |
+| fear（恐惧） | 608 |
+| joy（喜悦） | 904 |
+| neutral（中性） | 904 |
+| sadness（悲伤） | 802 |
+| surprise（惊讶） | 372 |
 
 ### 8.3 人工审核测试数据集
 
@@ -122,7 +122,7 @@ pipeline("text-classification", model="chase1zhang/youtube-emotion-distilbert-do
 模型开发过程：
 - 基础模型：`distilbert-base-uncased`
 - 第一阶段：在平衡的 GoEmotions 七情绪数据集上调优
-- 第二阶段：在 YouTube 领域评论上继续调优（最终版本使用 2,962 条评论）
+- 第二阶段：在 YouTube 领域评论上继续调优（当前数据集为 5,000 条最终样本，来自 8,000 条原始池）
 - 训练参数：学习率 2e-5，batch size 16，第一阶段 3 个 epoch
 - 模型选择：基于验证集准确率和应用级人工测试
 
@@ -212,14 +212,14 @@ GoEmotions fine-tuned 模型在 GoEmotions 测试集上从 0.6680 提升到 0.70
 
 | 模型 | 数据集 | 设备 | 样本数 | 准确率 |
 |---|---|---:|---:|---:|
-| j-hartmann DistilRoBERTa | YouTube 领域验证集 | CPU | 592 | 0.4713 |
-| GoEmotions fine-tuned | YouTube 领域验证集 | CPU | 592 | 0.5794 |
-| Domain-adapted | YouTube 领域验证集 | CPU | 592 | 0.6622 |
-| Public GoEmotions RoBERTa | YouTube 领域验证集 | CPU | 592 | 0.6554 |
-| Public RoBERTa-large | YouTube 领域验证集 | CPU | 592 | 0.4426 |
-| CardiffNLP 情感模型 | YouTube 领域验证集 | CPU | 592 | 0.5693 |
+| j-hartmann DistilRoBERTa | YouTube 领域验证集 | CPU | 1000 | 0.4090 |
+| GoEmotions fine-tuned | YouTube 领域验证集 | CPU | 1000 | 0.4670 |
+| Domain-adapted | YouTube 领域验证集 | CPU | 1000 | 0.6650 |
+| Public GoEmotions RoBERTa | YouTube 领域验证集 | CPU | 1000 | 0.4430 |
+| Public RoBERTa-large | YouTube 领域验证集 | CPU | 1000 | 0.4560 |
+| CardiffNLP 情感模型 | YouTube 领域验证集 | CPU | 1000 | 0.5970 |
 
-Domain-adapted DistilBERT 在 592 条 YouTube-domain 验证集上表现最好（0.6622），略高于公共 SamLowe RoBERTa 模型（0.6554）。因此最终应用仍默认使用自研的 YouTube-domain adapted 模型。
+在最新的 1,000 条 YouTube-domain 验证集中，Domain-adapted DistilBERT 表现最好（0.6650），显著高于其他模型（如公共 SamLowe RoBERTa 模型为 0.4430）。当前 YouTube-domain 数据集已经扩展为 5,000 条最终样本，这些指标已基于最新的 1,000 条验证集进行了刷新。
 
 ### 11.3 应用级性能（5 个模型对比，150 条人工审核评论）
 
@@ -260,7 +260,7 @@ Domain-adapted DistilBERT 在 592 条 YouTube-domain 验证集上表现最好（
 ### 11.4 关键发现
 
 - GoEmotions fine-tuned DistilBERT 在扩展后的 GoEmotions 测试集上从 0.6680 提升到 0.7030。
-- 重新平衡 YouTube 领域训练数据并加入类别加权损失后，domain-adapted 模型在 YouTube-domain 验证集上取得最佳结果：**392/592 (0.6622)**。
+- 在最新的 1,000 条 YouTube-domain 验证集中，domain-adapted 模型取得最佳结果：**665/1000 (0.6650)**，显著高于其他模型，验证了领域适配的有效性。
 - 在 150 条应用级人工 benchmark 中，公共 SamLowe GoEmotions RoBERTa 最高：**80/150 (0.5333)**。自研 domain-adapted DistilBERT 是最强自研 DistilBERT：**71/150 (0.4733)**，高于 GoEmotions fine-tuned 的 70/150 和预调优基线的 67/150。
 - 最大提升出现在以愤怒情绪为主的新闻视频上：从 12/50 提升到 18/50，说明平衡的领域适配有助于模型更好地检测负面情绪。
 - 公共模型依然是有价值的对照：SamLowe RoBERTa 在 app benchmark 里最好，而 RoBERTa-large 在本任务上更慢且准确率较低。

@@ -11,7 +11,7 @@
 - Streamlit app 目标地址：https://youtube-emotion-analyzer.streamlit.app/
 - 当前项目目录：`youtube_emotion_project/`
 - 当前分支：`main`
-- 本轮新增/更新文件：`docs/project_status_todo.md`、`docs/final_submission_checklist.md`、`experiments/Performance_result.xlsx`、`scripts/train_youtube_domain_all_models.py`、`notebooks/fine_tune_youtube_domain_all_models.ipynb`、`tests/test_multimodel_training_config.py`
+- 本轮新增/更新重点：YouTube-domain 8,000 条原始池、5,000 条最终 adaptation 数据集、平衡构建脚本、数据规模相关文档。
 
 ## 2. 项目目标
 
@@ -43,8 +43,11 @@
 | `docs/report/PPT_design.md` | 已更新 | PPT 设计说明 |
 | `README.md` | 已更新 | 项目说明 |
 | `scripts/evaluate_updated_results.py` | 已完成 | 当前可复跑评估脚本 |
+| `scripts/build_youtube_domain_balanced_dataset.py` | 已新增 | 抓取、分类、平衡 YouTube-domain 评论 |
 | `scripts/train_youtube_domain_all_models.py` | 已新增 | 多模型 YouTube-domain fine-tuning 脚本 |
 | `notebooks/fine_tune_youtube_domain_all_models.ipynb` | 已新增 | Colab 多模型调优 notebook |
+| `data/youtube_domain_training_comments_8000_assistant_labeled.csv` | 已生成 | 8,000 条 YouTube-domain 标注原始池 |
+| `data/youtube_domain_7class_assistant/all.csv` | 已刷新 | 5,000 条最终 YouTube-domain adaptation 数据集 |
 
 ### 3.2 项目目录外但属于作业要求的文件
 
@@ -86,15 +89,15 @@ youtube_emotion_project/
 |   |   `-- test.csv        1,000 条测试数据
 |   |
 |   |-- youtube_domain_7class_assistant/
-|   |   |-- train.csv       2,370 条训练数据
-|   |   |-- validation.csv  592 条验证数据
-|   |   `-- all.csv         2,962 条总数据
+|   |   |-- train.csv       4,000 条训练数据
+|   |   |-- validation.csv  1,000 条验证数据
+|   |   `-- all.csv         5,000 条总数据
 |   |
 |   |-- youtube_domain_7class_balanced/
 |   |   早期平衡版本 YouTube-domain 数据。
 |   |
 |   `-- youtube_domain_training_comments_*.csv
-|       原始、扩展、assistant-labeled YouTube 评论数据。
+|       原始、扩展、assistant-labeled YouTube 评论数据，含 8,000 条原始池。
 |
 |-- experiments/
 |   |-- Experimental_results.xlsx
@@ -107,7 +110,7 @@ youtube_emotion_project/
 |   |   GoEmotions 1,000 条测试集模型选择结果。
 |   |
 |   |-- youtube_domain_validation_performance.csv
-|   |   YouTube-domain 592 条验证集结果。
+|   |   上一轮 YouTube-domain 592 条验证集结果，5,000 条数据刷新后需要重跑。
 |   |
 |   |-- app_model_comparison_5models.csv
 |   |   150 条 app benchmark 简表。
@@ -136,6 +139,9 @@ youtube_emotion_project/
 |   |
 |   |-- label_youtube_domain_comments.py
 |   |   生成 assistant-labeled YouTube-domain split。
+|   |
+|   |-- build_youtube_domain_balanced_dataset.py
+|   |   抓取、分类、平衡 YouTube-domain 评论，生成 8,000 原始池和 5,000 最终数据集。
 |   |
 |   |-- review_app_manual_labels.py
 |   |   审核和修正 150 条 app benchmark 人工标签。
@@ -253,9 +259,10 @@ youtube_emotion_project/
 | GoEmotions train | `data/go_emotions_7class/train.csv` | 5,000 |
 | GoEmotions validation | `data/go_emotions_7class/validation.csv` | 406 |
 | GoEmotions test | `data/go_emotions_7class/test.csv` | 1,000 |
-| YouTube-domain train | `data/youtube_domain_7class_assistant/train.csv` | 2,370 |
-| YouTube-domain validation | `data/youtube_domain_7class_assistant/validation.csv` | 592 |
-| YouTube-domain all | `data/youtube_domain_7class_assistant/all.csv` | 2,962 |
+| YouTube-domain train | `data/youtube_domain_7class_assistant/train.csv` | 4,000 |
+| YouTube-domain validation | `data/youtube_domain_7class_assistant/validation.csv` | 1,000 |
+| YouTube-domain all | `data/youtube_domain_7class_assistant/all.csv` | 5,000 |
+| YouTube-domain raw pool | `data/youtube_domain_training_comments_8000_assistant_labeled.csv` | 8,000 |
 | App benchmark | `experiments/app_per_comment_manual_labels.csv` | 150 |
 
 注意：CSV 的 `wc -l` 会比数据行多 1，因为包含 header。
@@ -263,9 +270,10 @@ youtube_emotion_project/
 重要区分：
 
 - GoEmotions 训练集是 5,000 条，用于通用七情绪 fine-tuning / model selection。
-- YouTube-domain adaptation 训练集是 2,370 条，不是 5,000 条；当前多模型调优脚本默认使用这份数据。
-- YouTube-domain adaptation 数据明显不平衡，约 51.7% neutral、31.8% joy，其他五类每类约 2.7% 到 4.6%。这会让模型更容易预测 neutral / joy，可能拉低 anger、disgust、fear、sadness、surprise 等少数类的召回率。
-- 当前脚本已使用 class-weighted loss 缓解不平衡，但如果最终效果仍差，下一步应考虑重采样、补充少数类 YouTube 评论、或使用 focal loss / balanced batch sampler。
+- YouTube-domain raw pool 已扩展到 8,000 条，来自 71 个视频。
+- YouTube-domain 最终 adaptation 数据集是 5,000 条；train/validation 为 4,000 / 1,000。
+- 新的 5,000 条数据已尽量平衡且不复制样本：anger 905、disgust 505、fear 608、joy 904、neutral 904、sadness 802、surprise 372。
+- surprise 和 disgust 仍是相对少数类；当前训练脚本继续使用 class-weighted loss 缓解剩余不平衡。
 
 ## 8. 当前评估结果
 
@@ -283,7 +291,7 @@ youtube_emotion_project/
 - GoEmotions fine-tuned DistilBERT 在 GoEmotions 测试集上最好。
 - YouTube-domain adapted DistilBERT 在 GoEmotions 上下降是正常的，因为它向 YouTube 评论风格适配。
 
-### 8.2 YouTube-domain 592 条验证集
+### 8.2 上一轮 YouTube-domain 592 条验证集结果
 
 | 模型 | 匹配数 | 准确率 |
 |---|---:|---:|
@@ -297,7 +305,8 @@ youtube_emotion_project/
 解释：
 
 - 当前自研 YouTube-domain adapted DistilBERT 在这个验证集上略高于 SamLowe。
-- 但这个验证集来自 assistant-labeled YouTube-domain 数据，不等同于最终独立 app benchmark。
+- 但这个结果来自上一轮 592 条验证集。当前 YouTube-domain 数据已重建为 5,000 条 all / 4,000 train / 1,000 validation；需要重新训练并刷新评估。
+- 这个验证集来自 assistant-labeled YouTube-domain 数据，不等同于最终独立 app benchmark。
 
 ### 8.3 150 条 app 人工 benchmark
 
@@ -325,7 +334,8 @@ youtube_emotion_project/
 - [x] 实现多模型对比模式。
 - [x] 准备 GoEmotions 七情绪数据集。
 - [x] 扩展 GoEmotions train/test 到 5,000 / 1,000。
-- [x] 准备 YouTube-domain assistant-labeled 数据集，共 2,962 条。
+- [x] 扩展 YouTube-domain assistant-labeled 原始池到 8,000 条。
+- [x] 生成 YouTube-domain 5,000 条最终 adaptation 数据集。
 - [x] 训练并上传 DistilBERT 原始 fine-tuned 模型。
 - [x] 训练并上传 DistilBERT YouTube-domain adapted 模型。
 - [x] 建立 150 条 app 人工 benchmark。
@@ -338,7 +348,7 @@ youtube_emotion_project/
 - [x] 更新 README、英文报告、中文报告、PPT 设计、presentation outline。
 - [x] 制作网页 PPT，包含项目截图和案例演示。
 - [x] 发布 GitHub Pages。
-- [x] 单元测试通过：27 tests OK。
+- [x] 单元测试通过：31 tests OK。
 
 ## 10. Performance_result.xlsx 状态
 
@@ -417,7 +427,7 @@ youtube_emotion_project/
 - [ ] 增加新 Hugging Face repo 的 revision tracking。
 - [ ] 统一评估：
   - GoEmotions 1,000 test
-  - YouTube-domain 592 validation
+  - YouTube-domain 1,000 validation
   - 150 app benchmark
 - [ ] 增加 macro-F1，不只看 accuracy。
 - [ ] 重新生成：

@@ -25,9 +25,9 @@ class DefaultModelsTest(unittest.TestCase):
         self.assertEqual(len(DEFAULT_COMPARISON_MODEL_LABELS), 3)
         for label in DEFAULT_COMPARISON_MODEL_LABELS:
             self.assertIn(label, EMOTION_MODEL_OPTIONS)
-        self.assertIn("Public GoEmotions RoBERTa (SamLowe)", DEFAULT_COMPARISON_MODEL_LABELS)
+        self.assertIn("YouTube-domain adapted RoBERTa (SamLowe)", DEFAULT_COMPARISON_MODEL_LABELS)
         self.assertIn(
-            "Public DistilRoBERTa 7-emotion (j-hartmann)",
+            "YouTube-domain adapted DistilRoBERTa (j-hartmann)",
             DEFAULT_COMPARISON_MODEL_LABELS,
         )
 

@@ -8,7 +8,7 @@ InsightWave Digital Marketing Agency helps brands understand whether YouTube cam
 
 ## Project Status
 
-- ✅ `youtube_emotion/` package fully built and tested (23 tests pass)
+- ✅ `youtube_emotion/` package fully built and tested
 - ✅ Fine-tuning Colab notebook ready
 - ✅ Testing/experiments Colab notebook ready
 - ✅ Streamlit app built
@@ -23,7 +23,8 @@ InsightWave Digital Marketing Agency helps brands understand whether YouTube cam
 - ✅ Draft report PDF generated
 - ✅ Three-model Streamlit comparison mode added
 - ✅ App comment retrieval expanded to 100 comments per video
-- ✅ YouTube-domain adaptation dataset expanded to 2,962 comments from 30 videos
+- ✅ YouTube-domain raw comment pool expanded to 8,000 comments from 71 videos
+- ✅ YouTube-domain final adaptation dataset rebuilt as a 5,000-row balanced-as-possible set
 - ✅ GoEmotions train/test splits expanded to 5,000 / 1,000 rows
 - ✅ Decision pipeline added to Streamlit outputs
 
@@ -248,9 +249,10 @@ Labels: anger, disgust, fear, joy, neutral, sadness, surprise
 
 Additional YouTube-domain adaptation data:
 
-- 2,962 assistant-assisted labeled YouTube comments
-- 30 videos
-- Up to 100 top-level comments per video
+- 8,000 assistant-assisted labeled YouTube comments in the raw pool
+- 5,000 selected comments in the final adaptation dataset
+- 71 videos
+- Balanced as far as possible without duplicating minority-class comments
 - Stored in `data/youtube_domain_7class_assistant/`
 - Independent app evaluation uses a separate manually reviewed 150-comment benchmark
 
@@ -263,6 +265,8 @@ Additional YouTube-domain adaptation data:
 | 150-comment app benchmark | Public SamLowe GoEmotions RoBERTa | 80/150 |
 | 150-comment app benchmark, project-owned model | YouTube-domain adapted DistilBERT | 71/150 |
 | 150-comment app sentiment benchmark | CardiffNLP sentiment pipeline | 105/150 |
+
+Note: the YouTube-domain dataset has since been rebuilt to 5,000 rows from an 8,000-comment pool. The model metrics above are the latest completed evaluation before the 5,000-row dataset refresh and should be rerun after the next fine-tuning pass.
 
 ## YouTube API Key
 

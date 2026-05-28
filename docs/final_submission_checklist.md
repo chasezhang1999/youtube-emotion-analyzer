@@ -21,7 +21,8 @@ This checklist is based on `ISOM5240_project_requirements.pdf` and the current Y
   - `j-hartmann/emotion-english-roberta-large`
 - App comment retrieval expanded to 100 comments per video
 - GoEmotions seven-class dataset prepared: `data/go_emotions_7class/`
-- YouTube-domain adaptation dataset prepared: `data/youtube_domain_7class_assistant/` with 2,962 comments from 30 videos
+- YouTube-domain raw pool prepared: `data/youtube_domain_training_comments_8000_assistant_labeled.csv` with 8,000 comments from 71 videos
+- YouTube-domain adaptation dataset prepared: `data/youtube_domain_7class_assistant/` with 5,000 selected comments
 - Manual app testing dataset prepared: `experiments/app_per_comment_manual_labels.csv`
 - Experimental results workbook prepared: `experiments/Experimental_results.xlsx`
 - Performance result workbook prepared: `experiments/Performance_result.xlsx`
@@ -132,6 +133,9 @@ data/go_emotions_7class/test.csv
 data/youtube_domain_7class_assistant/all.csv
 data/youtube_domain_7class_assistant/train.csv
 data/youtube_domain_7class_assistant/validation.csv
+data/youtube_domain_training_comments_8000_unlabeled.csv
+data/youtube_domain_training_comments_8000_assistant_labeled.csv
+data/youtube_domain_training_comments_5000_balanced_assistant_labeled.csv
 data/sample_comments.csv
 fine_tuned_model_files/youtube-emotion-distilbert/
 fine_tuned_model_files/youtube-emotion-distilbert-domain-adapted/
@@ -170,7 +174,7 @@ Workbook sheets:
 Key numbers:
 
 - GoEmotions fine-tuned DistilBERT: 0.7030 on the expanded 1,000-sample GoEmotions test benchmark.
-- Domain-adapted model: 0.6622 on the expanded 592-sample YouTube-domain validation split.
+- Domain-adapted model: 0.6650 on the refreshed 1,000-sample YouTube-domain validation split.
 - Streamlit app seven-emotion manual benchmark:
   - pre-tuning public baseline: 67/150 = 0.4467
   - GoEmotions fine-tuned DistilBERT: 70/150 = 0.4667
@@ -179,6 +183,12 @@ Key numbers:
   - public RoBERTa-large seven-emotion: 62/150 = 0.4133
 - Streamlit app three-class sentiment benchmark: 105/150 = 0.7000
 - Manual label review: 23 of 150 labels revised after assistant review.
+
+Dataset refresh note:
+
+- The YouTube-domain dataset has now been rebuilt to 5,000 selected comments from an 8,000-comment pool.
+- The validation metrics above have been refreshed on the 1,000-sample YouTube-domain validation split (resulting in 0.6650 accuracy for our domain-adapted model).
+- Optional: Rerun fine-tuning on Colab if you want to perform multi-model domain adaptation.
 
 ### 6. Performance Result Excel
 
@@ -204,7 +214,7 @@ Workbook contents:
 
 - Pipeline 1: seven-emotion classification, marked as the pipeline requiring fine-tuning.
 - Step 1: comparable model selection on the 1,000-row GoEmotions test split.
-- Step 2a: YouTube-domain validation performance on 592 validation comments.
+- Step 2a: YouTube-domain validation performance on the refreshed 1,000-sample validation split (our model achieved 0.6650 accuracy).
 - Step 2b: current implementation model selection and caveat about SamLowe's app benchmark strength.
 - Step 3: deployed app benchmark on 150 manually reviewed YouTube comments.
 - Pipeline 2: CardiffNLP three-class sentiment pipeline as supporting signal, no fine-tuning required.

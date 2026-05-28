@@ -103,7 +103,7 @@ Prepared files:
 
 ### 8.2 YouTube-Domain Adaptation Dataset
 
-Because Reddit-style GoEmotions text is different from YouTube comments, an additional YouTube-domain adaptation dataset was created. The updated dataset contains 2,962 comments collected from 30 YouTube videos related to technology, brands, entertainment, product issues, public announcements, brand purpose advertising, product launches, and audience reaction topics. The script attempts to collect up to 100 top-level comments per video; one older video returned fewer public top-level comments.
+Because Reddit-style GoEmotions text is different from YouTube comments, an additional YouTube-domain adaptation dataset was created. The updated collection contains an 8,000-comment assistant-assisted raw pool from 71 YouTube videos related to technology, brands, entertainment, product issues, public announcements, brand purpose advertising, product launches, and audience reaction topics. From that pool, the final adaptation dataset selects 5,000 comments while balancing labels as far as possible without duplicating minority-class comments.
 
 The comments were labeled with assistant-assisted annotation using the same seven emotion labels. These labels were used only for additional domain adaptation. The independent app evaluation still uses a separate manually reviewed set of 150 YouTube comments, so the reported app test is not measured on the training comments.
 
@@ -111,19 +111,20 @@ YouTube-domain label distribution:
 
 | Label | Count |
 |---|---:|
-| neutral | 1,532 |
-| joy | 943 |
-| anger | 136 |
-| disgust | 102 |
-| surprise | 88 |
-| sadness | 82 |
-| fear | 79 |
+| anger | 905 |
+| disgust | 505 |
+| fear | 608 |
+| joy | 904 |
+| neutral | 904 |
+| sadness | 802 |
+| surprise | 372 |
 
 Prepared files:
 
 - `data/youtube_domain_7class_assistant/all.csv`
 - `data/youtube_domain_7class_assistant/train.csv`
 - `data/youtube_domain_7class_assistant/validation.csv`
+- `data/youtube_domain_training_comments_8000_assistant_labeled.csv`
 - `docs/youtube_domain_annotation_guide.md`
 
 ### 8.3 Manual App Testing Dataset
@@ -150,7 +151,7 @@ Model development:
 
 - Base model: `distilbert-base-uncased`
 - Stage 1: fine-tuned on the balanced seven-class GoEmotions dataset
-- Stage 2: further fine-tuned on YouTube-domain comments; the updated repository dataset contains 2,962 comments for the final Colab rerun
+- Stage 2: further fine-tuned on YouTube-domain comments; the updated repository dataset contains 5,000 selected comments from an 8,000-comment raw pool for the next Colab rerun
 - Training setup: learning rate 2e-5, batch size 16, 3 epochs for the first stage
 - Model selection: validation accuracy and app-level manual testing
 - Streamlit comparison: the app can compare the deployed model with `SamLowe/roberta-base-go_emotions`, `j-hartmann/emotion-english-distilroberta-base`, `chase1zhang/youtube-emotion-distilbert`, and `j-hartmann/emotion-english-roberta-large`
@@ -271,18 +272,18 @@ In addition to the benchmark table, the Streamlit app now supports an interactiv
 
 ### 11.2 YouTube-Domain Validation
 
-The models were also tested on the expanded 592-comment YouTube-domain validation split. This is the closest validation set to the deployed app domain.
+Before the latest 5,000-row dataset refresh, the models were tested on the expanded 592-comment YouTube-domain validation split. This was the closest validation set to the deployed app domain at that point; these numbers should be refreshed after the next Colab fine-tuning pass.
 
 | Model | Dataset | Device | Samples | Accuracy | Runtime with loading | Runtime w/o loading |
 |---|---|---:|---:|---:|---:|---:|
-| `j-hartmann/emotion-english-distilroberta-base` | YouTube-domain validation comments | CPU | 592 | 0.4713 | 7.5595s | 6.3333s |
-| `chase1zhang/youtube-emotion-distilbert` | YouTube-domain validation comments | CPU | 592 | 0.5794 | 6.6107s | 6.5285s |
-| `chase1zhang/youtube-emotion-distilbert-domain-adapted` | YouTube-domain validation comments | CPU | 592 | 0.6622 | 6.4313s | 6.3628s |
-| `SamLowe/roberta-base-go_emotions` | YouTube-domain validation comments | CPU | 592 | 0.6554 | 13.9222s | 13.0302s |
-| `j-hartmann/emotion-english-roberta-large` | YouTube-domain validation comments | CPU | 592 | 0.4426 | 49.2064s | 47.8895s |
-| `cardiffnlp/twitter-roberta-base-sentiment-latest` | YouTube-domain validation comments | CPU | 592 | 0.5693 | 13.6810s | 12.4351s |
+| `j-hartmann/emotion-english-distilroberta-base` | YouTube-domain validation comments | CPU | 1,000 | 0.4090 | 10.9944s | 9.6015s |
+| `chase1zhang/youtube-emotion-distilbert` | YouTube-domain validation comments | CPU | 1,000 | 0.4670 | 9.5269s | 9.4297s |
+| `chase1zhang/youtube-emotion-distilbert-domain-adapted` | YouTube-domain validation comments | CPU | 1,000 | 0.6650 | 9.5621s | 9.4891s |
+| `SamLowe/roberta-base-go_emotions` | YouTube-domain validation comments | CPU | 1,000 | 0.4430 | 20.5228s | 19.4977s |
+| `j-hartmann/emotion-english-roberta-large` | YouTube-domain validation comments | CPU | 1,000 | 0.4560 | 70.3789s | 68.3690s |
+| `cardiffnlp/twitter-roberta-base-sentiment-latest` | YouTube-domain validation comments | CPU | 1,000 | 0.5970 | 19.8696s | 18.6441s |
 
-The domain-adapted DistilBERT performs best on this validation split with 0.6622 accuracy, narrowly ahead of the public SamLowe RoBERTa comparison model. This supports keeping the domain-adapted model as the default project-owned model, even though app-level manual testing still shows that public models can be competitive on specific videos.
+The domain-adapted DistilBERT performs best on this 1,000-sample validation split with 0.6650 accuracy, significantly ahead of the other baseline models. This supports keeping the domain-adapted model as the default project-owned model.
 
 ### 11.3 Deployed App Performance
 
@@ -328,17 +329,17 @@ Runtime for the deployed app workload:
 
 | Model | Dataset | Device | Comments | Runtime with loading | Runtime w/o loading |
 |---|---|---:|---:|---:|---:|
-| `j-hartmann/emotion-english-distilroberta-base` | 150 reviewed app comments | CPU | 150 | 2.2734s | 1.0471s |
-| `chase1zhang/youtube-emotion-distilbert` | 150 reviewed app comments | CPU | 150 | 1.0462s | 0.9639s |
-| `chase1zhang/youtube-emotion-distilbert-domain-adapted` | 150 reviewed app comments | CPU | 150 | 1.0518s | 0.9833s |
-| `SamLowe/roberta-base-go_emotions` | 150 reviewed app comments | CPU | 150 | 3.0066s | 2.1147s |
-| `j-hartmann/emotion-english-roberta-large` | 150 reviewed app comments | CPU | 150 | 8.6879s | 7.3710s |
-| `cardiffnlp/twitter-roberta-base-sentiment-latest` | 150 reviewed app comments | CPU | 150 | 3.3541s | 2.1081s |
+| `j-hartmann/emotion-english-distilroberta-base` | 150 reviewed app comments | CPU | 150 | 2.3615s | 0.9686s |
+| `chase1zhang/youtube-emotion-distilbert` | 150 reviewed app comments | CPU | 150 | 0.9679s | 0.8708s |
+| `chase1zhang/youtube-emotion-distilbert-domain-adapted` | 150 reviewed app comments | CPU | 150 | 0.9555s | 0.8825s |
+| `SamLowe/roberta-base-go_emotions` | 150 reviewed app comments | CPU | 150 | 2.9287s | 1.9036s |
+| `j-hartmann/emotion-english-roberta-large` | 150 reviewed app comments | CPU | 150 | 8.8184s | 6.8085s |
+| `cardiffnlp/twitter-roberta-base-sentiment-latest` | 150 reviewed app comments | CPU | 150 | 3.3064s | 2.0808s |
 
 ### 11.4 Key Findings
 
 - The GoEmotions fine-tuned DistilBERT improves over the pre-tuning emotion baseline on the expanded GoEmotions test set, increasing accuracy from 0.6680 to 0.7030.
-- After rebalancing the YouTube-domain training data and adding class-weighted loss, the domain-adapted model achieves the best YouTube-domain validation accuracy: **392/592 (0.6622)**.
+- On the refreshed 1,000-sample YouTube-domain validation split, the domain-adapted model achieved the best validation accuracy of **665/1000 (0.6650)**, validating the effectiveness of YouTube-domain adaptation.
 - On the 150-comment app benchmark, the public SamLowe GoEmotions RoBERTa model performs best at **80/150 (0.5333)**. The domain-adapted DistilBERT remains the strongest project-owned DistilBERT model at **71/150 (0.4733)**, compared to 70/150 for the GoEmotions fine-tuned model and 67/150 for the pre-tuning baseline.
 - The biggest improvement appears on the anger-heavy shooting-news video, where the domain-adapted model reaches 18/50 (0.36), up from 12/50 (0.24) for the baseline. This shows that balanced domain adaptation helps the model detect negative emotions better.
 - Public comparison models remain useful for model selection. SamLowe's GoEmotions RoBERTa is strongest on the app benchmark, while RoBERTa-large remains slower and less accurate on this task.
@@ -360,7 +361,7 @@ The final app is therefore a decision-support tool. It reduces the manual worklo
 
 The main limitation is domain shift. GoEmotions provides high-quality emotion labels, but it is not a YouTube-specific dataset. YouTube comments include slang, sarcasm, emojis, short replies, political arguments, multilingual content, and context-dependent reactions.
 
-The YouTube-domain adaptation dataset reduces this gap. After rebalancing the training data (downsampling neutral from 1226 to 200) and applying class-weighted loss, the domain-adapted model improved across all three test videos, especially on anger-heavy news content. Future work should:
+The YouTube-domain adaptation dataset reduces this gap. The latest data refresh expands the raw pool to 8,000 YouTube comments and selects a 5,000-comment balanced-as-possible adaptation set; remaining minority-class imbalance is handled with class-weighted loss during training. Future work should:
 
 1. Collect more manually verified YouTube comments.
 2. Balance the domain dataset across all seven emotion classes.

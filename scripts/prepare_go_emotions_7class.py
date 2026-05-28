@@ -12,10 +12,10 @@ def main() -> None:
     output_dir = PROJECT_ROOT / "data" / "go_emotions_7class"
     summary = prepare_all_splits(
         output_dir=output_dir,
-        balance=True,
+        balance=False,
         max_train_per_label=None,
-        target_train_size=5000,
-        target_test_size=1000,
+        target_train_size=None,
+        target_test_size=None,
         random_state=42,
     )
 

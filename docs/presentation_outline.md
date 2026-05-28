@@ -71,9 +71,10 @@ Include:
   - test: 1,000
 - Labels: anger, disgust, fear, joy, neutral, sadness, surprise
 - YouTube-domain adaptation set:
-  - 2,962 comments
-  - 30 videos
-  - up to 100 comments per video
+  - 8,000-comment assistant-assisted raw pool
+  - 5,000 selected comments for final domain adaptation
+  - 71 videos
+  - balanced as far as possible without duplicating minority-class comments
   - assistant-assisted labels
 - Independent app test:
   - 150 manually reviewed comments

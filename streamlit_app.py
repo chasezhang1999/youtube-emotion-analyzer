@@ -43,8 +43,8 @@ DEFAULT_COMPARISON_MODEL_LABELS = [
         "DEFAULT_COMPARISON_MODEL_LABELS",
         [
             "YouTube-domain adapted DistilBERT (recommended)",
-            "Public GoEmotions RoBERTa (SamLowe)",
-            "Public DistilRoBERTa 7-emotion (j-hartmann)",
+            "YouTube-domain adapted RoBERTa (SamLowe)",
+            "YouTube-domain adapted DistilRoBERTa (j-hartmann)",
         ],
     )
     if label in EMOTION_MODEL_OPTIONS
@@ -361,6 +361,24 @@ def display_model_comparison(comparison_results: dict[str, dict]) -> None:
         file_name="youtube_comment_emotion_model_comparison.csv",
         mime="text/csv",
     )
+
+    st.markdown("---")
+    st.header("🎯 Final Campaign Decision Model Selection")
+    st.write(
+        "Choose one of the compared models to generate the final campaign decision, "
+        "marketing recommendations, and decision pipeline outcomes:"
+    )
+
+    decision_model_label = st.selectbox(
+        "Select decision model",
+        options=list(comparison_results.keys()),
+        index=0,
+        help="Select the model whose predictions will be used to make the final campaign decision.",
+        key="final_decision_model_selector",
+    )
+
+    st.write(f"Generating final campaign decision using predictions from **{decision_model_label}**:")
+    display_summary(comparison_results[decision_model_label]["rows"])
 
 
 def main() -> None:
