@@ -304,6 +304,8 @@ def prepare_datasets(train_csv: str, validation_csv: str, tokenizer, max_length:
         )
 
     tokenized = dataset.map(tokenize, batched=True)
+    if "token_type_ids" in tokenized["train"].column_names:
+        tokenized = tokenized.remove_columns(["token_type_ids"])
     tokenized = tokenized.rename_column("label", "labels")
     tokenized.set_format("torch", columns=["input_ids", "attention_mask", "labels"])
     return tokenized, train_df, validation_df
