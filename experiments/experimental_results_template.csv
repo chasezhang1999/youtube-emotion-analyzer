@@ -1,5 +1,5 @@
 experiment_id,model_name,task,dataset,device,num_samples,matched_samples,accuracy,runtime_with_model_loading_seconds,runtime_without_model_loading_seconds,notes
-1,j-hartmann/emotion-english-distilroberta-base,seven-emotion classification,GoEmotions 7-class test split,CPU,2160,1340,0.6204,10.8209,8.1364,"pre-tuning public baseline; refreshed after 5,000/1,000 split expansion"
-2,chase1zhang/youtube-emotion-distilbert,seven-emotion classification,GoEmotions 7-class test split,CPU,2160,1408,0.6519,7.1593,7.0601,"GoEmotions fine-tuned DistilBERT; refreshed after 5,000/1,000 split expansion"
-3,chase1zhang/youtube-emotion-distilbert-domain-adapted,seven-emotion classification,GoEmotions 7-class test split,CPU,2160,1252,0.5796,7.0672,6.9941,"YouTube-domain adapted DistilBERT; refreshed after 5,000/1,000 split expansion"
-4,cardiffnlp/twitter-roberta-base-sentiment-latest,sentiment classification,GoEmotions 7-class test split,CPU,2160,1176,0.5444,15.0587,13.7299,"supporting sentiment pipeline; refreshed after 5,000/1,000 split expansion"
+1,j-hartmann/emotion-english-distilroberta-base,seven-emotion classification,GoEmotions 7-class test split,CPU,2160,1340,0.6204,9.3215,7.9861,"pre-tuning public baseline; refreshed after 5,000/1,000 split expansion"
+2,chase1zhang/youtube-emotion-distilbert,seven-emotion classification,GoEmotions 7-class test split,CPU,2160,1864,0.863,7.5289,7.4261,"GoEmotions fine-tuned DistilBERT; refreshed after 5,000/1,000 split expansion"
+3,chase1zhang/youtube-emotion-distilbert-domain-adapted,seven-emotion classification,GoEmotions 7-class test split,CPU,2160,1498,0.6935,6.6423,6.596,"YouTube-domain adapted DistilBERT; refreshed after 5,000/1,000 split expansion"
+4,cardiffnlp/twitter-roberta-base-sentiment-latest,sentiment classification,GoEmotions 7-class test split,CPU,2160,1176,0.5444,14.4231,13.2994,"supporting sentiment pipeline; refreshed after 5,000/1,000 split expansion"

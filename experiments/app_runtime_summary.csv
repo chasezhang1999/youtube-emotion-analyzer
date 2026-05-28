@@ -1,7 +1,9 @@
 model_name,dataset,device,num_comments,runtime_with_model_loading_seconds,runtime_without_model_loading_seconds,notes
-j-hartmann/emotion-english-distilroberta-base,150 reviewed Streamlit app comments,CPU,150,3.73,1.0456,pre-tuning public baseline
-chase1zhang/youtube-emotion-distilbert,150 reviewed Streamlit app comments,CPU,150,0.9736,0.8745,GoEmotions fine-tuned DistilBERT
-chase1zhang/youtube-emotion-distilbert-domain-adapted,150 reviewed Streamlit app comments,CPU,150,0.989,0.916,YouTube-domain adapted DistilBERT
-SamLowe/roberta-base-go_emotions,150 reviewed Streamlit app comments,CPU,150,3.0158,1.9613,public GoEmotions RoBERTa
-j-hartmann/emotion-english-roberta-large,150 reviewed Streamlit app comments,CPU,150,8.34,6.8888,public RoBERTa-large seven-emotion
-cardiffnlp/twitter-roberta-base-sentiment-latest,150 reviewed Streamlit app comments,CPU,150,3.2465,1.9177,supporting sentiment pipeline
+j-hartmann/emotion-english-distilroberta-base,150 reviewed Streamlit app comments,CPU,150,2.4741,1.1386,pre-tuning public baseline
+chase1zhang/youtube-emotion-distilbert,150 reviewed Streamlit app comments,CPU,150,0.9543,0.8515,GoEmotions fine-tuned DistilBERT
+chase1zhang/youtube-emotion-distilbert-domain-adapted,150 reviewed Streamlit app comments,CPU,150,0.901,0.8547,YouTube-domain adapted DistilBERT
+SamLowe/roberta-base-go_emotions,150 reviewed Streamlit app comments,CPU,150,2.8756,1.945,public GoEmotions RoBERTa
+j-hartmann/emotion-english-roberta-large,150 reviewed Streamlit app comments,CPU,150,8.2112,6.8108,public RoBERTa-large seven-emotion
+chase1zhang/youtube-emotion-samlowe-roberta-domain-adapted,150 reviewed Streamlit app comments,CPU,150,2.1098,1.9588,YouTube-domain adapted RoBERTa
+chase1zhang/youtube-emotion-jhartmann-distilroberta-domain-adapted,150 reviewed Streamlit app comments,CPU,150,1.0728,0.979,YouTube-domain adapted DistilRoBERTa
+cardiffnlp/twitter-roberta-base-sentiment-latest,150 reviewed Streamlit app comments,CPU,150,2.9998,1.8761,supporting sentiment pipeline
