@@ -117,6 +117,14 @@ EMOTION_MODELS = [
         task="7-emotion",
         pipeline_task="text-classification",
     ),
+    ModelSpec(
+        stage="YouTube-domain adapted RoBERTa-large",
+        display_name="YouTube-domain adapted RoBERTa-large (j-hartmann)",
+        column_prefix="jhartmann_roberta_large_adapted",
+        model_name="chase1zhang/youtube-emotion-roberta-large-domain-adapted",
+        task="7-emotion",
+        pipeline_task="text-classification",
+    ),
 ]
 
 SENTIMENT_MODELS = [
