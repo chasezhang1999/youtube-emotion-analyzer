@@ -381,7 +381,9 @@ def train_one_model(spec: TrainingSpec, args: argparse.Namespace) -> dict[str, A
             max_length=args.max_length,
             padding=True,
             return_tensors="pt",
-        ).to(device)
+        )
+        encodings.pop("token_type_ids", None)
+        encodings = encodings.to(device)
         with torch.no_grad():
             logits = model(**encodings).logits
         probs = torch.softmax(logits, dim=-1).cpu().tolist()
