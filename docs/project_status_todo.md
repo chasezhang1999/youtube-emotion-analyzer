@@ -45,7 +45,7 @@
 | `scripts/evaluate_updated_results.py` | 已完成 | 当前可复跑评估脚本 |
 | `scripts/build_deepseek_training_data.py` | 已新增 | 抓取、分类、平衡 YouTube-domain 评论 |
 | `scripts/train_youtube_domain_all_models.py` | 已新增 | 多模型 YouTube-domain fine-tuning 脚本 |
-| `notebooks/fine_tune_youtube_domain_all_models.ipynb` | 已新增 | Colab 多模型调优 notebook |
+| `notebooks/fine_tune_all_models.ipynb` | 已新增 | Colab 多模型调优 notebook |
 | `data/youtube_domain_training_comments_8000_deepseek_labeled.csv` | 已生成 | 8,000 条 YouTube-domain 标注原始池 |
 | `data/youtube_domain_7class_deepseek/all.csv` | 已刷新 | 3,991 条最终 YouTube-domain adaptation 数据集 |
 
@@ -154,11 +154,8 @@ youtube_emotion_project/
 |       多模型 YouTube-domain fine-tuning 脚本。
 |
 |-- notebooks/
-|   |-- fine_tune_go_emotions_distilbert.ipynb
-|   |   当前 DistilBERT 两阶段训练 Colab notebook。
-|   |
-|   |-- fine_tune_youtube_domain_all_models.ipynb
-|   |   Colab 多模型 YouTube-domain 调优 notebook。
+|   |-- fine_tune_all_models.ipynb
+|   |   合并训练 Colab notebook：GoEmotions Stage 1 + YouTube-domain Stage 2 + 多模型对比。
 |   |
 |   `-- testing_experiments.ipynb
 |
@@ -391,7 +388,7 @@ youtube_emotion_project/
 ### A. 训练管线
 
 - [x] 新增 `scripts/train_youtube_domain_all_models.py`。
-- [x] 新增 `notebooks/fine_tune_youtube_domain_all_models.ipynb`，用于一次性训练多个基准模型。
+- [x] 新增 `notebooks/fine_tune_all_models.ipynb`，用于一次性训练多个基准模型。
 - [x] 所有模型使用同一份数据：
   - train：`data/youtube_domain_7class_deepseek/train.csv`
   - validation：`data/youtube_domain_7class_deepseek/validation.csv`
@@ -469,7 +466,7 @@ youtube_emotion_project/
 
 ## 13. 建议下一步工作顺序
 
-1. 在 Colab GPU 上运行 `notebooks/fine_tune_youtube_domain_all_models.ipynb`，训练所有 adapted emotion models。
+1. 在 Colab GPU 上运行 `notebooks/fine_tune_all_models.ipynb`，训练所有 adapted emotion models。
 2. 上传新的 Hugging Face repos，并记录每个模型 revision SHA。
 3. 更新 `scripts/evaluate_updated_results.py`，纳入 original vs adapted model family。
 4. 重新跑完整评估：GoEmotions test、YouTube-domain validation、150 条 app benchmark。

@@ -179,7 +179,7 @@ youtube_emotion_project/
 │   ├── go_emotions_7class/       # GoEmotions 七情绪数据
 │   └── youtube_domain_7class/    # YouTube 领域数据
 ├── notebooks/
-│   ├── fine_tune_go_emotions_distilbert.ipynb     # 训练 notebook
+│   ├── fine_tune_all_models.ipynb     # 训练 notebook
 │   └── testing_experiments.ipynb # 测试与实验 notebook
 ├── experiments/
 │   ├── Experimental_results.xlsx # 实验结果 Excel

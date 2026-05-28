@@ -64,17 +64,15 @@ GroupXX_program/Python_notebooks/
 Files:
 
 ```text
-fine_tune_go_emotions_distilbert.ipynb
-Testing_Experiments.ipynb
-fine_tune_youtube_domain_all_models.ipynb
+fine_tune_all_models.ipynb
+testing_experiments.ipynb
 ```
 
 Use these project files:
 
 ```text
-notebooks/fine_tune_go_emotions_distilbert.ipynb
+notebooks/fine_tune_all_models.ipynb
 notebooks/testing_experiments.ipynb
-notebooks/fine_tune_youtube_domain_all_models.ipynb
 ```
 
 Need to finish:
@@ -85,7 +83,7 @@ Need to finish:
 - Keep all outputs visible.
 - Make sure notebook numbers match `experiments/Experimental_results.xlsx` and the report.
 - Refreshed model has been uploaded and evaluated; latest model revisions are recorded in `experiments/model_revision_summary.csv`.
-- Use `notebooks/fine_tune_youtube_domain_all_models.ipynb` for the next fair-comparison experiment: YouTube-domain fine-tuning for every seven-emotion baseline model.
+- Use `notebooks/fine_tune_all_models.ipynb` for the next fair-comparison experiment: YouTube-domain fine-tuning for every seven-emotion baseline model.
 
 ### 3. GitHub App Files
 
@@ -281,9 +279,8 @@ GroupXX_documentation/
 
 GroupXX_program/
 |-- Python_notebooks/
-|   |-- fine_tune_go_emotions_distilbert.ipynb
-|   |-- Testing_Experiments.ipynb
-|   `-- fine_tune_youtube_domain_all_models.ipynb
+|   |-- fine_tune_all_models.ipynb
+|   `-- testing_experiments.ipynb
 `-- GitHub_App_Files/
     |-- streamlit_app.py
     |-- requirements.txt
