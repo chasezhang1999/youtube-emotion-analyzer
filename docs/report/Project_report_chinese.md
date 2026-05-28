@@ -136,8 +136,7 @@ YouTube 域标签分布：
 
 已部署的应用在 10 个 YouTube 视频上进行了评估，每个视频 50 条评论，共 500 条评论。其中 3 个视频的 150 条评论由人工审核，另外 7 个视频的 350 条评论由 DeepSeek v4pro AI 标注。该基准与 YouTube 域适配训练数据分开。10 个视频涵盖稀土、阿凡达片段、枪击新闻、品牌危机、公共安全、公益广告、产品失败、食品安全、快乐预告片和负面品牌危机等主题。基准存储在：
 
-- `experiments/app_per_comment_manual_labels.csv`（150 条人工审核评论）
-- `experiments/app_per_comment_manual_labels_500.csv`（完整 500 条评论基准）
+- `experiments/app_per_comment_manual_labels_500.csv`
 
 ## 9. 模型
 
