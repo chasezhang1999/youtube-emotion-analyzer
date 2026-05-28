@@ -24,6 +24,7 @@ This checklist is based on `ISOM5240_project_requirements.pdf` and the current Y
 - YouTube-domain adaptation dataset prepared: `data/youtube_domain_7class_assistant/` with 2,962 comments from 30 videos
 - Manual app testing dataset prepared: `experiments/app_per_comment_manual_labels.csv`
 - Experimental results workbook prepared: `experiments/Experimental_results.xlsx`
+- Performance result workbook prepared: `experiments/Performance_result.xlsx`
 - Report screenshots captured: `docs/report/screenshots/`
 - Draft report PDF generated: `docs/report/Project_report.pdf`
 - Unit tests pass locally
@@ -64,6 +65,7 @@ Files:
 ```text
 Fine_tune_Model.ipynb
 Testing_Experiments.ipynb
+fine_tune_youtube_domain_all_models.ipynb
 ```
 
 Use these project files:
@@ -71,16 +73,18 @@ Use these project files:
 ```text
 notebooks/Fine_tune_Model.ipynb
 notebooks/testing_experiments.ipynb
+notebooks/fine_tune_youtube_domain_all_models.ipynb
 ```
 
 Need to finish:
 
-- Open both notebooks in Google Colab.
+- Open the required notebooks in Google Colab.
 - Runtime: T4 GPU.
 - Run `Runtime -> Restart & Run All`.
 - Keep all outputs visible.
 - Make sure notebook numbers match `experiments/Experimental_results.xlsx` and the report.
 - Refreshed model has been uploaded and evaluated; latest model revisions are recorded in `experiments/model_revision_summary.csv`.
+- Use `notebooks/fine_tune_youtube_domain_all_models.ipynb` for the next fair-comparison experiment: YouTube-domain fine-tuning for every seven-emotion baseline model.
 
 ### 3. GitHub App Files
 
@@ -176,7 +180,41 @@ Key numbers:
 - Streamlit app three-class sentiment benchmark: 105/150 = 0.7000
 - Manual label review: 23 of 150 labels revised after assistant review.
 
-### 6. Presentation PPT
+### 6. Performance Result Excel
+
+File prepared:
+
+```text
+experiments/Performance_result.xlsx
+```
+
+Original course template location:
+
+```text
+../Performance_result.xlsx
+```
+
+Submit as:
+
+```text
+GroupXX_documentation/Performance_result.xlsx
+```
+
+Workbook contents:
+
+- Pipeline 1: seven-emotion classification, marked as the pipeline requiring fine-tuning.
+- Step 1: comparable model selection on the 1,000-row GoEmotions test split.
+- Step 2a: YouTube-domain validation performance on 592 validation comments.
+- Step 2b: current implementation model selection and caveat about SamLowe's app benchmark strength.
+- Step 3: deployed app benchmark on 150 manually reviewed YouTube comments.
+- Pipeline 2: CardiffNLP three-class sentiment pipeline as supporting signal, no fine-tuning required.
+
+Before final packaging:
+
+- Copy or export the final project workbook to `../Performance_result.xlsx` if the course template file in the Assignment2 root must be the submitted file.
+- Confirm the numbers match `experiments/Experimental_results.xlsx`, the report, and the PPT.
+
+### 7. Presentation PPT
 
 File to submit:
 
@@ -201,7 +239,7 @@ Suggested slide order:
 7. Experimental results
 8. Business insights, limitations, and conclusion
 
-### 7. MP4 Presentation Video
+### 8. MP4 Presentation Video
 
 File to submit:
 
@@ -230,12 +268,14 @@ Recommended structure:
 ```text
 GroupXX_documentation/
 |-- Project_report.pdf
-`-- Experimental_results.xlsx
+|-- Experimental_results.xlsx
+`-- Performance_result.xlsx
 
 GroupXX_program/
 |-- Python_notebooks/
 |   |-- Fine_tune_Model.ipynb
-|   `-- Testing_Experiments.ipynb
+|   |-- Testing_Experiments.ipynb
+|   `-- fine_tune_youtube_domain_all_models.ipynb
 `-- GitHub_App_Files/
     |-- streamlit_app.py
     |-- requirements.txt
@@ -263,7 +303,8 @@ https://youtube-emotion-analyzer.streamlit.app/
 
 1. Fill student names and IDs in the report.
 2. Re-export the report to PDF after filling names.
-3. Open both notebooks in Colab and save final outputs.
-4. Build the PPT from `docs/presentation_outline.md`.
-5. Record the MP4 presentation.
-6. Package the final zip using the required folder names.
+3. Open the required notebooks in Colab and save final outputs.
+4. Verify `experiments/Performance_result.xlsx` against the final report numbers.
+5. Build the PPT from `docs/presentation_outline.md`.
+6. Record the MP4 presentation.
+7. Package the final zip using the required folder names.
