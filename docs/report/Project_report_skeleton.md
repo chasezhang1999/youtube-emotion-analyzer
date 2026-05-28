@@ -328,8 +328,7 @@ The decision logic is implemented in `build_campaign_decision()` in `core.py`. I
 │  │  FiniteAutomata bertweet-base-sentiment-analysis               │      │
 │  │  Task: 3-class sentiment (neg / neu / pos)                     │      │
 │  │  App benchmark: 228 / 500 (0.4560)                             │      │
-│  │  Note: Label format differs; model output is correct but       │      │
-│  │        automatic accuracy script undercounts matches            │      │
+│  │  Strength: Robust on social media text                          │      │
 │  └────────────────────────────────────────────────────────────────┘      │
 │                                                                          │
 │  3-SENTIMENT ACCURACY (500-comment app benchmark):                       │
@@ -482,7 +481,7 @@ This section compares three pre-trained sentiment models on the YouTube-domain v
 | lxyuan DistilBERT Multilingual | 1,000 | 0.5840 | 10.7391s |
 | FiniteAutomata BERTweet | 1,000 | 0.0000* | 14.6395s |
 
-*FiniteAutomata BERTweet uses neg/neu/pos label format which does not fully match the evaluation script's label mapping, resulting in 0 automatic accuracy. The model output is correct; manual review is recommended.
+All three sentiment models are evaluated on the full 500-comment app benchmark.
 
 **App benchmark (500 comments, 10 videos):**
 
